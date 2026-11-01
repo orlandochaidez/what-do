@@ -306,7 +306,13 @@ const SEED_INFO = {
  "Boosinger Park": "Neighborhood park in Pismo with ocean views, a playground, and tennis courts.",
  "Spyglass Park": "Bluff-top park in Shell Beach with picnic spots hanging over the water.",
  "Chumash Park": "Roomy inland park in Pismo with ball fields, a playground, and courts.",
- "Shell Beach": "The cliffy neighborhood strip north of Pismo proper — small coves, tide pools at low tide, and sunset benches along Shell Beach Road."
+ "Shell Beach": "The cliffy neighborhood strip north of Pismo proper — small coves, tide pools at low tide, and sunset benches along Shell Beach Road.",
+ "Avila Beach Pier": "The town's wooden pier — walk it, watch for sea lions hanging out underneath, and the beach is right there when you're done.",
+ "Avila Valley Barn": "Beloved farm stand on the road into Avila — fresh-baked pies, local produce, farm animals to feed, and a hay maze in the fall. Very family-coded, locals swear by the pies.",
+ "Avila Hot Springs": "Old-school hot springs stop (going since 1907) right on Avila Beach Drive — a big warm soaking pool plus a freshwater pool with a slide. The dollar figure is the entry estimate.",
+ "Sycamore Mineral Springs": "Mineral hot tubs tucked into the hillside oaks that you rent by the hour, plus a spa, gardens, and a lagoon-ish pool. Top-tier chill / date move.",
+ "Point San Luis Lighthouse": "An 1890 lighthouse at the tip of the point — you get there on guided tours (usually Wednesdays and Saturdays, trolley from Avila). Check the tour day before you roll out; the views are huge.",
+ "Ontario Ridge Trail": "Steep local-favorite ridge hike between Avila and Shell Beach — a short climb that pays off with wall-to-wall ocean views."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||""}; }
 const SEEDS = {
@@ -370,7 +376,13 @@ const SEEDS = {
     seedPlace("Boosinger Park","park","Pismo Beach, CA",35.1468,-120.6396),
     seedPlace("Spyglass Park","park","Pismo Beach, CA",35.1604,-120.6861),
     seedPlace("Chumash Park","park","Pismo Beach, CA",35.1397,-120.6189),
-    seedPlace("Shell Beach","beach","Pismo Beach, CA",35.1553,-120.6724)
+    seedPlace("Shell Beach","beach","Pismo Beach, CA",35.1553,-120.6724),
+    seedPlace("Avila Beach Pier","viewpoint","Avila Beach, CA",35.1766,-120.7345),
+    seedPlace("Avila Valley Barn","market","Avila Beach, CA",35.1828,-120.7061),
+    seedPlace("Avila Hot Springs","attraction","Avila Beach, CA",35.1807,-120.7029),
+    seedPlace("Sycamore Mineral Springs","attraction","Avila Beach, CA",35.1867,-120.7141),
+    seedPlace("Point San Luis Lighthouse","museum","Avila Beach, CA",35.1604,-120.7608),
+    seedPlace("Ontario Ridge Trail","nature","Avila Beach, CA",35.1829,-120.7176)
   ]
 };
 function seedForZip(zip){
