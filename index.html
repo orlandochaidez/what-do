@@ -97,10 +97,10 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
 
 <div class="wrap">
   <div class="logo">What Do<span class="q">?</span></div>
-  <p class="tagline">Bored? Don't decide. Roll.</p>
+  <p class="tagline">Bored? Don't decide. Roll.<br>Type a ZIP or a city — San Luis Obispo works too.</p>
 
   <div class="zipRow">
-    <input id="zip" inputmode="numeric" autocomplete="postal-code" placeholder="ZIP code" maxlength="5">
+    <input id="zip" autocomplete="off" placeholder="ZIP or city name" maxlength="40">
     <button id="locBtn" type="button">Use my location</button>
   </div>
   <div id="zipNote"></div>
@@ -379,6 +379,20 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||[]).slice();
   return list;
 }
+const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934"};
+const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582]};
+function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
+function seedForCity(city){
+  const k=CITY_SEED_KEYS[normCity(city)];
+  return k ? (SEEDS[k]||[]).slice() : [];
+}
+function seedForQuery(zip,city){
+  const out=[], seen=new Set();
+  for(const src of [seedForZip(zip), seedForCity(city)]){
+    for(const sp of src){ if(!seen.has(sp.name)){ seen.add(sp.name); out.push(sp); } }
+  }
+  return out;
+}
 
 /* ---- Filtering + plan building ---- */
 const DEFAULT_FILTERS = {who:"any", vibe:"any", budget:999, time:999, setting:"any", preferIndoor:false};
@@ -430,7 +444,7 @@ function planText(plan,zip){
 
 /* ================= Live lookup ================= */
 const OVERPASS_URLS=["https://overpass-api.de/api/interpreter","https://overpass.private.coffee/api/interpreter","https://overpass.kumi.systems/api/interpreter","https://overpass.nchc.org.tw/api/interpreter"];
-const zipCacheKey="whatdo_zipcache2";
+const zipCacheKey="whatdo_zipcache3";
 const SEED_CENTERS={"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
 function fetchT(url,opts,ms){
   ms=ms||10000;
@@ -451,6 +465,20 @@ async function geocodeZip(zip){
   const r=await fetchT(`https://nominatim.openstreetmap.org/search?postalcode=${encodeURIComponent(zip)}&country=US&format=json&limit=1`,{},8000);
   const j=await r.json(); if(!j.length) throw new Error("ZIP not found");
   return {lat:parseFloat(j[0].lat), lon:parseFloat(j[0].lon), label:j[0].display_name.split(",").slice(0,2).join(",")};
+}
+function pickGeocodeResult(j,q){
+  if(!j || !j.length) return null;
+  const want=(q||"").split(",")[0].trim().toLowerCase();
+  const firstSeg=(r)=>(r.display_name||"").split(",")[0].trim().toLowerCase();
+  // A city that shares its name with its county (San Luis Obispo!) returns the COUNTY
+  // boundary first — its centroid can be 15+ miles off. Prefer an exact name match.
+  return j.find(r=>firstSeg(r)===want) || j.find(r=>!/county$/.test(firstSeg(r))) || j[0];
+}
+async function geocodeCity(q){
+  const r=await fetchT(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&countrycodes=us&format=json&limit=5&addressdetails=1`,{},8000);
+  const j=await r.json(); const hit=pickGeocodeResult(j,q); if(!hit) throw new Error("place not found");
+  const a=hit.address||{};
+  return {lat:parseFloat(hit.lat), lon:parseFloat(hit.lon), label:hit.display_name.split(",").slice(0,2).join(","), postcode:(a.postcode||"").slice(0,5)};
 }
 async function fetchPlaces(lat,lon){
   const q=`[out:json][timeout:15];(nwr["leisure"~"park|garden|miniature_golf|bowling_alley|ice_rink|sports_centre|nature_reserve|playground|beach_resort|common|dog_park"](around:10000,${lat},${lon});nwr["tourism"~"museum|gallery|zoo|aquarium|attraction|viewpoint|theme_park"](around:10000,${lat},${lon});nwr["amenity"~"cinema|theatre|arts_centre|library|marketplace|nightclub"](around:10000,${lat},${lon}););out center tags 300;`;
@@ -569,32 +597,37 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
   $("#historyHead").onclick=()=>{ const l=$("#historyList"); const open=l.style.display!=="none"; l.style.display=open?"none":"block"; $("#histToggle").textContent=open?"[+]":"[−]"; };
   renderHistory();
 
-  async function ensurePlaces(zip){
-    const cached=getCache(zip);
+  async function ensurePlaces(raw){
+    const isZip=/^\d{5}$/.test(raw);
+    const cacheKey=raw.toLowerCase();
+    const cached=getCache(cacheKey);
     if(cached){ state.places=cached.places; state.label=cached.label; state.weather=cached.weather||null; return; }
-    $("#zipNote").textContent="Finding spots near "+zip+"…";
+    $("#zipNote").textContent="Finding spots near "+raw+"\u2026";
     let g=null;
-    try{ g=await geocodeZip(zip); }catch(e){ g=null; }
+    try{ g=isZip?await geocodeZip(raw):await geocodeCity(raw); }catch(e){ g=null; }
+    let seedZip=isZip?raw:null;
+    if(g && g.postcode) seedZip=g.postcode;
     if(!g){
-      // Geocoder down? If this ZIP has a starter pack, roll from the pack center instead of dying.
-      const c=SEED_CENTERS[zip.slice(0,3)];
+      // Geocoder down? If this place has a starter pack, roll from the pack center instead of dying.
+      const c=isZip?SEED_CENTERS[raw.slice(0,3)]:SEED_CITY_CENTERS[normCity(raw)];
       if(!c) throw new Error("geocode failed");
-      g={lat:c[0], lon:c[1], label:zip};
+      g={lat:c[0], lon:c[1], label:raw};
     }
     state.label=g.label;
     let places=[];
     const wxPromise=fetchWeather(g.lat,g.lon);
     try{ places=await fetchPlaces(g.lat,g.lon); }catch(e){ places=[]; }
-    // merge starters for this ZIP (dedupe by name), compute their distances
-    for(const s of seedForZip(zip)){
-      if(!places.some(p=>p.name.toLowerCase()===s.name.toLowerCase())){
-        s.dist=Math.round(haversineMi(g.lat,g.lon,s.lat,s.lon)*10)/10; places.push(s);
+    // merge starters for this ZIP/city (dedupe by name), compute their distances
+    for(const sp of seedForQuery(seedZip, isZip?null:raw)){
+      if(!places.some(x=>x.name.toLowerCase()===sp.name.toLowerCase())){
+        const c2=Object.assign({},sp);
+        c2.dist=Math.round(haversineMi(g.lat,g.lon,sp.lat,sp.lon)*10)/10; places.push(c2);
       }
     }
     places.sort((a,b)=>(a.dist||99)-(b.dist||99));
     state.places=places;
     state.weather=await wxPromise;
-    setCache(zip,{places,label:g.label,weather:state.weather});
+    setCache(cacheKey,{places,label:g.label,weather:state.weather});
   }
   function applyWeather(){
     const w=state.weather, pill=$("#wxPill");
@@ -606,20 +639,21 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     pill.textContent=note; renderFilterSummary();
   }
   async function roll(){
-    const zip=$("#zip").value.trim();
-    if(!/^\d{5}$/.test(zip)){ $("#zipNote").textContent="Enter a 5-digit ZIP first."; return; }
-    state.zip=zip; $("#rollBtn").disabled=true; $("#rollBtn").textContent="ROLLING…";
+    const raw=$("#zip").value.trim();
+    const isZip=/^\d{5}$/.test(raw);
+    if(!isZip && raw.replace(/[^a-zA-Z ]/g,"").trim().length<2){ $("#zipNote").textContent="Enter a ZIP code or a city name first."; return; }
+    state.zip=raw; $("#rollBtn").disabled=true; $("#rollBtn").textContent="ROLLING\u2026";
     try{
-      if(!state.places.length || state._zipLoaded!==zip){ await ensurePlaces(zip); state._zipLoaded=zip; }
+      if(!state.places.length || state._zipLoaded!==raw.toLowerCase()){ await ensurePlaces(raw); state._zipLoaded=raw.toLowerCase(); }
       applyWeather();
-      if(!state.places.length){ $("#zipNote").textContent="Couldn't find spots for that ZIP — check it and try again."; return; }
+      if(!state.places.length){ $("#zipNote").textContent="Couldn't find spots for that — check the spelling and try again."; return; }
       $("#zipNote").textContent="";
       const plan=buildPlan(state.places,state.filters,state.lockedMain);
       if(!plan){ $("#zipNote").textContent="No plan fits those filters here — loosen one and roll again."; return; }
       state.plan=plan; renderPlan(); saveHistory();
     }catch(e){
       $("#zipNote").textContent="Lookup hiccup — try again in a sec.";
-    }finally{ $("#rollBtn").disabled=false; $("#rollBtn").textContent="WHAT DO? 🎲"; }
+    }finally{ $("#rollBtn").disabled=false; $("#rollBtn").textContent="WHAT DO? \ud83c\udfb2"; }
   }
   $("#rollBtn").onclick=roll;
   $("#againBtn").onclick=roll;
@@ -639,14 +673,15 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
         const {latitude:lat,longitude:lon}=pos.coords;
         const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
         const j=await r.json(); const zip=(j.address&&j.address.postcode||"").slice(0,5);
-        if(zip){ $("#zip").value=zip; roll(); } else $("#zipNote").textContent="Couldn't get a ZIP from your location.";
+        const cityName=(j.address&&(j.address.city||j.address.town||j.address.village))||"";
+        if(zip){ $("#zip").value=zip; roll(); } else if(cityName){ $("#zip").value=cityName; roll(); } else $("#zipNote").textContent="Couldn't get a place from your location.";
       }catch(e){ $("#zipNote").textContent="Location lookup failed."; }
     },()=>{ $("#zipNote").textContent="Location permission denied — type your ZIP instead."; });
   };
 }
 
 /* Node/test export */
-if(typeof module!=="undefined" && module.exports){ module.exports={CATS,CAT_BLURBS,SEED_INFO,catFromTags,placesFromElements,seedForZip,buildPlan,planText,placeOK,DEFAULT_FILTERS,haversineMi,fetchPlaces,geocodeZip,SEED_CENTERS}; }
+if(typeof module!=="undefined" && module.exports){ module.exports={CATS,CAT_BLURBS,SEED_INFO,catFromTags,placesFromElements,seedForZip,seedForCity,seedForQuery,buildPlan,planText,placeOK,DEFAULT_FILTERS,haversineMi,fetchPlaces,geocodeZip,geocodeCity,pickGeocodeResult,SEED_CENTERS}; }
 </script>
 </body>
 </html>
