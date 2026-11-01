@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<title>What Do? — Things To Do Roulette</title>
+<style>
+:root{
+  --bg:#f7f5f0; --card:#ffffff; --ink:#1d1d22; --muted:#6d6d76;
+  --accent:#0aa88a; --accent2:#7c4dff; --line:#e5e1d8; --chip:#eceae3;
+  --shadow:0 10px 30px rgba(20,20,30,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#222227; --card:#2e2e34; --ink:#f2f1ec; --muted:#a9a9b2; --line:#45454c; --chip:#3b3b43; --shadow:0 10px 30px rgba(0,0,0,.35); }
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink);}
+.wrap{max-width:560px; margin:0 auto; padding:18px 16px 40px; position:relative;}
+@media(min-width:760px){ .wrap{padding-top:24px;} }
+
+/* hamburger */
+#menuBtn{position:fixed; top:14px; left:14px; z-index:60; width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:var(--card); box-shadow:var(--shadow); cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;}
+#menuBtn span{display:block; width:20px; height:2.5px; border-radius:2px; background:var(--ink);}
+#menuBtn span:nth-child(2){width:14px; margin-right:6px; background:var(--accent);}
+
+.logo{text-align:center; margin:26px 0 2px; font-size:44px; font-weight:900; letter-spacing:-1px;}
+.logo .q{background:linear-gradient(120deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.tagline{text-align:center; color:var(--muted); margin:0 0 20px; font-size:15px;}
+
+.zipRow{display:flex; gap:8px; justify-content:center; margin-bottom:10px;}
+#zip{width:150px; padding:13px 14px; font-size:18px; text-align:center; border-radius:14px; border:1.5px solid var(--line); background:var(--card); color:var(--ink); outline:none;}
+#zip:focus{border-color:var(--accent);}
+#locBtn{padding:13px 14px; font-size:14px; border-radius:14px; border:1.5px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer;}
+#zipNote{text-align:center; color:var(--muted); font-size:13px; min-height:18px; margin-bottom:8px;}
+#wxPill{text-align:center; font-size:13px; color:var(--muted); margin-bottom:6px; min-height:16px;}
+
+#rollBtn{display:block; width:100%; padding:19px; font-size:24px; font-weight:900; letter-spacing:.3px; color:#fff; border:none; border-radius:18px; cursor:pointer; background:linear-gradient(120deg,var(--accent),var(--accent2)); box-shadow:var(--shadow);}
+#rollBtn:active{transform:scale(.985);}
+#rollBtn:disabled{opacity:.55;}
+#filterSummary{text-align:center; color:var(--muted); font-size:13px; margin:10px 4px 0; min-height:16px;}
+
+/* result */
+#result{margin-top:20px; display:none;}
+.planCard{background:var(--card); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); overflow:hidden;}
+.planHead{padding:14px 18px; background:linear-gradient(120deg, rgba(10,168,138,.14), rgba(124,77,255,.14)); display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;}
+.planHead .ttl{font-weight:800; font-size:16px;}
+.pill{font-size:12px; padding:4px 9px; border-radius:999px; background:var(--chip); color:var(--ink); white-space:nowrap;}
+.stop{padding:15px 18px; border-top:1px solid var(--line);}
+.stop:first-of-type{border-top:none;}
+.stopLabel{font-size:11px; font-weight:800; letter-spacing:1.2px; color:var(--accent); text-transform:uppercase; margin-bottom:3px;}
+.stopLabel.side{color:var(--accent2);}
+.stopLabel.closer{color:#e08a00;}
+.stopName{font-size:20px; font-weight:800; line-height:1.2; overflow-wrap:anywhere;}
+.stopMeta{color:var(--muted); font-size:13.5px; margin-top:3px; line-height:1.45; overflow-wrap:anywhere;}
+.stopMeta a{color:var(--accent); text-decoration:none; font-weight:600;}
+.totals{display:flex; gap:8px; padding:14px 18px; border-top:1px solid var(--line); flex-wrap:wrap;}
+.totalBox{flex:1; min-width:0; text-align:center; background:var(--chip); border-radius:12px; padding:9px 4px;}
+.totalBox b{display:block; font-size:17px;}
+.totalBox small{color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.6px;}
+.btnRow{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;}
+.btn{flex:1; min-width:120px; padding:14px 10px; font-size:16px; font-weight:700; border-radius:14px; border:1.5px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer;}
+.btn.primary{background:linear-gradient(120deg,var(--accent),var(--accent2)); color:#fff; border:none;}
+.btn.on{border-color:var(--accent2); color:var(--accent2);}
+
+/* history */
+#historyBox{margin-top:22px; display:none;}
+#historyHead{cursor:pointer; font-weight:800; font-size:15px; padding:8px 2px; user-select:none;}
+.histItem{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; font-size:14px;}
+.histItem small{color:var(--muted);}
+
+/* drawer */
+#scrim{position:fixed; inset:0; background:rgba(0,0,0,.38); z-index:70; opacity:0; pointer-events:none; transition:opacity .22s;}
+#scrim.open{opacity:1; pointer-events:auto;}
+#drawer{position:fixed; top:0; left:0; bottom:0; width:min(88vw,330px); background:var(--card); z-index:80; transform:translateX(-105%); transition:transform .24s; padding:20px 18px 30px; overflow-y:auto; box-shadow:6px 0 24px rgba(0,0,0,.2);}
+#drawer.open{transform:translateX(0);}
+#drawer h2{margin:2px 0 14px; font-size:20px;}
+.fGroup{margin-bottom:16px;}
+.fGroup h3{font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin:0 0 8px;}
+.chips{display:flex; flex-wrap:wrap; gap:7px;}
+.chip{padding:8px 12px; border-radius:999px; background:var(--chip); border:1.5px solid transparent; font-size:14px; cursor:pointer; color:var(--ink);}
+.chip.sel{border-color:var(--accent); background:rgba(10,168,138,.14); font-weight:700;}
+#drawerClose{width:100%; padding:13px; border:none; border-radius:12px; background:linear-gradient(120deg,var(--accent),var(--accent2)); color:#fff; font-weight:800; font-size:15px; cursor:pointer; margin-top:4px;}
+.foot{text-align:center; color:var(--muted); font-size:12px; margin-top:28px; line-height:1.5;}
+</style>
+</head>
+<body>
+<button id="menuBtn" aria-label="Filters"><span></span><span></span><span></span></button>
+
+<div class="wrap">
+  <div class="logo">What Do<span class="q">?</span></div>
+  <p class="tagline">Bored? Don't decide. Roll.</p>
+
+  <div class="zipRow">
+    <input id="zip" inputmode="numeric" autocomplete="postal-code" placeholder="ZIP code" maxlength="5">
+    <button id="locBtn" type="button">Use my location</button>
+  </div>
+  <div id="zipNote"></div>
+  <div id="wxPill"></div>
+
+  <button id="rollBtn" type="button">WHAT DO? 🎲</button>
+  <div id="filterSummary"></div>
+
+  <div id="result">
+    <div class="planCard" id="planCard"></div>
+    <div class="btnRow">
+      <button class="btn primary" id="againBtn" type="button">Roll Again 🎲</button>
+      <button class="btn" id="lockBtn" type="button">Lock Main Event</button>
+    </div>
+    <div class="btnRow">
+      <button class="btn" id="copyBtn" type="button">Copy Plan to Text</button>
+    </div>
+  </div>
+
+  <div id="historyBox">
+    <div id="historyHead">History <span id="histToggle">[+]</span></div>
+    <div id="historyList" style="display:none;"></div>
+  </div>
+
+  <p class="foot">Places come from live OpenStreetMap data (plus a few hand-picked starters).<br>Costs &amp; times are estimates — check hours before you roll out.</p>
+</div>
+
+<div id="scrim"></div>
+<aside id="drawer" aria-label="Filters">
+  <h2>Filters</h2>
+  <div class="fGroup"><h3>Who's going?</h3><div class="chips" id="fWho"></div></div>
+  <div class="fGroup"><h3>Vibe</h3><div class="chips" id="fVibe"></div></div>
+  <div class="fGroup"><h3>Budget (per person)</h3><div class="chips" id="fBudget"></div></div>
+  <div class="fGroup"><h3>Time you got</h3><div class="chips" id="fTime"></div></div>
+  <div class="fGroup"><h3>Setting</h3><div class="chips" id="fSetting"></div></div>
+  <button id="drawerClose" type="button">Done</button>
+</aside>
+
+<script>
+"use strict";
+/* ================= What Do? — core engine (pure, testable) ================= */
+const $ = (s)=>document.querySelector(s);
+
+function haversineMi(aLat,aLon,bLat,bLon){
+  const R=3958.8, dLa=(bLat-aLat)*Math.PI/180, dLo=(bLon-aLon)*Math.PI/180;
+  const s=Math.sin(dLa/2)**2 + Math.cos(aLat*Math.PI/180)*Math.cos(bLat*Math.PI/180)*Math.sin(dLo/2)**2;
+  return 2*R*Math.asin(Math.sqrt(s));
+}
+const rnd = (n)=>Math.floor(Math.random()*n);
+function pick(arr){ return arr[rnd(arr.length)]; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=rnd(i+1); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+/* Category model: dur = typical minutes, cost = est $/person, io = in/out/both */
+const CATS = {
+  park:      {label:"Park",            icon:"🌳", dur:75,  cost:0,  io:"out", vibes:["chill","outdoors","active"], who:["solo","date","friends","family"]},
+  garden:    {label:"Garden",          icon:"🌷", dur:60,  cost:5,  io:"out", vibes:["chill","outdoors","artsy"], who:["solo","date","family"]},
+  viewpoint: {label:"Viewpoint",       icon:"🌇", dur:30,  cost:0,  io:"out", vibes:["chill","outdoors"], who:["solo","date","friends","family"]},
+  museum:    {label:"Museum",          icon:"🏛️", dur:120, cost:15, io:"in",  vibes:["artsy","chill","tourist"], who:["solo","date","friends","family"]},
+  gallery:   {label:"Art Gallery",     icon:"🎨", dur:60,  cost:0,  io:"in",  vibes:["artsy","chill"], who:["solo","date","friends"]},
+  zoo:       {label:"Zoo / Aquarium",  icon:"🦁", dur:150, cost:22, io:"both",vibes:["outdoors","tourist"], who:["date","friends","family"]},
+  attraction:{label:"Attraction",      icon:"🎡", dur:120, cost:18, io:"both",vibes:["tourist","active"], who:["date","friends","family"]},
+  cinema:    {label:"Movie Theater",   icon:"🎬", dur:130, cost:14, io:"in",  vibes:["chill","nightlife"], who:["solo","date","friends","family"]},
+  theatre:   {label:"Theatre",         icon:"🎭", dur:120, cost:25, io:"in",  vibes:["artsy","nightlife"], who:["date","friends"]},
+  bowling:   {label:"Bowling",         icon:"🎳", dur:90,  cost:15, io:"in",  vibes:["active","nightlife"], who:["date","friends","family"]},
+  minigolf:  {label:"Mini Golf",       icon:"⛳", dur:60,  cost:12, io:"out", vibes:["active"], who:["date","friends","family"]},
+  sports:    {label:"Sports / Rec",    icon:"🏀", dur:90,  cost:10, io:"both",vibes:["active"], who:["solo","friends","family"]},
+  ice:       {label:"Ice Rink",        icon:"⛸️", dur:90,  cost:14, io:"in",  vibes:["active"], who:["date","friends","family"]},
+  playground:{label:"Playground",      icon:"🛝", dur:60,  cost:0,  io:"out", vibes:["outdoors","active"], who:["family"]},
+  library:   {label:"Library",         icon:"📚", dur:60,  cost:0,  io:"in",  vibes:["chill","artsy"], who:["solo","family"]},
+  nature:    {label:"Nature / Trail",  icon:"🥾", dur:120, cost:0,  io:"out", vibes:["outdoors","active","chill"], who:["solo","date","friends","family"]},
+  beach:     {label:"Beach / Lake",    icon:"🏖️", dur:150, cost:0,  io:"out", vibes:["outdoors","chill"], who:["date","friends","family"]},
+  market:    {label:"Market",          icon:"🧺", dur:60,  cost:10, io:"both",vibes:["tourist","chill"], who:["solo","date","friends","family"]},
+  cafe:      {label:"Café / Dessert",  icon:"🍦", dur:40,  cost:8,  io:"in",  vibes:["chill"], who:["solo","date","friends","family"]},
+  nightlife: {label:"Nightlife",       icon:"🎤", dur:120, cost:20, io:"in",  vibes:["nightlife","active"], who:["date","friends"]},
+  generic:   {label:"Spot",            icon:"📍", dur:60,  cost:10, io:"both",vibes:["chill"], who:["solo","date","friends","family"]}
+};
+const CLOSER_CATS = ["viewpoint","cafe","garden","park","gallery","market"];
+const MAIN_CATS   = ["zoo","attraction","museum","park","nature","cinema","bowling","sports","beach","theatre","minigolf","ice"];
+
+function catFromTags(t){
+  const L=t.leisure||"", T=t.tourism||"", A=t.amenity||"", N=t.natural||"";
+  if(L==="park"||L==="common"||L==="dog_park") return "park";
+  if(L==="garden"||T==="garden") return "garden";
+  if(T==="viewpoint") return "viewpoint";
+  if(T==="museum") return "museum";
+  if(T==="gallery"||A==="arts_centre") return "gallery";
+  if(T==="zoo"||T==="aquarium") return "zoo";
+  if(T==="attraction"||T==="theme_park") return "attraction";
+  if(A==="cinema") return "cinema";
+  if(A==="theatre") return "theatre";
+  if(L==="bowling_alley"||A==="bowling_alley") return "bowling";
+  if(L==="miniature_golf") return "minigolf";
+  if(L==="ice_rink") return "ice";
+  if(L==="playground") return "playground";
+  if(L==="sports_centre"||L==="fitness_centre"||L==="pitch") return "sports";
+  if(A==="library") return "library";
+  if(L==="nature_reserve"||N==="wood"||N==="peak") return "nature";
+  if(N==="beach"||L==="beach_resort") return "beach";
+  if(A==="marketplace") return "market";
+  if(A==="cafe"||A==="ice_cream"||A==="fast_food") return "cafe";
+  if(A==="nightclub"||A==="karaoke_box") return "nightlife";
+  return "generic";
+}
+
+function addrFromTags(t){
+  const parts=[t["addr:housenumber"],t["addr:street"]].filter(Boolean).join(" ");
+  return parts || t["addr:street"] || "";
+}
+
+function placesFromElements(elements, cLat, cLon){
+  const out=[], seen=new Set();
+  for(const el of (elements||[])){
+    const t=el.tags||{}; if(!t.name) continue;
+    const lat=el.lat!=null?el.lat:(el.center&&el.center.lat), lon=el.lon!=null?el.lon:(el.center&&el.center.lon);
+    if(lat==null||lon==null) continue;
+    const key=t.name.toLowerCase()+"@"+lat.toFixed(3)+","+lon.toFixed(3);
+    if(seen.has(key)) continue; seen.add(key);
+    const cat=catFromTags(t), cm=CATS[cat]||CATS.generic;
+    const dist=haversineMi(cLat,cLon,lat,lon);
+    if(dist>15) continue;
+    out.push({name:t.name, cat, lat, lon, dist:Math.round(dist*10)/10, addr:addrFromTags(t),
+      dur:cm.dur, cost:cm.cost, io:cm.io, vibes:cm.vibes.slice(), who:cm.who.slice(), src:"live"});
+  }
+  return out.sort((a,b)=>a.dist-b.dist);
+}
+
+/* ---- Hand-picked starter places (real, well-known) for test cities ---- */
+function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter"}; }
+const SEEDS = {
+  "933":[ // Bakersfield
+    seedPlace("California Living Museum (CALM Zoo)","zoo","Bakersfield, CA",35.4319,-118.8817),
+    seedPlace("Kern County Museum & Pioneer Village","museum","Bakersfield, CA",35.3930,-119.0194),
+    seedPlace("Bakersfield Museum of Art","museum","Bakersfield, CA",35.3768,-119.0089),
+    seedPlace("Hart Memorial Park","park","Bakersfield, CA",35.4570,-118.9600),
+    seedPlace("The Park at River Walk","park","Bakersfield, CA",35.3860,-119.1120),
+    seedPlace("Panorama Park (The Bluffs)","viewpoint","Bakersfield, CA",35.3905,-119.0050),
+    seedPlace("Camelot Park (mini golf & go-karts)","minigolf","Bakersfield, CA",35.3865,-119.0435),
+    seedPlace("Fox Theater","theatre","Bakersfield, CA",35.3736,-119.0157),
+    seedPlace("Buena Vista Museum of Natural History","museum","Bakersfield, CA",35.3722,-119.0219),
+    seedPlace("Dewar's Ice Cream & Fine Candies","cafe","Bakersfield, CA",35.3510,-119.0620)
+  ],
+  "900":[ // Los Angeles
+    seedPlace("Griffith Observatory","museum","Los Angeles, CA",34.1184,-118.3004),
+    seedPlace("Griffith Park","park","Los Angeles, CA",34.1367,-118.2942),
+    seedPlace("Los Angeles Zoo","zoo","Los Angeles, CA",34.1484,-118.2841),
+    seedPlace("Echo Park Lake","park","Los Angeles, CA",34.0731,-118.2606),
+    seedPlace("The Broad","museum","Los Angeles, CA",34.0544,-118.2503),
+    seedPlace("LACMA","museum","Los Angeles, CA",34.0639,-118.3592),
+    seedPlace("Santa Monica Pier","attraction","Santa Monica, CA",34.0100,-118.4961),
+    seedPlace("Venice Beach Boardwalk","beach","Venice, CA",33.9850,-118.4695),
+    seedPlace("The Getty Center","museum","Los Angeles, CA",34.0780,-118.4741),
+    seedPlace("Elysian Park","viewpoint","Los Angeles, CA",34.0830,-118.2360)
+  ],
+  "606":[ // Chicago
+    seedPlace("Millennium Park & Cloud Gate","park","Chicago, IL",41.8826,-87.6226),
+    seedPlace("Art Institute of Chicago","museum","Chicago, IL",41.8796,-87.6247),
+    seedPlace("Chicago Riverwalk","viewpoint","Chicago, IL",41.8880,-87.6270),
+    seedPlace("Navy Pier","attraction","Chicago, IL",41.8911,-87.5998),
+    seedPlace("Lincoln Park Zoo","zoo","Chicago, IL",41.9211,-87.6340),
+    seedPlace("Shedd Aquarium","zoo","Chicago, IL",41.8676,-87.6140),
+    seedPlace("Maggie Daley Park","park","Chicago, IL",41.8827,-87.6189),
+    seedPlace("Garfield Park Conservatory","garden","Chicago, IL",41.8862,-87.7173)
+  ]
+};
+function seedForZip(zip){
+  if(!zip) return [];
+  const p3=zip.slice(0,3);
+  const list=(SEEDS[p3]||[]).slice();
+  return list;
+}
+
+/* ---- Filtering + plan building ---- */
+const DEFAULT_FILTERS = {who:"any", vibe:"any", budget:999, time:999, setting:"any", preferIndoor:false};
+function placeOK(p,f){
+  if(f.who!=="any" && !p.who.includes(f.who)) return false;
+  if(f.vibe!=="any" && !p.vibes.includes(f.vibe)) return false;
+  if(p.cost>f.budget) return false;
+  if(f.setting==="in" && p.io==="out") return false;
+  if(f.setting==="out" && p.io==="in") return false;
+  if(f.preferIndoor && f.setting==="any" && p.io==="out" && p.cat!=="zoo") return false;
+  return true;
+}
+function buildPlan(places,f,lockedMain){
+  f=Object.assign({},DEFAULT_FILTERS,f||{});
+  const pool=places.filter(p=>placeOK(p,f));
+  if(!pool.length) return null;
+  let main = lockedMain && placeOK(lockedMain,f) ? lockedMain : null;
+  if(!main){
+    let mains=pool.filter(p=>MAIN_CATS.includes(p.cat));
+    if(!mains.length) mains=pool;
+    if(f.time<999){ const timed=mains.filter(p=>p.dur<=f.time); if(timed.length) mains=timed; else { const quick=pool.filter(p=>p.dur<=f.time); if(quick.length) mains=quick; } }
+    if(!mains.length) return null;
+    main=pick(mains);
+  }
+  const rest=pool.filter(p=>p!==main);
+  const near=(p)=> main.lat!=null&&p.lat!=null ? haversineMi(main.lat,main.lon,p.lat,p.lon) : (p.dist||0);
+  let sides=rest.filter(p=>p.cat!==main.cat && p.dur<=90 && near(p)<=6);
+  if(!sides.length) sides=rest.filter(p=>p.dur<=90).sort((a,b)=>near(a)-near(b)).slice(0,3);
+  const side=sides.length?pick(sides):null;
+  let closers=rest.filter(p=>p!==side && CLOSER_CATS.includes(p.cat) && near(p)<=6);
+  if(!closers.length) closers=rest.filter(p=>p!==side && p.dur<=45).sort((a,b)=>near(a)-near(b)).slice(0,3);
+  const closer=closers.length?pick(closers):null;
+  const stops=[main,side,closer].filter(Boolean);
+  const totalCost=stops.reduce((s,p)=>s+p.cost,0);
+  const totalTime=stops.reduce((s,p)=>s+p.dur,0);
+  if(totalTime>f.time && stops.length>1){
+    // time crunch: drop the closer first, then side
+    let s2=[main]; let t=main.dur;
+    if(side && t+side.dur<=f.time){ s2.push(side); t+=side.dur; }
+    else if(closer && t+closer.dur<=f.time){ s2.push(closer); t+=closer.dur; }
+    return {stops:s2, main, totalCost:s2.reduce((s,p)=>s+p.cost,0), totalTime:t};
+  }
+  return {stops, main, totalCost, totalTime};
+}
+function planText(plan,zip){
+  const lines=plan.stops.map((p,i)=>`${["MAIN EVENT","SIDE QUEST","CLOSER"][i]||"STOP"}: ${p.name} (${CATS[p.cat].label}${p.dist!=null?", "+p.dist+" mi":""}${p.cost? ", ~$"+p.cost+"/person":", Free"})`);
+  return `What Do? — plan for ${zip}\n`+lines.join("\n")+`\nEst: ~$${plan.totalCost}/person · ~${Math.round(plan.totalTime/60*10)/10} hrs total`;
+}
+
+/* ================= Live lookup ================= */
+const OVERPASS_URLS=["https://overpass.kumi.systems/api/interpreter","https://overpass-api.de/api/interpreter"];
+const zipCacheKey="whatdo_zipcache1";
+function getCache(zip){
+  try{ const c=JSON.parse(localStorage.getItem(zipCacheKey)||"{}")[zip]; if(c && Date.now()-c.t<7*864e5) return c; }catch(e){}
+  return null;
+}
+function setCache(zip,data){
+  try{ const all=JSON.parse(localStorage.getItem(zipCacheKey)||"{}"); all[zip]=Object.assign({t:Date.now()},data); localStorage.setItem(zipCacheKey,JSON.stringify(all)); }catch(e){}
+}
+async function geocodeZip(zip){
+  const r=await fetch(`https://nominatim.openstreetmap.org/search?postalcode=${encodeURIComponent(zip)}&country=US&format=json&limit=1`);
+  const j=await r.json(); if(!j.length) throw new Error("ZIP not found");
+  return {lat:parseFloat(j[0].lat), lon:parseFloat(j[0].lon), label:j[0].display_name.split(",").slice(0,2).join(",")};
+}
+async function fetchPlaces(lat,lon){
+  const q=`[out:json][timeout:25];(nwr["leisure"~"park|garden|miniature_golf|bowling_alley|ice_rink|sports_centre|nature_reserve|playground|beach_resort|common|dog_park"](around:10000,${lat},${lon});nwr["tourism"~"museum|gallery|zoo|aquarium|attraction|viewpoint|theme_park"](around:10000,${lat},${lon});nwr["amenity"~"cinema|theatre|arts_centre|library|marketplace|nightclub"](around:10000,${lat},${lon}););out center tags 300;`;
+  let lastErr=null;
+  for(const url of OVERPASS_URLS){
+    try{
+      const r=await fetch(url,{method:"POST",body:"data="+encodeURIComponent(q),headers:{"Content-Type":"application/x-www-form-urlencoded"}});
+      if(!r.ok) throw new Error("overpass "+r.status);
+      const j=await r.json();
+      return placesFromElements(j.elements,lat,lon);
+    }catch(e){ lastErr=e; }
+  }
+  throw lastErr||new Error("lookup failed");
+}
+async function fetchWeather(lat,lon){
+  try{
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit`);
+    const j=await r.json(); if(!j.current) return null;
+    return {temp:Math.round(j.current.temperature_2m), code:j.current.weather_code};
+  }catch(e){ return null; }
+}
+
+/* ================= UI (browser only) ================= */
+if(typeof document!=="undefined" && document.getElementById("rollBtn")){
+  const state={places:[], zip:"", label:"", plan:null, lockedMain:null, weather:null,
+    filters:Object.assign({},DEFAULT_FILTERS)};
+  const FILTER_DEFS={
+    fWho:[["any","Anyone"],["solo","Solo"],["date","Date"],["friends","Friends"],["family","Family / Kids"]],
+    fVibe:[["any","Any vibe"],["chill","Chill"],["active","Active"],["outdoors","Outdoors"],["artsy","Artsy"],["nightlife","Nightlife"],["tourist","Tourist Mode"]],
+    fBudget:[["999","Any budget"],["0","Free Only"],["20","Under $20"],["50","Under $50"]],
+    fTime:[["999","Any length"],["70","~1 hour"],["180","2–3 hours"],["300","Half day"],["600","All day"]],
+    fSetting:[["any","Indoor or Outdoor"],["in","Indoor"],["out","Outdoor"]]
+  };
+  const FKEY={fWho:"who",fVibe:"vibe",fBudget:"budget",fTime:"time",fSetting:"setting"};
+  for(const [id,opts] of Object.entries(FILTER_DEFS)){
+    const box=document.getElementById(id);
+    opts.forEach(([val,label],i)=>{
+      const c=document.createElement("button"); c.type="button"; c.className="chip"+(i===0?" sel":""); c.textContent=label; c.dataset.val=val;
+      c.onclick=()=>{ box.querySelectorAll(".chip").forEach(x=>x.classList.remove("sel")); c.classList.add("sel");
+        const k=FKEY[id]; state.filters[k]=(k==="budget"||k==="time")?parseInt(val,10):val; renderFilterSummary(); };
+      box.appendChild(c);
+    });
+  }
+  function renderFilterSummary(){
+    const f=state.filters, bits=[];
+    if(f.who!=="any") bits.push(f.who==="family"?"Family / Kids":f.who[0].toUpperCase()+f.who.slice(1));
+    if(f.vibe!=="any") bits.push(f.vibe[0].toUpperCase()+f.vibe.slice(1));
+    if(f.budget===0) bits.push("Free only"); else if(f.budget<999) bits.push("Under $"+f.budget);
+    if(f.time<999) bits.push(f.time<=70?"~1 hour":f.time<=180?"2–3 hours":f.time<=300?"Half day":"All day");
+    if(f.setting!=="any") bits.push(f.setting==="in"?"Indoor":"Outdoor");
+    if(state.filters.preferIndoor) bits.push("Weather: indoor-leaning");
+    $("#filterSummary").textContent=bits.length?("Filters: "+bits.join(" · ")):"";
+  }
+  const drawer=$("#drawer"), scrim=$("#scrim");
+  const openDrawer=(o)=>{ drawer.classList.toggle("open",o); scrim.classList.toggle("open",o); };
+  $("#menuBtn").onclick=()=>openDrawer(true);
+  scrim.onclick=()=>openDrawer(false);
+  $("#drawerClose").onclick=()=>openDrawer(false);
+
+  function fmtTime(min){ return min>=90 ? (Math.round(min/60*10)/10)+" hrs" : min+" min"; }
+  function stopHTML(p,label,cls){
+    const cm=CATS[p.cat];
+    const maps=`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+" "+(p.addr||""))}`;
+    return `<div class="stop"><div class="stopLabel ${cls}">${label}</div>
+      <div class="stopName">${cm.icon} ${p.name}</div>
+      <div class="stopMeta">${cm.label}${p.dist!=null?" · "+p.dist+" mi away":""} · ~${fmtTime(p.dur)} · ${p.cost?("~$"+p.cost+"/person"):"Free"}
+      ${p.addr?`<br>${p.addr}`:""} · <a href="${maps}" target="_blank" rel="noopener">Directions</a></div></div>`;
+  }
+  function renderPlan(){
+    const plan=state.plan; if(!plan) return;
+    const labels=[["MAIN EVENT",""],["SIDE QUEST","side"],["CLOSER","closer"]];
+    $("#planCard").innerHTML=
+      `<div class="planHead"><span class="ttl">Your plan — ${state.label||state.zip}</span><span class="pill">${plan.stops.length} stops</span></div>`
+      + plan.stops.map((p,i)=>stopHTML(p,labels[i][0],labels[i][1])).join("")
+      + `<div class="totals"><div class="totalBox"><b>${plan.totalCost?("~$"+plan.totalCost):"Free"}</b><small>per person est.</small></div>
+         <div class="totalBox"><b>${fmtTime(plan.totalTime)}</b><small>total time</small></div>
+         <div class="totalBox"><b>${state.places.length}</b><small>spots nearby</small></div></div>`;
+    $("#result").style.display="block";
+    $("#lockBtn").textContent=state.lockedMain?"Main Locked 🔒 (tap to unlock)":"Lock Main Event";
+    $("#lockBtn").classList.toggle("on",!!state.lockedMain);
+  }
+  function saveHistory(){
+    try{
+      const h=JSON.parse(localStorage.getItem("whatdo_history")||"[]");
+      h.unshift({t:Date.now(), zip:state.zip, text:planText(state.plan,state.zip)});
+      localStorage.setItem("whatdo_history",JSON.stringify(h.slice(0,20)));
+    }catch(e){}
+    renderHistory();
+  }
+  function renderHistory(){
+    let h=[]; try{ h=JSON.parse(localStorage.getItem("whatdo_history")||"[]"); }catch(e){}
+    $("#historyBox").style.display=h.length?"block":"none";
+    $("#historyList").innerHTML=h.map(x=>`<div class="histItem">${x.text.replace(/\n/g,"<br>")}<br><small>${new Date(x.t).toLocaleString()}</small></div>`).join("");
+  }
+  $("#historyHead").onclick=()=>{ const l=$("#historyList"); const open=l.style.display!=="none"; l.style.display=open?"none":"block"; $("#histToggle").textContent=open?"[+]":"[−]"; };
+  renderHistory();
+
+  async function ensurePlaces(zip){
+    const cached=getCache(zip);
+    if(cached){ state.places=cached.places; state.label=cached.label; state.weather=cached.weather||null; return; }
+    $("#zipNote").textContent="Finding spots near "+zip+"…";
+    const g=await geocodeZip(zip);
+    state.label=g.label;
+    let places=[];
+    try{ places=await fetchPlaces(g.lat,g.lon); }catch(e){ places=[]; }
+    // merge starters for this ZIP (dedupe by name), compute their distances
+    for(const s of seedForZip(zip)){
+      if(!places.some(p=>p.name.toLowerCase()===s.name.toLowerCase())){
+        s.dist=Math.round(haversineMi(g.lat,g.lon,s.lat,s.lon)*10)/10; places.push(s);
+      }
+    }
+    places.sort((a,b)=>(a.dist||99)-(b.dist||99));
+    state.places=places;
+    state.weather=await fetchWeather(g.lat,g.lon);
+    setCache(zip,{places,label:g.label,weather:state.weather});
+  }
+  function applyWeather(){
+    const w=state.weather, pill=$("#wxPill");
+    state.filters.preferIndoor=false;
+    if(!w){ pill.textContent=""; return; }
+    const rainy=w.code>=51, hot=w.temp>=100, cold=w.temp<=38;
+    let note=`${w.temp}°F right now`;
+    if(rainy||hot||cold){ state.filters.preferIndoor=true; note+=" — leaning indoor for you"; }
+    pill.textContent=note; renderFilterSummary();
+  }
+  async function roll(){
+    const zip=$("#zip").value.trim();
+    if(!/^\d{5}$/.test(zip)){ $("#zipNote").textContent="Enter a 5-digit ZIP first."; return; }
+    state.zip=zip; $("#rollBtn").disabled=true; $("#rollBtn").textContent="ROLLING…";
+    try{
+      if(!state.places.length || state._zipLoaded!==zip){ await ensurePlaces(zip); state._zipLoaded=zip; }
+      applyWeather();
+      if(!state.places.length){ $("#zipNote").textContent="Couldn't find spots for that ZIP — check it and try again."; return; }
+      $("#zipNote").textContent="";
+      const plan=buildPlan(state.places,state.filters,state.lockedMain);
+      if(!plan){ $("#zipNote").textContent="No plan fits those filters here — loosen one and roll again."; return; }
+      state.plan=plan; renderPlan(); saveHistory();
+    }catch(e){
+      $("#zipNote").textContent="Lookup hiccup — try again in a sec.";
+    }finally{ $("#rollBtn").disabled=false; $("#rollBtn").textContent="WHAT DO? 🎲"; }
+  }
+  $("#rollBtn").onclick=roll;
+  $("#againBtn").onclick=roll;
+  $("#zip").addEventListener("keydown",(e)=>{ if(e.key==="Enter") roll(); });
+  $("#lockBtn").onclick=()=>{ state.lockedMain=state.lockedMain?null:(state.plan?state.plan.main:null); renderPlan(); };
+  $("#copyBtn").onclick=async()=>{
+    if(!state.plan) return;
+    const txt=planText(state.plan,state.zip);
+    try{ await navigator.clipboard.writeText(txt); $("#copyBtn").textContent="Copied ✓"; setTimeout(()=>$("#copyBtn").textContent="Copy Plan to Text",1500); }
+    catch(e){ $("#copyBtn").textContent="Copy blocked — long-press the plan"; }
+  };
+  $("#locBtn").onclick=()=>{
+    if(!navigator.geolocation){ $("#zipNote").textContent="Location not available on this device."; return; }
+    $("#zipNote").textContent="Getting your location…";
+    navigator.geolocation.getCurrentPosition(async(pos)=>{
+      try{
+        const {latitude:lat,longitude:lon}=pos.coords;
+        const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+        const j=await r.json(); const zip=(j.address&&j.address.postcode||"").slice(0,5);
+        if(zip){ $("#zip").value=zip; roll(); } else $("#zipNote").textContent="Couldn't get a ZIP from your location.";
+      }catch(e){ $("#zipNote").textContent="Location lookup failed."; }
+    },()=>{ $("#zipNote").textContent="Location permission denied — type your ZIP instead."; });
+  };
+}
+
+/* Node/test export */
+if(typeof module!=="undefined" && module.exports){ module.exports={CATS,catFromTags,placesFromElements,seedForZip,buildPlan,planText,placeOK,DEFAULT_FILTERS,haversineMi}; }
+</script>
+</body>
+</html>
