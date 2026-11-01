@@ -341,36 +341,50 @@ function planText(plan,zip){
 }
 
 /* ================= Live lookup ================= */
-const OVERPASS_URLS=["https://overpass.kumi.systems/api/interpreter","https://overpass-api.de/api/interpreter"];
-const zipCacheKey="whatdo_zipcache1";
+const OVERPASS_URLS=["https://overpass-api.de/api/interpreter","https://overpass.private.coffee/api/interpreter","https://overpass.kumi.systems/api/interpreter","https://overpass.nchc.org.tw/api/interpreter"];
+const zipCacheKey="whatdo_zipcache2";
+const SEED_CENTERS={"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
+function fetchT(url,opts,ms){
+  ms=ms||10000;
+  if(typeof AbortController==="undefined") return fetch(url,opts);
+  const ctl=new AbortController();
+  const t=setTimeout(()=>ctl.abort(),ms);
+  return fetch(url,Object.assign({},opts,{signal:ctl.signal})).finally(()=>clearTimeout(t));
+}
 function getCache(zip){
-  try{ const c=JSON.parse(localStorage.getItem(zipCacheKey)||"{}")[zip]; if(c && Date.now()-c.t<7*864e5) return c; }catch(e){}
+  try{ const c=JSON.parse(localStorage.getItem(zipCacheKey)||"{}")[zip]; if(c && c.places && c.places.length && Date.now()-c.t<7*864e5) return c; }catch(e){}
   return null;
 }
 function setCache(zip,data){
+  if(!data.places || !data.places.length) return; // never cache an empty result
   try{ const all=JSON.parse(localStorage.getItem(zipCacheKey)||"{}"); all[zip]=Object.assign({t:Date.now()},data); localStorage.setItem(zipCacheKey,JSON.stringify(all)); }catch(e){}
 }
 async function geocodeZip(zip){
-  const r=await fetch(`https://nominatim.openstreetmap.org/search?postalcode=${encodeURIComponent(zip)}&country=US&format=json&limit=1`);
+  const r=await fetchT(`https://nominatim.openstreetmap.org/search?postalcode=${encodeURIComponent(zip)}&country=US&format=json&limit=1`,{},8000);
   const j=await r.json(); if(!j.length) throw new Error("ZIP not found");
   return {lat:parseFloat(j[0].lat), lon:parseFloat(j[0].lon), label:j[0].display_name.split(",").slice(0,2).join(",")};
 }
 async function fetchPlaces(lat,lon){
-  const q=`[out:json][timeout:25];(nwr["leisure"~"park|garden|miniature_golf|bowling_alley|ice_rink|sports_centre|nature_reserve|playground|beach_resort|common|dog_park"](around:10000,${lat},${lon});nwr["tourism"~"museum|gallery|zoo|aquarium|attraction|viewpoint|theme_park"](around:10000,${lat},${lon});nwr["amenity"~"cinema|theatre|arts_centre|library|marketplace|nightclub"](around:10000,${lat},${lon}););out center tags 300;`;
-  let lastErr=null;
-  for(const url of OVERPASS_URLS){
-    try{
-      const r=await fetch(url,{method:"POST",body:"data="+encodeURIComponent(q),headers:{"Content-Type":"application/x-www-form-urlencoded"}});
-      if(!r.ok) throw new Error("overpass "+r.status);
-      const j=await r.json();
-      return placesFromElements(j.elements,lat,lon);
-    }catch(e){ lastErr=e; }
+  const q=`[out:json][timeout:15];(nwr["leisure"~"park|garden|miniature_golf|bowling_alley|ice_rink|sports_centre|nature_reserve|playground|beach_resort|common|dog_park"](around:10000,${lat},${lon});nwr["tourism"~"museum|gallery|zoo|aquarium|attraction|viewpoint|theme_park"](around:10000,${lat},${lon});nwr["amenity"~"cinema|theatre|arts_centre|library|marketplace|nightclub"](around:10000,${lat},${lon}););out center tags 300;`;
+  const attempt=async(url)=>{
+    const r=await fetchT(url,{method:"POST",body:"data="+encodeURIComponent(q),headers:{"Content-Type":"application/x-www-form-urlencoded"}},10000);
+    if(!r.ok) throw new Error("overpass "+r.status);
+    const j=await r.json();
+    const places=placesFromElements(j.elements,lat,lon);
+    if(!places.length) throw new Error("overpass empty");
+    return places;
+  };
+  // Race all mirrors — first good answer wins; a hung mirror can't stall the roll.
+  if(typeof Promise!=="undefined" && Promise.any){
+    return Promise.any(OVERPASS_URLS.map(attempt));
   }
+  let lastErr=null;
+  for(const url of OVERPASS_URLS){ try{ return await attempt(url); }catch(e){ lastErr=e; } }
   throw lastErr||new Error("lookup failed");
 }
 async function fetchWeather(lat,lon){
   try{
-    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit`);
+    const r=await fetchT(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit`,{},5000);
     const j=await r.json(); if(!j.current) return null;
     return {temp:Math.round(j.current.temperature_2m), code:j.current.weather_code};
   }catch(e){ return null; }
@@ -455,9 +469,17 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     const cached=getCache(zip);
     if(cached){ state.places=cached.places; state.label=cached.label; state.weather=cached.weather||null; return; }
     $("#zipNote").textContent="Finding spots near "+zip+"…";
-    const g=await geocodeZip(zip);
+    let g=null;
+    try{ g=await geocodeZip(zip); }catch(e){ g=null; }
+    if(!g){
+      // Geocoder down? If this ZIP has a starter pack, roll from the pack center instead of dying.
+      const c=SEED_CENTERS[zip.slice(0,3)];
+      if(!c) throw new Error("geocode failed");
+      g={lat:c[0], lon:c[1], label:zip};
+    }
     state.label=g.label;
     let places=[];
+    const wxPromise=fetchWeather(g.lat,g.lon);
     try{ places=await fetchPlaces(g.lat,g.lon); }catch(e){ places=[]; }
     // merge starters for this ZIP (dedupe by name), compute their distances
     for(const s of seedForZip(zip)){
@@ -467,7 +489,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     }
     places.sort((a,b)=>(a.dist||99)-(b.dist||99));
     state.places=places;
-    state.weather=await fetchWeather(g.lat,g.lon);
+    state.weather=await wxPromise;
     setCache(zip,{places,label:g.label,weather:state.weather});
   }
   function applyWeather(){
@@ -520,7 +542,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
 }
 
 /* Node/test export */
-if(typeof module!=="undefined" && module.exports){ module.exports={CATS,catFromTags,placesFromElements,seedForZip,buildPlan,planText,placeOK,DEFAULT_FILTERS,haversineMi}; }
+if(typeof module!=="undefined" && module.exports){ module.exports={CATS,catFromTags,placesFromElements,seedForZip,buildPlan,planText,placeOK,DEFAULT_FILTERS,haversineMi,fetchPlaces,geocodeZip,SEED_CENTERS}; }
 </script>
 </body>
 </html>
