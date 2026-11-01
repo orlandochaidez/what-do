@@ -54,6 +54,14 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
 .stopName{font-size:20px; font-weight:800; line-height:1.2; overflow-wrap:anywhere;}
 .stopMeta{color:var(--muted); font-size:13.5px; margin-top:3px; line-height:1.45; overflow-wrap:anywhere;}
 .stopMeta a{color:var(--accent); text-decoration:none; font-weight:600;}
+.stop{cursor:pointer;}
+.tapHint{font-size:12px; color:var(--accent); font-weight:700; margin-top:5px;}
+.detail{display:none; margin-top:10px; padding:11px 12px; background:var(--chip); border-radius:12px; font-size:14px; line-height:1.5;}
+.detail.open{display:block;}
+.detail .dInfo{margin-bottom:8px;}
+.detail .dRow{color:var(--muted); font-size:13px; margin-bottom:3px;}
+.detail .dLinks{margin-top:8px; display:flex; gap:12px; flex-wrap:wrap;}
+.detail .dLinks a{color:var(--accent); font-weight:700; text-decoration:none; font-size:14px;}
 .totals{display:flex; gap:8px; padding:14px 18px; border-top:1px solid var(--line); flex-wrap:wrap;}
 .totalBox{flex:1; min-width:0; text-align:center; background:var(--chip); border-radius:12px; padding:9px 4px;}
 .totalBox b{display:block; font-size:17px;}
@@ -169,6 +177,29 @@ const CATS = {
   nightlife: {label:"Nightlife",       icon:"🎤", dur:120, cost:20, io:"in",  vibes:["nightlife","active"], who:["date","friends"]},
   generic:   {label:"Spot",            icon:"📍", dur:60,  cost:10, io:"both",vibes:["chill"], who:["solo","date","friends","family"]}
 };
+const CAT_BLURBS = {
+  park:"A park — open green space, usually free. Good for a walk, a picnic, or just hanging out.",
+  garden:"A garden or conservatory — plants, paths, and a slow pace.",
+  viewpoint:"A viewpoint or overlook — go for the view, especially near sunset.",
+  museum:"A museum — exhibits indoors, expect about the time shown. The dollar figure is a rough ticket estimate.",
+  gallery:"An art gallery or arts center — usually free or cheap to browse.",
+  zoo:"A zoo or aquarium — animals and exhibits; the dollar figure is a rough ticket estimate.",
+  attraction:"A local attraction or landmark — the kind of place visitors get taken to. The dollar figure is a rough per-person estimate.",
+  cinema:"A movie theater — check showtimes before you roll out.",
+  theatre:"A theater or performance venue — check what's on; many only open for shows.",
+  bowling:"A bowling alley — games plus shoe rental usually land near the estimate.",
+  minigolf:"Mini golf — a round usually takes about an hour.",
+  sports:"A sports or recreation center — courts, fields, or drop-in activities.",
+  ice:"An ice rink — public skate sessions usually land near the estimate, skates included.",
+  playground:"A playground — a let-the-kids-burn-energy stop.",
+  library:"A public library — quiet, free, and often hosting events.",
+  nature:"Nature — trails, reserves, or wild coast. Bring water and check the weather.",
+  beach:"A beach — sand, water, and however long you feel like staying.",
+  market:"A market — stalls, food, and local stuff to browse.",
+  cafe:"A cafe or dessert spot — the classic low-stakes closer.",
+  nightlife:"Nightlife — music, karaoke, or a late scene. Best with the 21+ crew.",
+  generic:"A local spot pulled from the map — tap 'Look it up' to see photos, reviews, and hours."
+};
 const CLOSER_CATS = ["viewpoint","cafe","garden","park","gallery","market"];
 const MAIN_CATS   = ["zoo","attraction","museum","park","nature","cinema","bowling","sports","beach","theatre","minigolf","ice"];
 
@@ -214,13 +245,70 @@ function placesFromElements(elements, cLat, cLon){
     const dist=haversineMi(cLat,cLon,lat,lon);
     if(dist>15) continue;
     out.push({name:t.name, cat, lat, lon, dist:Math.round(dist*10)/10, addr:addrFromTags(t),
-      dur:cm.dur, cost:cm.cost, io:cm.io, vibes:cm.vibes.slice(), who:cm.who.slice(), src:"live"});
+      dur:cm.dur, cost:cm.cost, io:cm.io, vibes:cm.vibes.slice(), who:cm.who.slice(), src:"live",
+      website:t.website||t["contact:website"]||"", hours:t.opening_hours||"", info:""});
   }
   return out.sort((a,b)=>a.dist-b.dist);
 }
 
 /* ---- Hand-picked starter places (real, well-known) for test cities ---- */
-function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter"}; }
+const SEED_INFO = {
+ "California Living Museum (CALM Zoo)": "Zoo and botanical garden of California native animals — bighorn sheep, mountain lions, a reptile house, and native plant gardens.",
+ "Kern County Museum & Pioneer Village": "Open-air history village with 50+ restored old buildings from around Kern County, plus a kids discovery center.",
+ "Bakersfield Museum of Art": "Art museum downtown with California artists, rotating galleries, and sculpture gardens.",
+ "Hart Memorial Park": "Big park on the Kern River east of town — picnic areas, playgrounds, fishing, and peacocks roaming around.",
+ "The Park at River Walk": "Park on the Kern River with lakes, an amphitheater, and access to the river bike trail.",
+ "Panorama Park (The Bluffs)": "Bluff-top park with views over the river and oil fields — one of the best sunset spots in town.",
+ "Camelot Park (mini golf & go-karts)": "Family fun center — mini golf, go-karts, batting cages, bumper boats and an arcade. You pay per activity.",
+ "Fox Theater": "Historic 1930 theater downtown hosting concerts, comedy, and classic movie nights — check what's on before you go.",
+ "Buena Vista Museum of Natural History": "Natural history and science museum — fossils, gems, and hands-on exhibits for kids.",
+ "Dewar's Ice Cream & Fine Candies": "Old-school ice cream parlor and candy shop, a Bakersfield staple since 1909 — famous for taffy chews and sundaes.",
+ "Griffith Observatory": "Iconic observatory above the city — planetarium shows, telescopes, science exhibits, and the best LA views. The grounds and building are free.",
+ "Griffith Park": "One of the biggest city parks in the US — hiking trails, the zoo, museums, pony rides, and golf, all inside it.",
+ "Los Angeles Zoo": "The city's zoo inside Griffith Park — 1,400+ animals plus botanical gardens.",
+ "Echo Park Lake": "Pretty lake with pedal boats you can rent, lotus flowers in summer, and a straight-on downtown skyline view.",
+ "The Broad": "Free contemporary art museum downtown (book tickets ahead) — the glowing Infinity Mirror Rooms are the main draw.",
+ "LACMA": "LA's biggest art museum. The Urban Light lamp-post sculpture out front is free to wander any time.",
+ "Santa Monica Pier": "Classic beach pier with a small amusement park (Pacific Park), an aquarium underneath, fishing, and sunsets.",
+ "Venice Beach Boardwalk": "The famous boardwalk scene — skate park, Muscle Beach gym, street performers, vendors and murals.",
+ "The Getty Center": "Free hilltop art museum with gardens and panoramic city views — you only pay for parking.",
+ "Elysian Park": "One of LA's oldest parks, right by Dodger Stadium — shady trails and skyline viewpoints, usually uncrowded.",
+ "Millennium Park & Cloud Gate": "Downtown park built around 'The Bean' — plus Crown Fountain, gardens, and free summer concerts.",
+ "Art Institute of Chicago": "One of the best art museums in the world — Monet, Seurat, and American Gothic all live here.",
+ "Chicago Riverwalk": "Riverfront walkway lined with cafes and wine gardens — grab an architecture boat tour from here.",
+ "Navy Pier": "Lakefront pier with the big Centennial Wheel, boat cruises, gardens, and summer fireworks twice a week.",
+ "Lincoln Park Zoo": "A real zoo that is completely free, open every day of the year.",
+ "Shedd Aquarium": "Huge lakefront aquarium — beluga whales, penguins, dolphins and a shark reef.",
+ "Maggie Daley Park": "Playground wonderland next to Millennium Park — climbing walls, a skating ribbon, and mini golf in summer.",
+ "Garfield Park Conservatory": "Massive free indoor botanical garden — whole rainforests under glass, open year-round.",
+ "Mission San Luis Obispo de Tolosa": "Spanish mission founded in 1772, right in downtown — still an active church, with a small museum and the creekside plaza out front.",
+ "Bubblegum Alley": "Exactly what it sounds like: a narrow downtown alley where the walls are plastered with decades of chewed gum. Gross, famous, takes two minutes.",
+ "Madonna Inn": "YES, it's a hotel — a wildly kitschy one from 1958 with 110 themed rooms (caveman room, pink everything) and a famous waterfall urinal. You don't have to stay there: people visit to walk the grounds, hit the bakery/steakhouse, and see the decor. The ~$18 shown is a visit-and-eats estimate, NOT a room rate.",
+ "Bishop Peak": "Hike up the tallest point in SLO (1,559 ft) — rocky summit with huge views, about 3.5 miles round trip.",
+ "Cerro San Luis Obispo": "The mountain with the 'M' on it, right at the edge of downtown — a local-favorite hike with city and ocean views.",
+ "San Luis Obispo Museum of Art": "Small, free art museum by the mission with rotating California art exhibits.",
+ "San Luis Obispo Children's Museum": "Three floors of hands-on play exhibits for kids — best for under-10s.",
+ "Sunset Drive-In Theatre": "A real, still-running drive-in movie theater — one of the last in California. Double features, mostly on weekends, opens at dusk.",
+ "Laguna Lake Park": "Lake park with a playground, disc golf course, dog park, and trail access up Cerro San Luis.",
+ "El Chorro Regional Park": "County park between SLO and Morro Bay — big picnic areas, ball fields, playgrounds, and a botanical garden.",
+ "San Luis Obispo Railroad Museum": "Railroad history museum in the old freight house by the Amtrak station — model trains and real rail cars.",
+ "Dallidet Adobe and Gardens": "An 1850s adobe house museum tucked in a quiet garden — a low-key hidden gem downtown.",
+ "Avila Beach": "Small, sheltered beach cove town — the water is calmer and warmer than Pismo, with a pier and a beachfront promenade of cafes.",
+ "Bob Jones Trail": "Paved 'City to the Sea' trail that follows the creek from the edge of SLO all the way to Avila Beach — walk it or bike it, mostly flat and shady.",
+ "Pirate's Cove": "Cliffside viewpoint above a small cove beach near Avila — sea cave at low tide, big sunset views. (One end of the beach is clothing-optional.)",
+ "Pismo Beach Pier": "Long wooden pier in the middle of classic Pismo — watch surfers, fish off the end, then hit the beach-town strip behind you.",
+ "Monarch Butterfly Grove": "From about October to February, tens of thousands of monarch butterflies cluster in these eucalyptus trees. Free, and genuinely wild in season.",
+ "Dinosaur Caves Park": "Ocean-bluff park in Shell Beach with a big playground, lawns, and cliff-edge views. The namesake caves are below the cliffs.",
+ "Margo Dodd Park": "Small grassy bluff park over the ocean in Shell Beach — benches, sunset views, whale watching in season.",
+ "Price Historical Park": "Quiet little historic park built around the 1890s Price Anniversary House, one of Pismo's oldest homes.",
+ "Oceano Dunes": "The only beach in California you can drive on — ride right on the sand, camp, or rent an ATV nearby. Vehicle fees apply.",
+ "Eldwayen Ocean Park": "Grassy bluff-top park above the tide pools in Shell Beach — picnic tables and sunset views.",
+ "Boosinger Park": "Neighborhood park in Pismo with ocean views, a playground, and tennis courts.",
+ "Spyglass Park": "Bluff-top park in Shell Beach with picnic spots hanging over the water.",
+ "Chumash Park": "Roomy inland park in Pismo with ball fields, a playground, and courts.",
+ "Shell Beach": "The cliffy neighborhood strip north of Pismo proper — small coves, tide pools at low tide, and sunset benches along Shell Beach Road."
+};
+function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||""}; }
 const SEEDS = {
   "933":[ // Bakersfield
     seedPlace("California Living Museum (CALM Zoo)","zoo","Bakersfield, CA",35.4319,-118.8817),
@@ -431,10 +519,18 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
   function stopHTML(p,label,cls){
     const cm=CATS[p.cat];
     const maps=`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+" "+(p.addr||""))}`;
+    const look=`https://www.google.com/search?q=${encodeURIComponent(p.name+" "+(p.addr||""))}`;
+    const info=p.info||CAT_BLURBS[p.cat]||CAT_BLURBS.generic;
+    const costNote=p.cost?`Rough estimate (~$${p.cost}/person) — actual prices vary.`:"Free.";
     return `<div class="stop"><div class="stopLabel ${cls}">${label}</div>
       <div class="stopName">${cm.icon} ${p.name}</div>
       <div class="stopMeta">${cm.label}${p.dist!=null?" · "+p.dist+" mi away":""} · ~${fmtTime(p.dur)} · ${p.cost?("~$"+p.cost+"/person"):"Free"}
-      ${p.addr?`<br>${p.addr}`:""} · <a href="${maps}" target="_blank" rel="noopener">Directions</a></div></div>`;
+      ${p.addr?`<br>${p.addr}`:""}</div>
+      <div class="tapHint">Tap for info ▾</div>
+      <div class="detail"><div class="dInfo">${info}</div>
+      <div class="dRow">Type: ${cm.label} · ${p.io==="in"?"Indoor":p.io==="out"?"Outdoor":"Indoor / outdoor"} · Cost: ${costNote}</div>
+      ${p.hours?`<div class="dRow">Hours (from the map): ${p.hours}</div>`:""}
+      <div class="dLinks"><a href="${maps}" target="_blank" rel="noopener">Directions</a><a href="${look}" target="_blank" rel="noopener">Look it up (photos & reviews)</a>${p.website?`<a href="${p.website}" target="_blank" rel="noopener">Website</a>`:""}</div></div></div>`;
   }
   function renderPlan(){
     const plan=state.plan; if(!plan) return;
@@ -446,6 +542,14 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
          <div class="totalBox"><b>${fmtTime(plan.totalTime)}</b><small>total time</small></div>
          <div class="totalBox"><b>${state.places.length}</b><small>spots nearby</small></div></div>`;
     $("#result").style.display="block";
+    document.querySelectorAll("#planCard .stop").forEach(st=>{
+      st.addEventListener("click",(e)=>{
+        if(e.target.closest("a")) return;
+        const d=st.querySelector(".detail"), h=st.querySelector(".tapHint");
+        const open=d.classList.toggle("open");
+        if(h) h.textContent=open?"Tap to close ▴":"Tap for info ▾";
+      });
+    });
     $("#lockBtn").textContent=state.lockedMain?"Main Locked 🔒 (tap to unlock)":"Lock Main Event";
     $("#lockBtn").classList.toggle("on",!!state.lockedMain);
   }
@@ -542,7 +646,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
 }
 
 /* Node/test export */
-if(typeof module!=="undefined" && module.exports){ module.exports={CATS,catFromTags,placesFromElements,seedForZip,buildPlan,planText,placeOK,DEFAULT_FILTERS,haversineMi,fetchPlaces,geocodeZip,SEED_CENTERS}; }
+if(typeof module!=="undefined" && module.exports){ module.exports={CATS,CAT_BLURBS,SEED_INFO,catFromTags,placesFromElements,seedForZip,buildPlan,planText,placeOK,DEFAULT_FILTERS,haversineMi,fetchPlaces,geocodeZip,SEED_CENTERS}; }
 </script>
 </body>
 </html>
