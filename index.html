@@ -421,7 +421,18 @@ const SEED_INFO = {
  "Mosquito Lake State Park": "One of Ohio's biggest lakes, just north of Warren — beach, boating, fishing, and camping. The area's summer lake day.",
  "Nelson Ledges Quarry Park": "The legendary quarry — cliff jumping and swimming in clear spring water, camping, and festival weekends in the woods. A whole scene unto itself; check event weekends before a quiet visit.",
  "Nelson-Kennedy Ledges State Park": "The state park next door to the quarry — mossy rock formations, squeeze-through ledges, and waterfall trails. The hiking half of Nelson Ledges.",
- "The Lily Pond": "The park's oldest man-made body of water, tucked off McCollum Road by Birch Hill Drive — a flat quarter-mile circle trail loops it, with wooden overlooks jutting into the pond and ducks and geese everywhere (look, don't feed — park rules). Birch Hill Cabin sits right across the road."
+ "The Lily Pond": "The park's oldest man-made body of water, tucked off McCollum Road by Birch Hill Drive — a flat quarter-mile circle trail loops it, with wooden overlooks jutting into the pond and ducks and geese everywhere (look, don't feed — park rules). Birch Hill Cabin sits right across the road.",
+ "West Side Bowl": "The west side's beloved bowling alley on Mahoning Ave — lanes, a stage for live local bands, and a kitchen people swear by. Part bowling alley, part music venue, all Youngstown.",
+ "Youngstown Playhouse": "Community theater running since 1924 — one of the oldest in the country — doing full seasons of plays and musicals on Glenwood Ave.",
+ "Tyler History Center": "The Mahoning Valley Historical Society's downtown home — rotating exhibits on Valley history in a landmark former Goodwill building.",
+ "Youngstown Main Library": "The grand main library on Wick Ave — a landmark building with events, exhibits, and a deep local-history and genealogy collection.",
+ "Penguin City Brewing": "Downtown brewery and event hall on East Federal — house beers, food trucks, live music, and markets. The beating heart of the downtown comeback.",
+ "Wick Park": "Historic park on the north side by YSU — big shade trees, a restored pavilion, walking paths, and disc golf. Not to confuse with the Wick Rec Area inside Mill Creek.",
+ "Lake Newport": "Mill Creek's southern lake — the wild one: wetlands, a boardwalk, birdwatching, and boat launches. A different world from the manicured north end of the park.",
+ "Bears Den": "A jumble of giant sandstone boulders and squeeze-through rock passages tucked in the middle of Mill Creek — a hidden little adventure off the gorge trails.",
+ "Poland Municipal Forest": "Poland's beloved woods — tall pines, easy walking trails, and a covered bridge over Yellow Creek. The quiet, shady reset.",
+ "Yellow Creek Park": "Creekside park in Struthers — trails along Yellow Creek, picnic grounds, and the stone Hopewell Furnace left over from the 1800s iron days.",
+ "Extreme Air Trampoline Park": "Trampoline park by the Eastwood complex — jump courts, foam pits, and ninja obstacles. Peak kid-energy disposal."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||""}; }
 const SEEDS = {
@@ -526,7 +537,18 @@ const SEEDS = {
     seedPlace("Warren Community Amphitheatre","theatre","Warren, OH",41.2384,-80.8216),
     seedPlace("Mosquito Lake State Park","nature","Cortland, OH",41.3571,-80.7408),
     seedPlace("Nelson Ledges Quarry Park","nature","Garrettsville, OH",41.3215,-81.0379),
-    seedPlace("Nelson-Kennedy Ledges State Park","nature","Garrettsville, OH",41.3266,-81.0396)
+    seedPlace("Nelson-Kennedy Ledges State Park","nature","Garrettsville, OH",41.3266,-81.0396),
+    seedPlace("West Side Bowl","bowling","Youngstown, OH",41.1029,-80.698),
+    seedPlace("Youngstown Playhouse","theatre","Youngstown, OH",41.0795,-80.6737),
+    seedPlace("Tyler History Center","museum","Youngstown, OH",41.1021,-80.6542),
+    seedPlace("Youngstown Main Library","library","Youngstown, OH",41.1031,-80.6469),
+    seedPlace("Penguin City Brewing","attraction","Youngstown, OH",41.0967,-80.6412),
+    seedPlace("Wick Park","park","Youngstown, OH",41.1148,-80.6484),
+    seedPlace("Lake Newport","nature","Youngstown, OH",41.0646,-80.6783),
+    seedPlace("Bears Den","nature","Youngstown, OH",41.0843,-80.6837),
+    seedPlace("Poland Municipal Forest","nature","Poland, OH",41.0121,-80.6223),
+    seedPlace("Yellow Creek Park","park","Struthers, OH",41.0467,-80.5871),
+    seedPlace("Extreme Air Trampoline Park","sports","Niles, OH",41.2181,-80.7455)
   ],
   "432":[
     seedPlace("Easton Town Center","market","Columbus, OH",40.0529,-82.9151),
