@@ -109,14 +109,20 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
   #grubLink .gT{display:flex;flex-direction:column;line-height:1.15;}
   #grubLink .gT small{color:var(--muted);font-size:10.5px;}
   #grubLink .gT b{font-size:13px;}
+
+  .topRow{display:flex;justify-content:flex-end;margin-bottom:2px;}
+  #langToggle{display:flex;align-items:center;gap:6px;background:var(--card);color:var(--muted);border:1.5px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer;}
+  #langToggle span.on{color:var(--accent);font-weight:800;}
+  #langToggle .lsep{opacity:.4;}
 </style>
 </head>
 <body>
 <button id="menuBtn" aria-label="Filters"><span></span><span></span><span></span></button>
 
 <div class="wrap">
+  <div class="topRow"><button id="langToggle" type="button" aria-label="Language / Idioma"><span data-l="en">EN</span><span class="lsep">|</span><span data-l="es">ES</span></button></div>
   <div class="logo">What Do<span class="q">?</span></div>
-  <p class="tagline">What's there to do around here?</p>
+  <p class="tagline" id="tagline">What's there to do around here?</p>
 
   <div class="zipRow">
     <input id="zip" autocomplete="off" placeholder="ZIP or city name" maxlength="40">
@@ -143,11 +149,11 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
   </div>
 
   <div id="historyBox">
-    <div id="historyHead">History <span id="histToggle">[+]</span></div>
+    <div id="historyHead"><span id="histLabel">History</span> <span id="histToggle">[+]</span></div>
     <div id="historyList" style="display:none;"></div>
   </div>
 
-  <p class="foot">Places come from live OpenStreetMap data (plus a few hand-picked starters).<br>Costs &amp; times are estimates — check hours before you roll out.</p>
+  <p class="foot" id="footNote">Places come from live OpenStreetMap data (plus a few hand-picked starters).<br>Costs &amp; times are estimates — check hours before you roll out.</p>
 </div>
 
 <a id="grubLink" href="https://orlandochaidez.com/grubroulette/" target="_blank" rel="noopener" aria-label="Hungry? Try GrubRoulette">
@@ -158,16 +164,16 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
     <path d="M4.6 17h14.8"/>
     <path d="M4 19.6c0 .9.7 1.6 1.6 1.6h12.8c.9 0 1.6-.7 1.6-1.6"/>
   </svg>
-  <span class="gT"><small>Hungry?</small><b>Try GrubRoulette</b></span>
+  <span class="gT"><small id="gSmall">Hungry?</small><b id="gBold">Try GrubRoulette</b></span>
 </a>
 <div id="scrim"></div>
 <aside id="drawer" aria-label="Filters">
-  <h2>Filters</h2>
-  <div class="fGroup"><h3>Who's going?</h3><div class="chips" id="fWho"></div></div>
-  <div class="fGroup"><h3>Vibe</h3><div class="chips" id="fVibe"></div></div>
-  <div class="fGroup"><h3>Budget (per person)</h3><div class="chips" id="fBudget"></div></div>
-  <div class="fGroup"><h3>Time you got</h3><div class="chips" id="fTime"></div></div>
-  <div class="fGroup"><h3>Setting</h3><div class="chips" id="fSetting"></div></div>
+  <h2 id="dFilters">Filters</h2>
+  <div class="fGroup"><h3 id="dWho">Who's going?</h3><div class="chips" id="fWho"></div></div>
+  <div class="fGroup"><h3 id="dVibe">Vibe</h3><div class="chips" id="fVibe"></div></div>
+  <div class="fGroup"><h3 id="dBudget">Budget (per person)</h3><div class="chips" id="fBudget"></div></div>
+  <div class="fGroup"><h3 id="dTime">Time you got</h3><div class="chips" id="fTime"></div></div>
+  <div class="fGroup"><h3 id="dSetting">Setting</h3><div class="chips" id="fSetting"></div></div>
   <button id="drawerClose" type="button">Done</button>
 </aside>
 
@@ -176,6 +182,9 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
 "use strict";
 /* ================= What Do? — core engine (pure, testable) ================= */
 const $ = (s)=>document.querySelector(s);
+let WD_LANG="en";
+try{ WD_LANG = localStorage.getItem("whatdo_lang") || (((navigator.language||"en").toLowerCase().indexOf("es")===0)?"es":"en"); }catch(e){}
+function catLabel(c){ const cm=CATS[c]; return (WD_LANG==="es"&&cm&&cm.labelEs)?cm.labelEs:(cm?cm.label:""); }
 
 function haversineMi(aLat,aLon,bLat,bLon){
   const R=3958.8, dLa=(bLat-aLat)*Math.PI/180, dLo=(bLon-aLon)*Math.PI/180;
@@ -188,27 +197,27 @@ function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=rnd(i+1
 
 /* Category model: dur = typical minutes, cost = est $/person, io = in/out/both */
 const CATS = {
-  park:      {label:"Park",            icon:"🌳", dur:75,  cost:0,  io:"out", vibes:["chill","outdoors","active"], who:["solo","date","friends","family"]},
-  garden:    {label:"Garden",          icon:"🌷", dur:60,  cost:5,  io:"out", vibes:["chill","outdoors","artsy"], who:["solo","date","family"]},
-  viewpoint: {label:"Viewpoint",       icon:"🌇", dur:30,  cost:0,  io:"out", vibes:["chill","outdoors"], who:["solo","date","friends","family"]},
-  museum:    {label:"Museum",          icon:"🏛️", dur:120, cost:15, io:"in",  vibes:["artsy","chill","tourist"], who:["solo","date","friends","family"]},
-  gallery:   {label:"Art Gallery",     icon:"🎨", dur:60,  cost:0,  io:"in",  vibes:["artsy","chill"], who:["solo","date","friends"]},
-  zoo:       {label:"Zoo / Aquarium",  icon:"🦁", dur:150, cost:22, io:"both",vibes:["outdoors","tourist"], who:["date","friends","family"]},
-  attraction:{label:"Attraction",      icon:"🎡", dur:120, cost:18, io:"both",vibes:["tourist","active"], who:["date","friends","family"]},
-  cinema:    {label:"Movie Theater",   icon:"🎬", dur:130, cost:14, io:"in",  vibes:["chill","nightlife"], who:["solo","date","friends","family"]},
-  theatre:   {label:"Theatre",         icon:"🎭", dur:120, cost:25, io:"in",  vibes:["artsy","nightlife"], who:["date","friends"]},
-  bowling:   {label:"Bowling",         icon:"🎳", dur:90,  cost:15, io:"in",  vibes:["active","nightlife"], who:["date","friends","family"]},
-  minigolf:  {label:"Mini Golf",       icon:"⛳", dur:60,  cost:12, io:"out", vibes:["active"], who:["date","friends","family"]},
-  sports:    {label:"Sports / Rec",    icon:"🏀", dur:90,  cost:10, io:"both",vibes:["active"], who:["solo","friends","family"]},
-  ice:       {label:"Ice Rink",        icon:"⛸️", dur:90,  cost:14, io:"in",  vibes:["active"], who:["date","friends","family"]},
-  playground:{label:"Playground",      icon:"🛝", dur:60,  cost:0,  io:"out", vibes:["outdoors","active"], who:["family"]},
-  library:   {label:"Library",         icon:"📚", dur:60,  cost:0,  io:"in",  vibes:["chill","artsy"], who:["solo","family"]},
-  nature:    {label:"Nature / Trail",  icon:"🥾", dur:120, cost:0,  io:"out", vibes:["outdoors","active","chill"], who:["solo","date","friends","family"]},
-  beach:     {label:"Beach / Lake",    icon:"🏖️", dur:150, cost:0,  io:"out", vibes:["outdoors","chill"], who:["date","friends","family"]},
-  market:    {label:"Market",          icon:"🧺", dur:60,  cost:10, io:"both",vibes:["tourist","chill"], who:["solo","date","friends","family"]},
-  cafe:      {label:"Café / Dessert",  icon:"🍦", dur:40,  cost:8,  io:"in",  vibes:["chill"], who:["solo","date","friends","family"]},
-  nightlife: {label:"Nightlife",       icon:"🎤", dur:120, cost:20, io:"in",  vibes:["nightlife","active"], who:["date","friends"]},
-  generic:   {label:"Spot",            icon:"📍", dur:60,  cost:10, io:"both",vibes:["chill"], who:["solo","date","friends","family"]}
+  park:      {label:"Park", labelEs:"Parque", icon:"🌳", dur:75,  cost:0,  io:"out", vibes:["chill","outdoors","active"], who:["solo","date","friends","family"]},
+  garden:    {label:"Garden", labelEs:"Jardín", icon:"🌷", dur:60,  cost:5,  io:"out", vibes:["chill","outdoors","artsy"], who:["solo","date","family"]},
+  viewpoint: {label:"Viewpoint", labelEs:"Mirador", icon:"🌇", dur:30,  cost:0,  io:"out", vibes:["chill","outdoors"], who:["solo","date","friends","family"]},
+  museum:    {label:"Museum", labelEs:"Museo", icon:"🏛️", dur:120, cost:15, io:"in",  vibes:["artsy","chill","tourist"], who:["solo","date","friends","family"]},
+  gallery:   {label:"Art Gallery", labelEs:"Galería de arte", icon:"🎨", dur:60,  cost:0,  io:"in",  vibes:["artsy","chill"], who:["solo","date","friends"]},
+  zoo:       {label:"Zoo / Aquarium", labelEs:"Zoológico / Acuario", icon:"🦁", dur:150, cost:22, io:"both",vibes:["outdoors","tourist"], who:["date","friends","family"]},
+  attraction:{label:"Attraction", labelEs:"Atracción", icon:"🎡", dur:120, cost:18, io:"both",vibes:["tourist","active"], who:["date","friends","family"]},
+  cinema:    {label:"Movie Theater", labelEs:"Cine", icon:"🎬", dur:130, cost:14, io:"in",  vibes:["chill","nightlife"], who:["solo","date","friends","family"]},
+  theatre:   {label:"Theatre", labelEs:"Teatro", icon:"🎭", dur:120, cost:25, io:"in",  vibes:["artsy","nightlife"], who:["date","friends"]},
+  bowling:   {label:"Bowling", labelEs:"Boliche", icon:"🎳", dur:90,  cost:15, io:"in",  vibes:["active","nightlife"], who:["date","friends","family"]},
+  minigolf:  {label:"Mini Golf", labelEs:"Minigolf", icon:"⛳", dur:60,  cost:12, io:"out", vibes:["active"], who:["date","friends","family"]},
+  sports:    {label:"Sports / Rec", labelEs:"Deportes / Recreación", icon:"🏀", dur:90,  cost:10, io:"both",vibes:["active"], who:["solo","friends","family"]},
+  ice:       {label:"Ice Rink", labelEs:"Pista de hielo", icon:"⛸️", dur:90,  cost:14, io:"in",  vibes:["active"], who:["date","friends","family"]},
+  playground:{label:"Playground", labelEs:"Juegos infantiles", icon:"🛝", dur:60,  cost:0,  io:"out", vibes:["outdoors","active"], who:["family"]},
+  library:   {label:"Library", labelEs:"Biblioteca", icon:"📚", dur:60,  cost:0,  io:"in",  vibes:["chill","artsy"], who:["solo","family"]},
+  nature:    {label:"Nature / Trail", labelEs:"Naturaleza / Senderos", icon:"🥾", dur:120, cost:0,  io:"out", vibes:["outdoors","active","chill"], who:["solo","date","friends","family"]},
+  beach:     {label:"Beach / Lake", labelEs:"Playa / Lago", icon:"🏖️", dur:150, cost:0,  io:"out", vibes:["outdoors","chill"], who:["date","friends","family"]},
+  market:    {label:"Market", labelEs:"Mercado", icon:"🧺", dur:60,  cost:10, io:"both",vibes:["tourist","chill"], who:["solo","date","friends","family"]},
+  cafe:      {label:"Café / Dessert", labelEs:"Café / Postres", icon:"🍦", dur:40,  cost:8,  io:"in",  vibes:["chill"], who:["solo","date","friends","family"]},
+  nightlife: {label:"Nightlife", labelEs:"Vida nocturna", icon:"🎤", dur:120, cost:20, io:"in",  vibes:["nightlife","active"], who:["date","friends"]},
+  generic:   {label:"Spot", labelEs:"Lugar", icon:"📍", dur:60,  cost:10, io:"both",vibes:["chill"], who:["solo","date","friends","family"]}
 };
 const CAT_BLURBS = {
   park:"A park — open green space, usually free. Good for a walk, a picnic, or just hanging out.",
@@ -232,6 +241,29 @@ const CAT_BLURBS = {
   cafe:"A cafe or dessert spot — the classic low-stakes closer.",
   nightlife:"Nightlife — music, karaoke, or a late scene. Best with the 21+ crew.",
   generic:"A local spot pulled from the map — tap 'Look it up' to see photos, reviews, and hours."
+};
+const CAT_BLURBS_ES = {
+ "park": "Un parque — espacio verde abierto, casi siempre gratis. Bueno para caminar, un picnic o nomás pasar el rato.",
+ "garden": "Un jardín o invernadero — plantas, senderos y ritmo tranquilo.",
+ "viewpoint": "Un mirador — ve por la vista, sobre todo cerca del atardecer.",
+ "museum": "Un museo — exhibiciones bajo techo, calcula el tiempo que se muestra. El costo es un estimado aproximado del boleto.",
+ "gallery": "Una galería de arte o centro cultural — casi siempre gratis o barato para entrar a ver.",
+ "zoo": "Un zoológico o acuario — animales y exhibiciones; el costo es un estimado aproximado del boleto.",
+ "attraction": "Una atracción o lugar emblemático local — de esos a los que llevan a las visitas. El costo es un estimado aproximado por persona.",
+ "cinema": "Un cine — checa los horarios antes de salir.",
+ "theatre": "Un teatro o foro de espectáculos — checa la cartelera; muchos solo abren cuando hay función.",
+ "bowling": "Un boliche — los juegos y la renta de zapatos suelen quedar cerca del estimado.",
+ "minigolf": "Minigolf — una ronda suele tardar como una hora.",
+ "sports": "Un centro deportivo o recreativo — canchas, campos o actividades sin reservar.",
+ "ice": "Una pista de hielo — la sesión pública suele quedar cerca del estimado, patines incluidos.",
+ "playground": "Un área de juegos — la parada para que los niños quemen energía.",
+ "library": "Una biblioteca pública — tranquila, gratis, y seguido con eventos.",
+ "nature": "Naturaleza — senderos, reservas o costa. Lleva agua y checa el clima.",
+ "beach": "Una playa o lago — arena, agua, y el tiempo que quieras quedarte.",
+ "market": "Un mercado — puestos, comida y cosas locales para curiosear.",
+ "cafe": "Un café o lugar de postres — el cierre clásico sin complicaciones.",
+ "nightlife": "Vida nocturna — música, karaoke o ambiente tarde. Mejor con el grupo de 21+.",
+ "generic": "Un lugar sacado del mapa — toca 'Buscar' para ver fotos, reseñas y horarios."
 };
 const CLOSER_CATS = ["viewpoint","cafe","garden","park","gallery","market"];
 const MAIN_CATS   = ["zoo","attraction","museum","park","nature","cinema","bowling","sports","beach","theatre","minigolf","ice"];
@@ -450,7 +482,172 @@ const SEED_INFO = {
  "Yellow Creek Park": "Creekside park in Struthers — trails along Yellow Creek, picnic grounds, and the stone Hopewell Furnace left over from the 1800s iron days.",
  "Extreme Air Trampoline Park": "Trampoline park by the Eastwood complex — jump courts, foam pits, and ninja obstacles. Peak kid-energy disposal."
 };
-function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||""}; }
+function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
+const SEED_INFO_ES = {
+ "California Living Museum (CALM Zoo)": "Zoológico y jardín botánico de animales nativos de California — borregos cimarrones, pumas, una casa de reptiles y jardines de plantas nativas.",
+ "Kern County Museum & Pioneer Village": "Pueblo histórico al aire libre con más de 50 edificios antiguos restaurados de todo el condado de Kern, más un centro de descubrimientos para niños.",
+ "Bakersfield Museum of Art": "Museo de arte en el centro con artistas de California, galerías rotativas y jardines de esculturas.",
+ "Hart Memorial Park": "Parque grande a orillas del río Kern, al este de la ciudad — áreas de picnic, juegos, pesca, y pavos reales sueltos por ahí.",
+ "The Park at River Walk": "Parque junto al río Kern con lagos, un anfiteatro y acceso a la ciclovía del río.",
+ "Panorama Park (The Bluffs)": "Parque en lo alto del acantilado con vistas al río y los campos petroleros — uno de los mejores lugares para el atardecer en la ciudad.",
+ "Camelot Park (mini golf & go-karts)": "Centro de diversión familiar — minigolf, go-karts, jaulas de bateo, lanchitas de choque y videojuegos. Se paga por actividad.",
+ "Fox Theater": "Teatro histórico de 1930 en el centro, con conciertos, comedia y noches de cine clásico — checa la cartelera antes de ir.",
+ "Buena Vista Museum of Natural History": "Museo de historia natural y ciencia — fósiles, gemas y exhibiciones interactivas para niños.",
+ "Dewar's Ice Cream & Fine Candies": "Heladería y dulcería de antaño, un clásico de Bakersfield desde 1909 — famosa por sus chiclosos y sundaes.",
+ "Griffith Observatory": "Observatorio icónico sobre la ciudad — funciones de planetario, telescopios, exhibiciones de ciencia y las mejores vistas de LA. El edificio y los jardines son gratis.",
+ "Griffith Park": "Uno de los parques urbanos más grandes de EE.UU. — senderos, el zoológico, museos, paseos en poni y golf, todo dentro.",
+ "Los Angeles Zoo": "El zoológico de la ciudad dentro de Griffith Park — más de 1,400 animales y jardines botánicos.",
+ "Echo Park Lake": "Lago bonito con botes de pedales para rentar, flores de loto en verano y vista directa al skyline del centro.",
+ "The Broad": "Museo de arte contemporáneo gratis en el centro (reserva boletos antes) — los cuartos Infinity Mirror que brillan son la atracción principal.",
+ "LACMA": "El museo de arte más grande de LA. La escultura de lámparas Urban Light de la entrada es gratis para visitar a cualquier hora.",
+ "Santa Monica Pier": "Muelle clásico de playa con un parquecito de juegos mecánicos (Pacific Park), un acuario debajo, pesca y atardeceres.",
+ "Venice Beach Boardwalk": "El famoso malecón — pista de patinaje, el gimnasio Muscle Beach, artistas callejeros, vendedores y murales.",
+ "The Getty Center": "Museo de arte gratis en la colina, con jardines y vistas panorámicas de la ciudad — solo pagas el estacionamiento.",
+ "Elysian Park": "Uno de los parques más antiguos de LA, junto al Dodger Stadium — senderos con sombra y miradores al skyline, casi siempre tranquilo.",
+ "Millennium Park & Cloud Gate": "Parque céntrico construido alrededor de 'The Bean' — más la Crown Fountain, jardines y conciertos gratis en verano.",
+ "Art Institute of Chicago": "Uno de los mejores museos de arte del mundo — Monet, Seurat y el Gótico americano viven aquí.",
+ "Chicago Riverwalk": "Malecón a orillas del río, lleno de cafés y jardines de vino — de aquí salen los tours en barco de arquitectura.",
+ "Navy Pier": "Muelle a orillas del lago con la enorme Centennial Wheel, cruceros, jardines y fuegos artificiales dos veces por semana en verano.",
+ "Lincoln Park Zoo": "Un zoológico de verdad y totalmente gratis, abierto todos los días del año.",
+ "Shedd Aquarium": "Acuario enorme junto al lago — ballenas beluga, pingüinos, delfines y un arrecife de tiburones.",
+ "Maggie Daley Park": "Paraíso de juegos junto a Millennium Park — muros para escalar, una pista de patinaje sinuosa y minigolf en verano.",
+ "Garfield Park Conservatory": "Invernadero botánico interior gigantesco y gratis — selvas enteras bajo vidrio, abierto todo el año.",
+ "Mission San Luis Obispo de Tolosa": "Misión española fundada en 1772, en pleno centro — todavía es iglesia activa, con un museo pequeño y la plaza junto al arroyo al frente.",
+ "Bubblegum Alley": "Exactamente lo que suena: un callejón angosto del centro con las paredes tapizadas de décadas de chicle masticado. Asqueroso, famoso, dura dos minutos.",
+ "Madonna Inn": "SÍ, es un hotel — uno kitsch a más no poder, de 1958, con 110 cuartos temáticos (cuarto de cavernícola, todo rosa) y un famoso mingitorio de cascada. No tienes que hospedarte: la gente visita para recorrerlo, ir a la panadería/steakhouse y ver la decoración. Los ~$18 indicados son un estimado de visita y comida, NO el precio del cuarto.",
+ "Bishop Peak": "Sube el punto más alto de SLO (1,559 pies) — cumbre rocosa con vistas enormes, unas 3.5 millas ida y vuelta.",
+ "Cerro San Luis Obispo": "La montaña con la 'M', justo a la orilla del centro — la caminata favorita de los locales, con vistas a la ciudad y el océano.",
+ "San Luis Obispo Museum of Art": "Museo de arte pequeño y gratis junto a la misión, con exhibiciones rotativas de arte de California.",
+ "San Luis Obispo Children's Museum": "Tres pisos de exhibiciones interactivas para que los niños jueguen — ideal para menores de 10 años.",
+ "Sunset Drive-In Theatre": "Un autocinema de verdad que todavía funciona — uno de los últimos en California. Función doble, casi siempre en fines de semana, abre al anochecer.",
+ "Laguna Lake Park": "Parque con lago, juegos, campo de disc golf, parque para perros y acceso al sendero del Cerro San Luis.",
+ "El Chorro Regional Park": "Parque del condado entre SLO y Morro Bay — áreas grandes de picnic, canchas, juegos y un jardín botánico.",
+ "San Luis Obispo Railroad Museum": "Museo de historia ferroviaria en la antigua casa de carga junto a la estación de Amtrak — trenes a escala y vagones reales.",
+ "Dallidet Adobe and Gardens": "Una casa-museo de adobe de los 1850 escondida en un jardín tranquilo — una joyita escondida en el centro, sin prisas.",
+ "Avila Beach": "Pueblito de playa en una caleta protegida — el agua es más calmada y cálida que en Pismo, con muelle y un malecón de cafés frente a la playa.",
+ "Bob Jones Trail": "Sendero pavimentado 'City to the Sea' que sigue el arroyo desde la orilla de SLO hasta Avila Beach — camínalo o en bici, casi todo plano y con sombra.",
+ "Pirate's Cove": "Mirador en el acantilado sobre una caleta cerca de Avila — cueva marina con marea baja y vistas grandes al atardecer. (Un extremo de la playa es opcional de ropa.)",
+ "Pismo Beach Pier": "Muelle largo de madera en el corazón del Pismo clásico — mira a los surfistas, pesca desde el final y luego date la vuelta a la zona playera.",
+ "Monarch Butterfly Grove": "De octubre a febrero, más o menos, decenas de miles de mariposas monarca se juntan en estos eucaliptos. Gratis, y en temporada es algo impresionante.",
+ "Dinosaur Caves Park": "Parque sobre el acantilado en Shell Beach con un área de juegos grande, jardines y vistas desde el borde. Las cuevas que le dan nombre están bajo los acantilados.",
+ "Margo Dodd Park": "Parquecito de pasto sobre el océano en Shell Beach — bancas, atardeceres y avistamiento de ballenas en temporada.",
+ "Price Historical Park": "Parquecito histórico y tranquilo alrededor de la Price Anniversary House de los 1890, una de las casas más antiguas de Pismo.",
+ "Oceano Dunes": "La única playa de California donde puedes manejar — entra en la arena, acampa o renta una cuatrimoto cerca. Aplica cobro por vehículo.",
+ "Eldwayen Ocean Park": "Parque de pasto en lo alto del acantilado, sobre las pozas de marea en Shell Beach — mesas de picnic y atardeceres.",
+ "Boosinger Park": "Parque de barrio en Pismo con vistas al océano, juegos y canchas de tenis.",
+ "Spyglass Park": "Parque en lo alto del acantilado en Shell Beach, con áreas de picnic colgando sobre el agua.",
+ "Chumash Park": "Parque amplio tierra adentro en Pismo, con canchas, juegos y campos deportivos.",
+ "Shell Beach": "La franja de acantilados al norte de Pismo — caletas pequeñas, pozas de marea con marea baja y bancas para el atardecer por Shell Beach Road.",
+ "Avila Beach Pier": "El muelle de madera del pueblo — camínalo, busca leones marinos abajo, y la playa está ahí mismo cuando termines.",
+ "Avila Valley Barn": "Puesto de granja queridísimo en el camino a Avila — pays recién horneados, productos locales, animales para alimentar y un laberinto de paja en otoño. Muy familiar; los locales juran por los pays.",
+ "Avila Hot Springs": "Aguas termales a la antigua (desde 1907) sobre Avila Beach Drive — una alberca grande de agua caliente para remojarse y una de agua dulce con tobogán. El costo indicado es el estimado de la entrada.",
+ "Sycamore Mineral Springs": "Jacuzzis de agua mineral escondidos entre los encinos de la ladera, que se rentan por hora, más spa, jardines y una alberca tipo laguna. Plan de relax / cita de primer nivel.",
+ "Point San Luis Lighthouse": "Un faro de 1890 en la punta — llegas en tours guiados (normalmente miércoles y sábados, en tranvía desde Avila). Checa el día del tour antes de salir; las vistas son enormes.",
+ "Ontario Ridge Trail": "Caminata empinada por la cresta, favorita de los locales, entre Avila y Shell Beach — subida corta que se paga con vistas al océano de pared a pared.",
+ "Maya Cinemas": "Cine sobre California Ave con asientos reclinables tipo lounge — la opción de asientos cómodos en la ciudad.",
+ "Studio Movie Grill": "Cine con cena junto a River Walk — menú completo y bebidas servidas hasta tu asiento.",
+ "Regal Edwards Bakersfield": "El cine grande con IMAX sobre Rosedale Highway — el lugar para los estrenos.",
+ "Bowlero Bakersfield": "Boliche en Wible Road (el antiguo Southwest Lanes, totalmente remodelado) — líneas, maquinitas y comida de bar.",
+ "The BLVD": "Centro de entretenimiento en Buck Owens Blvd — boliche, maquinitas enormes, laser tag, cuerdas altas y restaurante, todo bajo un mismo techo.",
+ "Rollerama": "Pista de patinaje sobre ruedas a la antigua — sesiones públicas y renta de patines. Energía de fiesta de cumpleaños en su máximo, en el buen sentido.",
+ "Bakersfield Ice Sports Center": "La pista de hielo de la ciudad, justo al este del centro (hoy Valley Children's Ice Center) — patinaje público, rentas, hockey y clases.",
+ "Buck Owens Crystal Palace": "El Crystal Palace de Buck Owens — steakhouse y salón de música country en vivo, con el famoso Pontiac de Buck colgando sobre la barra. Una institución de Bakersfield: mitad cena, mitad show.",
+ "Dignity Health Arena": "La arena grande del centro — hockey de los Condors, conciertos y shows grandes. Depende de eventos, así que checa el calendario antes de salir.",
+ "Bakersfield Community Theatre": "Teatro comunitario desde 1927 — uno de los más antiguos de California — con producciones locales en South Chester Ave.",
+ "Bakersfield Speedway": "Carreras en óvalo de tierra en Oildale, desde 1946 — sprint cars y ruido de sábado por la noche, casi siempre de primavera a otoño.",
+ "Sam Lynn Ballpark": "Estadio histórico de 1941 — uno de los parques de ligas menores más antiguos del país. Aquí salen juegos y eventos; checa el calendario.",
+ "Beach Park": "Parque junto al río Kern en Truxtun — inicio de la ciclovía del río, con jardines, voleibol y espacio para picnic.",
+ "Jastro Park": "Uno de los parques más antiguos de la ciudad, justo al oeste del centro — árboles grandes con sombra, juegos, tenis y un anfiteatro pequeño.",
+ "Yokuts Park": "Parque verde junto al río, sobre la ciclovía, en el suroeste — juegos, áreas de picnic techadas y espacio para extenderse.",
+ "Patriots Park": "Parque de barrio grande en el suroeste — campos deportivos, canchas, juegos y áreas de picnic.",
+ "Silver Creek Park": "Parque amplio del lado sur — espacios verdes, juegos y canchas deportivas.",
+ "Lowell Park": "Parque de barrio tranquilo al sureste del centro — juegos, jardines y mesas de picnic.",
+ "Lake Ming": "Lago del condado al noreste, sobre el río Kern — pesca, botes y picnics, con un campo de golf al lado. Más tranquilo que Hart Park.",
+ "Beale Memorial Library": "La biblioteca principal del condado, en el centro — tres pisos de libros, eventos y exhibiciones seguido, y una sala de historia del condado de Kern.",
+ "Valley Plaza Mall": "El centro comercial grande sobre Ming Ave — tiendas, área de comida y un cine adentro. Plan sólido para cuando hace demasiado calor afuera.",
+ "Kaiser Permanente Sports Village": "Complejo deportivo enorme en el suroeste — canchas de fútbol y béisbol con torneos casi cada fin de semana.",
+ "Links at RiverLakes Ranch": "Golf público en RiverLakes Ranch, al noroeste — 18 hoyos entre lagos, más un campo de práctica para una cubeta rápida de bolas. Los green fees cuestan más que el estimado genérico de deportes de la app.",
+ "North Kern Golf Course": "Campo público del condado en el norte — green fees baratos y campo de práctica, si solo quieres pegarle a una cubeta de bolas.",
+ "Kern River Golf Course": "Campo del condado junto a Lake Ming, sobre el río Kern — 18 hoyos, campo de práctica y greens de práctica. El bonito.",
+ "Rio Bravo Country Club": "Campo de club campestre en las faldas del noreste, junto al río Kern — el campo más bonito de la ciudad. Checa la disponibilidad pública de horarios antes de ir.",
+ "Sundale Country Club": "Campo de club en el suroeste con campo de práctica — checa la disponibilidad de horarios para invitados / público antes de ir.",
+ "Easton Town Center": "Toda la plaza de Easton — un distrito enorme de compras y entretenimiento al aire libre, construido como su propio pueblito: tiendas, restaurantes, fuentes, artistas callejeros y gente sin parar. El plan por defecto de 'nomás ve a caminar a Easton'.",
+ "LEGOLAND Discovery Center Columbus": "Parque interior de LEGO dentro de Easton — juegos mecánicos, zonas para construir y un Columbus mini hecho de LEGO. Parada 100% para niños y familia.",
+ "Funny Bone Comedy Club": "Club de stand-up justo en Easton — comediantes nacionales de gira casi cada fin de semana. Checa la cartelera; las funciones son con boleto y casi siempre de noche.",
+ "Pins Mechanical Co.": "Boliche duckpin + bar de maquinitas en Easton — juegos vintage, pinball, Jenga gigante y tragos. La opción de noche de juegos para adultos.",
+ "Polaris Fashion Place": "El centro comercial grande de dos pisos en Polaris — más de 150 tiendas, área de comida, la corrida principal de compras del lado norte.",
+ "Topgolf Columbus": "Topgolf en Polaris — cabinas de tiro climatizadas, blancos, comida y bebidas hasta tu cabina. No necesitas saber golf; a los grupos les encanta.",
+ "Franklin Park Conservatory": "Jardines botánicos e invernaderos de cristal — biomas tropicales, la colección de vidrio de Chihuly y liberación de mariposas en temporada. El paseo interior-exterior más bonito de la ciudad.",
+ "Otherworld": "Un parque de arte inmersivo enorme en el sureste — cuarto tras cuarto de instalaciones interactivas, brillantes y para treparse. Las fotos no le hacen justicia; reserva boletos antes en fines de semana.",
+ "Ohio History Center": "El museo estatal de historia de Ohio, junto a los terrenos de la feria — exhibiciones desde mastodontes hasta los años 50, más el Ohio Village, un pueblo recreado de los 1860 afuera (por temporada).",
+ "Inniswood Metro Gardens": "Un santuario-jardín de 123 acres en Westerville — jardines temáticos de flores, senderos en el bosque y un jardín para que los niños exploren. Gratis y pacífico.",
+ "Sharon Woods Metro Park": "Parque metropolitano grande al norte — un lago para pescar y pasear en bote, millas de senderos y un área de juegos de aventura. Territorio clásico de picnic y caminata.",
+ "Blendon Woods Metro Park": "Parque metropolitano boscoso justo al este de Easton — senderos por cañadas, un centro de naturaleza y disc golf. El respiro de naturaleza real más cercano a Easton.",
+ "Creekside Park": "Parque y plaza sobre Big Walnut Creek en el centro de Gahanna — cascadas, botes de pedales en temporada y cafés sobre la plaza.",
+ "Columbus Zoo and Aquarium": "Uno de los mejores zoológicos del país — más de 10,000 animales, regiones desde el Congo hasta la frontera polar, y el zoológico de casa de Jack Hanna. Aparta el día, es enorme.",
+ "Zoombezi Bay": "El parque acuático del zoológico, al lado — toboganes, alberca de olas y río lento. Solo en verano, y hay boletos combinados con el zoológico.",
+ "Star Lanes Polaris": "Boliche de nivel en Polaris — líneas boutique, maquinitas grandes y un bar deportivo. Boliche de cita, no de liga.",
+ "Dave & Buster's": "El arcade grande de Polaris — juegos, premios, bar deportivo, todo el paquete. Come, toma y pierde en el air hockey.",
+ "Magic Mountain Fun Center": "Centro de diversión familiar en Polaris — go-karts, dos campos de minigolf, lanchitas de choque y jaulas de bateo. Energía pura de caos en grupo.",
+ "Marcus Crosswoods Cinema": "Cine en Crosswoods junto a la I-270 — asientos reclinables y el cine por defecto y fácil del lado norte.",
+ "Ohio Railway Museum": "Trenes antiguos en Worthington — tranvías, locomotoras y paseos cortos en tren en días de apertura (casi siempre fines de semana, por temporada). Joya escondida para los fans de los trenes y los niños.",
+ "Village Green": "El corazón del viejo Worthington — una plaza clásica estilo Nueva Inglaterra, con conciertos, mercados y festivales todo el año.",
+ "Whetstone Park": "Parque grande de Clintonville sobre el río Olentangy — senderos, lago para pescar, campos deportivos y el Park of Roses adentro.",
+ "Columbus Park of Roses": "Uno de los jardines municipales de rosas más grandes del país — más de 12,000 rosas dentro de Whetstone Park, en su mejor momento en junio. Gratis, y material de paseo de cita de primer nivel.",
+ "Flight Adventure Park": "Parque interior de trampolines y aventura en Buck Owens Blvd — unos 40,000 pies cuadrados de trampolines, pista ninja e inflables. La opción para quemar la energía de los niños.",
+ "The Empty Space": "Teatro comunitario a base de donativos — obras, comedia y una galería de arte bajo un techo, en su casa de Woodmere Drive al sur de la ciudad. Los asientos no vendidos salen 'paga lo que puedas' a la hora de la función.",
+ "Central Park at Mill Creek": "El único parque del centro — una franja verde a lo largo del canal de Mill Creek, junto al museo de arte, con un laguito, fuentes de chorros y el puente de Mill Creek. El paseo del centro.",
+ "Reading Cinemas Valley Plaza": "El cine dentro del centro comercial Valley Plaza — combina la película con el área de comida y hazlo una corrida completa al mall.",
+ "Highbanks Metro Park": "El grande — 1,200 acres de bosque sobre el río Olentangy, con acantilados altos, senderos por cañadas y un centro de naturaleza. Este pin es el centro de naturaleza; el parque tiene varias entradas y todas valen la pena.",
+ "AMC Dine-In Easton 30": "El AMC de 30 salas dentro de Easton Town Center — reclinables con cena, la jugada de cine por defecto en Easton.",
+ "Fellows Riverside Gardens": "La joya de la corona de Mill Creek — 12 acres de jardines de rosas, glorietas y vistas al lago en el extremo norte del parque, con el Davis Center adentro. Gratis, y el lugar más fotografiado de Youngstown.",
+ "Lanterman's Mill": "Un molino de 1845 que todavía muele en la cañada de Mill Creek — recorre el molino y luego mira el puente cubierto y la cascada afuera. La foto de postal del parque.",
+ "Mill Creek Suspension Bridge": "El puente Cinderella — un puente colgante de 1895 en arco sobre la cañada de Mill Creek. Caminata corta, recompensa enorme, sobre todo en otoño.",
+ "Lake Glacier": "El lago tranquilo de Mill Creek, en el norte — kayaks y botes de pedales en temporada, caminata fácil por la orilla todo el año.",
+ "Ford Nature Center": "La sede de naturaleza de Mill Creek — exhibiciones de vida silvestre, una ventana para observar aves y salidas de senderos a la cañada. El mejor punto de partida del parque con niños.",
+ "Wick Recreation Area": "El lado de juego de Mill Creek — campos deportivos, tenis, un campo de golf par-3, juegos y la colina para trineos en invierno.",
+ "Mill Creek Golf Course": "Dos campos de 18 hoyos diseñados por Donald Ross (Norte y Sur) en Boardman — una ganga de golf público bien calificado, escondida al sur de Mill Creek.",
+ "Butler Institute of American Art": "El primer museo de América construido solo para arte americano — y es gratis. Norman Rockwell, Winslow Homer y los famosos cuadros 'instantáneos' de Lincoln, junto a YSU.",
+ "McDonough Museum of Art": "El museo de arte contemporáneo de YSU, frente al Butler — exhibiciones modernas rotativas en un edificio llamativo. También gratis.",
+ "Covelli Centre": "La arena del centro — hockey de los Youngstown Phantoms, conciertos y shows grandes de gira. Depende de eventos; checa el calendario.",
+ "DeYor Performing Arts Center": "Casa de la Sinfónica de Youngstown en el hermoso Powers Auditorium de 1931 — conciertos, giras de Broadway y danza en el centro.",
+ "Stambaugh Auditorium": "Un auditorio Greek Revival de 1926 en el lado norte — conciertos, comedia y el gran salón de baile. Un ícono de Youngstown por dentro y por fuera.",
+ "Youngstown Historical Center of Industry and Labor": "El Museo del Acero — la historia de las fábricas que construyeron el Valley, contada donde pasó. Serio y excelente.",
+ "Arms Family Museum": "Una mansión-museo Arts & Crafts de 1905 en Millionaires Row — cuartos de época, historia local y las queridas exhibiciones navideñas en temporada.",
+ "OH WOW! Children's Center": "Centro interactivo de ciencia y tecnología para niños en el centro — zonas para construir, chapotear y experimentar. Energía familiar pura.",
+ "Wean Park": "El jardín delantero del centro — espacio verde junto al río y pasto de anfiteatro junto al Covelli Centre, sede de conciertos y festivales de verano.",
+ "Boardman Park": "El 'Oasis Verde' de Boardman, de 227 acres — senderos, pabellones, parque para perros y la histórica St. James Meeting House. La sala de estar del municipio.",
+ "Cinemark Tinseltown Boardman": "El cine grande de Boardman — asientos tipo estadio sobre la franja de la 224, la corrida de cine suburbana por defecto.",
+ "Southern Park Mall": "El centro comercial techado de Boardman — tiendas, área de comida y el ancla del corredor de la 224.",
+ "Camelot Lanes": "El boliche de Boardman — líneas, ligas y noches de boliche cósmico en el lado oeste.",
+ "Wedgewood Lanes": "Boliche en Austintown — casa del famoso nombre de pizza Wedgewood. Líneas, más bar y cocina completos.",
+ "Hollywood Gaming Mahoning Valley": "El racino — carreras de purasangres más un piso completo de casino (tragamonedas, mesas, póker) en el lado oeste. 21+ para el área de juego.",
+ "Austintown Township Park": "El parque comunitario grande de Austintown — campos, canchas, juegos y pabellones, por Kirk Road.",
+ "Canfield Fairgrounds": "Casa de la Feria de Canfield, una de las ferias de condado más grandes de Ohio (semana del Labor Day) — más eventos y shows todo el año en los terrenos.",
+ "MetroParks Farm": "El campus granja de Mill Creek en Canfield — graneros de animales, un molino de viento, lago para pescar y programas de granja. Buenísimo con niños pequeños.",
+ "White House Fruit Farm": "El famoso mercado de granja al sur de Canfield — donas por las que la gente maneja condados enteros, una nave de mercado gigante y terrenos junto al lago para pasear.",
+ "National McKinley Birthplace Memorial": "Un templo griego de mármol en medio de Niles — museo y biblioteca en honor al presidente William McKinley, nacido a unas cuadras.",
+ "Eastwood Mall": "Uno de los complejos comerciales más grandes de Ohio — el mall más todo un universo de tiendas grandes y restaurantes alrededor, en Niles.",
+ "Eastwood Field": "Casa de los Mahoning Valley Scrappers (béisbol colegial de verano) — asientos baratos, noches de fuegos artificiales, verano clásico de estadio pequeño.",
+ "National Packard Museum": "Warren construyó Packards antes que Detroit — este museo junta los carros, la historia y una rotación de clásicos. Obligado para la gente de carros.",
+ "Packard Music Hall": "El gran salón de Warren desde 1955 — conciertos, comedia y shows de gira, financiado en su día por el propio Packard.",
+ "Warren Community Amphitheatre": "Anfiteatro junto al río en el centro de Warren — serie de conciertos de verano y noches de River Rock at the Amp a orillas del río Mahoning.",
+ "Mosquito Lake State Park": "Uno de los lagos más grandes de Ohio, justo al norte de Warren — playa, botes, pesca y camping. El día de lago de verano de la zona.",
+ "Nelson Ledges Quarry Park": "La legendaria cantera — clavados desde acantilados y nado en agua de manantial cristalina, camping y fines de semana de festival en el bosque. Todo un mundo aparte; checa los fines de semana de eventos antes de una visita tranquila.",
+ "Nelson-Kennedy Ledges State Park": "El parque estatal junto a la cantera — formaciones rocosas con musgo, pasajes estrechos entre piedras y senderos con cascadas. La mitad senderista de Nelson Ledges.",
+ "The Lily Pond": "El cuerpo de agua artificial más antiguo del parque, escondido por McCollum Road junto a Birch Hill Drive — un sendero circular plano de un cuarto de milla lo rodea, con miradores de madera sobre el estanque y patos y gansos por todos lados (mira, no alimentes — reglas del parque). La cabaña Birch Hill está justo cruzando la calle.",
+ "West Side Bowl": "El querido boliche del lado oeste, en Mahoning Ave — líneas, un escenario para bandas locales en vivo y una cocina de la que la gente habla maravillas. Mitad boliche, mitad foro de música, puro Youngstown.",
+ "Youngstown Playhouse": "Teatro comunitario desde 1924 — uno de los más antiguos del país — con temporadas completas de obras y musicales en Glenwood Ave.",
+ "Tyler History Center": "La casa céntrica de la Sociedad Histórica del Valle de Mahoning — exhibiciones rotativas de historia del Valley en un edificio histórico, antiguo local de Goodwill.",
+ "Youngstown Main Library": "La gran biblioteca principal en Wick Ave — un edificio histórico con eventos, exhibiciones y una colección profunda de historia local y genealogía.",
+ "Penguin City Brewing": "Cervecería y salón de eventos del centro, en East Federal — cervezas de la casa, food trucks, música en vivo y mercados. El corazón que late del regreso del centro.",
+ "Wick Park": "Parque histórico del lado norte, junto a YSU — árboles grandes con sombra, un pabellón restaurado, senderos y disc golf. No confundir con el área recreativa Wick dentro de Mill Creek.",
+ "Lake Newport": "El lago sur de Mill Creek — el salvaje: humedales, un paseo de madera, observación de aves y rampas para botes. Otro mundo comparado con el norte bien cuidado del parque.",
+ "Bears Den": "Un montón de rocas gigantes de arenisca y pasajes estrechos entre piedras, escondido en medio de Mill Creek — una aventurita escondida junto a los senderos de la cañada.",
+ "Poland Municipal Forest": "El bosque querido de Poland — pinos altos, senderos fáciles para caminar y un puente cubierto sobre Yellow Creek. El respiro tranquilo y con sombra.",
+ "Yellow Creek Park": "Parque junto al arroyo en Struthers — senderos por Yellow Creek, áreas de picnic y el horno de piedra Hopewell, reliquia de la época del hierro de los 1800.",
+ "Extreme Air Trampoline Park": "Parque de trampolines junto al complejo Eastwood — canchas de salto, fosas de espuma y obstáculos ninja. Deshecho máximo de energía infantil."
+};
 const SEEDS = {
   "933":[ // Bakersfield
     seedPlace("California Living Museum (CALM Zoo)","zoo","Bakersfield, CA",35.4319,-118.8817),
@@ -694,8 +891,10 @@ function buildPlan(places,f,lockedMain){
   return {stops, main, totalCost, totalTime};
 }
 function planText(plan,zip){
-  const lines=plan.stops.map((p,i)=>`${["MAIN EVENT","SIDE QUEST","CLOSER"][i]||"STOP"}: ${p.name} (${CATS[p.cat].label}${p.dist!=null?", "+p.dist+" mi":""}${p.cost? ", ~$"+p.cost+"/person":", Free"})`);
-  return `What Do? — plan for ${zip}\n`+lines.join("\n")+`\nEst: ~$${plan.totalCost}/person · ~${Math.round(plan.totalTime/60*10)/10} hrs total`;
+  const L=WD_LANG==="es";
+  const labels=L?["EVENTO PRINCIPAL","PARADA EXTRA","CIERRE"]:["MAIN EVENT","SIDE QUEST","CLOSER"];
+  const lines=plan.stops.map((p,i)=>`${labels[i]||(L?"PARADA":"STOP")}: ${p.name} (${catLabel(p.cat)}${p.dist!=null?", "+p.dist+" mi":""}${p.cost? ", ~$"+p.cost+(L?"/persona":"/person"):(L?", Gratis":", Free")})`);
+  return `What Do? \u2014 plan ${L?"para":"for"} ${zip}\n`+lines.join("\n")+`\nEst: ~$${plan.totalCost}${L?"/persona":"/person"} \u00B7 ~${Math.round(plan.totalTime/60*10)/10} hrs total`;
 }
 
 /* ================= Live lookup ================= */
@@ -766,32 +965,190 @@ async function fetchWeather(lat,lon){
 if(typeof document!=="undefined" && document.getElementById("rollBtn")){
   const state={places:[], zip:"", label:"", plan:null, lockedMain:null, weather:null, center:null, picked:null,
     filters:Object.assign({},DEFAULT_FILTERS)};
+
+  const T = {
+ "en": {
+  "tagline": "What's there to do around here?",
+  "zipPh": "ZIP or city name",
+  "loc": "Use my location",
+  "roll": "WHAT DO? 🎲",
+  "rolling": "ROLLING…",
+  "again": "Roll Again 🎲",
+  "lock": "Lock Main Event",
+  "locked": "Main Locked 🔒 (tap to unlock)",
+  "copy": "Copy Plan to Text",
+  "copied": "Copied ✓",
+  "copyBlocked": "Copy blocked — long-press the plan",
+  "map": "View on Map 🗺",
+  "hideMap": "Hide Map",
+  "history": "History",
+  "foot": "Places come from live OpenStreetMap data (plus a few hand-picked starters).<br>Costs & times are estimates — check hours before you roll out.",
+  "filters": "Filters",
+  "fWho": "Who's going?",
+  "fVibe": "Vibe",
+  "fBudget": "Budget (per person)",
+  "fTime": "Time you got",
+  "fSetting": "Setting",
+  "done": "Done",
+  "yourPlan": "Your plan",
+  "stops": "stops",
+  "perPersonEst": "per person est.",
+  "totalTime": "total time",
+  "spotsNearby": "spots nearby",
+  "tapInfo": "Tap for info ▾",
+  "tapClose": "Tap to close ▴",
+  "type": "Type",
+  "indoor": "Indoor",
+  "outdoor": "Outdoor",
+  "inOut": "Indoor / outdoor",
+  "cost": "Cost",
+  "free": "Free",
+  "perPerson": "/person",
+  "hoursFromMap": "Hours (from the map)",
+  "directions": "Directions",
+  "lookUp": "Look it up (photos & reviews)",
+  "website": "Website",
+  "needInput": "Enter a ZIP code or a city name first.",
+  "noSpots": "Couldn't find spots for that — check the spelling and try again.",
+  "noPlan": "No plan fits those filters here — loosen one and roll again.",
+  "hiccup": "Lookup hiccup — try again in a sec.",
+  "locNA": "Location not available on this device.",
+  "gettingLoc": "Getting your location…",
+  "locFailCity": "Couldn't get a place from your location.",
+  "locFail": "Location lookup failed.",
+  "locDenied": "Location permission denied — type your ZIP instead.",
+  "wxNow": "°F right now",
+  "wxLean": " — leaning indoor for you",
+  "filtersWord": "Filters: ",
+  "freeOnly": "Free only",
+  "under": "Under $",
+  "time1": "~1 hour",
+  "time23": "2–3 hours",
+  "halfDay": "Half day",
+  "allDay": "All day",
+  "wxIndoor": "Weather: indoor-leaning",
+  "mapFail": "Map could not load — check your connection and try again.",
+  "searchedHere": "You searched here",
+  "tapUse": "Tap to use this place",
+  "hungry": "Hungry?",
+  "grub": "Try GrubRoulette",
+  "planLabels": [
+   "MAIN EVENT",
+   "SIDE QUEST",
+   "CLOSER"
+  ]
+ },
+ "es": {
+  "tagline": "¿Qué hay para hacer por aquí?",
+  "zipPh": "Código postal o ciudad",
+  "loc": "Usar mi ubicación",
+  "roll": "¿QUÉ HACEMOS? 🎲",
+  "rolling": "BUSCANDO…",
+  "again": "Tirar otra vez 🎲",
+  "lock": "Fijar evento principal",
+  "locked": "Principal fijado 🔒 (toca para soltar)",
+  "copy": "Copiar plan para mensaje",
+  "copied": "Copiado ✓",
+  "copyBlocked": "Copia bloqueada — mantén presionado el plan",
+  "map": "Ver en el mapa 🗺",
+  "hideMap": "Ocultar mapa",
+  "history": "Historial",
+  "foot": "Los lugares vienen de datos en vivo de OpenStreetMap (más algunos favoritos elegidos a mano).<br>Los costos y tiempos son estimados — checa los horarios antes de salir.",
+  "filters": "Filtros",
+  "fWho": "¿Quiénes van?",
+  "fVibe": "Ambiente",
+  "fBudget": "Presupuesto (por persona)",
+  "fTime": "¿Cuánto tiempo tienes?",
+  "fSetting": "Lugar",
+  "done": "Listo",
+  "yourPlan": "Tu plan",
+  "stops": "paradas",
+  "perPersonEst": "por persona (est.)",
+  "totalTime": "tiempo total",
+  "spotsNearby": "lugares cerca",
+  "tapInfo": "Toca para ver info ▾",
+  "tapClose": "Toca para cerrar ▴",
+  "type": "Tipo",
+  "indoor": "Interior",
+  "outdoor": "Exterior",
+  "inOut": "Interior / exterior",
+  "cost": "Costo",
+  "free": "Gratis",
+  "perPerson": "/persona",
+  "hoursFromMap": "Horario (según el mapa)",
+  "directions": "Cómo llegar",
+  "lookUp": "Buscar (fotos y reseñas)",
+  "website": "Sitio web",
+  "needInput": "Primero escribe un código postal o una ciudad.",
+  "noSpots": "No encontré lugares para eso — revisa la ortografía e inténtalo de nuevo.",
+  "noPlan": "Ningún plan encaja con esos filtros aquí — afloja uno y tira otra vez.",
+  "hiccup": "Falló la búsqueda — inténtalo en un momento.",
+  "locNA": "Ubicación no disponible en este dispositivo.",
+  "gettingLoc": "Obteniendo tu ubicación…",
+  "locFailCity": "No pude obtener un lugar desde tu ubicación.",
+  "locFail": "La búsqueda de ubicación falló.",
+  "locDenied": "Permiso de ubicación denegado — escribe tu código postal.",
+  "wxNow": "°F ahorita",
+  "wxLean": " — mejor buscar lugares cerrados",
+  "filtersWord": "Filtros: ",
+  "freeOnly": "Solo gratis",
+  "under": "Menos de $",
+  "time1": "~1 hora",
+  "time23": "2–3 horas",
+  "halfDay": "Medio día",
+  "allDay": "Todo el día",
+  "wxIndoor": "Clima: mejor interior",
+  "mapFail": "El mapa no cargó — revisa tu conexión e inténtalo de nuevo.",
+  "searchedHere": "Buscaste aquí",
+  "tapUse": "Toca para usar este lugar",
+  "hungry": "¿Tienes hambre?",
+  "grub": "Prueba GrubRoulette",
+  "planLabels": [
+   "EVENTO PRINCIPAL",
+   "PARADA EXTRA",
+   "CIERRE"
+  ]
+ }
+};
+  function t(k){ const d=T[WD_LANG]||T.en; return (k in d)?d[k]:T.en[k]; }
+  T.en.distSeg=(d)=>" \u00B7 "+d+" mi away"; T.es.distSeg=(d)=>" \u00B7 a "+d+" mi";
+  T.en.costEst=(c)=>"Rough estimate (~$"+c+"/person) \u2014 actual prices vary."; T.es.costEst=(c)=>"Estimado aprox. (~$"+c+"/persona) \u2014 los precios reales var\u00EDan.";
+  T.en.finding=(r)=>"Finding spots near "+r+"\u2026"; T.es.finding=(r)=>"Buscando lugares cerca de "+r+"\u2026";
   const FILTER_DEFS={
-    fWho:[["any","Anyone"],["solo","Solo"],["date","Date"],["friends","Friends"],["family","Family / Kids"]],
-    fVibe:[["any","Any vibe"],["chill","Chill"],["active","Active"],["outdoors","Outdoors"],["artsy","Artsy"],["nightlife","Nightlife"],["tourist","Tourist Mode"]],
-    fBudget:[["999","Any budget"],["0","Free Only"],["20","Under $20"],["50","Under $50"]],
-    fTime:[["999","Any length"],["70","~1 hour"],["180","2–3 hours"],["300","Half day"],["600","All day"]],
-    fSetting:[["any","Indoor or Outdoor"],["in","Indoor"],["out","Outdoor"]]
+    fWho:[["any","Anyone","Quien sea"],["solo","Solo","Solo"],["date","Date","Cita"],["friends","Friends","Amigos"],["family","Family / Kids","Familia / Niños"]],
+    fVibe:[["any","Any vibe","Lo que sea"],["chill","Chill","Tranqui"],["active","Active","Activo"],["outdoors","Outdoors","Aire libre"],["artsy","Artsy","Artístico"],["nightlife","Nightlife","Vida nocturna"],["tourist","Tourist Mode","Modo turista"]],
+    fBudget:[["999","Any budget","Lo que sea"],["0","Free Only","Solo gratis"],["20","Under $20","Menos de $20"],["50","Under $50","Menos de $50"]],
+    fTime:[["999","Any length","Lo que sea"],["70","~1 hour","~1 hora"],["180","2–3 hours","2–3 horas"],["300","Half day","Medio día"],["600","All day","Todo el día"]],
+    fSetting:[["any","Indoor or Outdoor","Interior o exterior"],["in","Indoor","Interior"],["out","Outdoor","Exterior"]]
   };
   const FKEY={fWho:"who",fVibe:"vibe",fBudget:"budget",fTime:"time",fSetting:"setting"};
-  for(const [id,opts] of Object.entries(FILTER_DEFS)){
-    const box=document.getElementById(id);
-    opts.forEach(([val,label],i)=>{
-      const c=document.createElement("button"); c.type="button"; c.className="chip"+(i===0?" sel":""); c.textContent=label; c.dataset.val=val;
-      c.onclick=()=>{ box.querySelectorAll(".chip").forEach(x=>x.classList.remove("sel")); c.classList.add("sel");
-        const k=FKEY[id]; state.filters[k]=(k==="budget"||k==="time")?parseInt(val,10):val; renderFilterSummary(); };
-      box.appendChild(c);
-    });
+  function chipLabelFor(id,val){ const def=(FILTER_DEFS[id]||[]).find(o=>o[0]===String(val)); return def?((WD_LANG==="es"&&def[2])?def[2]:def[1]):String(val); }
+  function buildChips(){
+    for(const [id,opts] of Object.entries(FILTER_DEFS)){
+      const box=document.getElementById(id); if(!box) continue; box.innerHTML="";
+      const k=FKEY[id], cur=state.filters[k];
+      opts.forEach(([val,en,es])=>{
+        const c=document.createElement("button"); c.type="button"; c.dataset.val=val;
+        c.textContent=(WD_LANG==="es"&&es)?es:en;
+        const isSel=(k==="budget"||k==="time")?(parseInt(val,10)===cur):(val===cur);
+        if(isSel) c.classList.add("sel");
+        c.onclick=()=>{ box.querySelectorAll(".chip").forEach(x=>x.classList.remove("sel")); c.classList.add("sel");
+          state.filters[k]=(k==="budget"||k==="time")?parseInt(val,10):val; renderFilterSummary(); };
+        c.className="chip"+(isSel?" sel":"");
+        box.appendChild(c);
+      });
+    }
   }
+  buildChips();
   function renderFilterSummary(){
     const f=state.filters, bits=[];
-    if(f.who!=="any") bits.push(f.who==="family"?"Family / Kids":f.who[0].toUpperCase()+f.who.slice(1));
-    if(f.vibe!=="any") bits.push(f.vibe[0].toUpperCase()+f.vibe.slice(1));
-    if(f.budget===0) bits.push("Free only"); else if(f.budget<999) bits.push("Under $"+f.budget);
-    if(f.time<999) bits.push(f.time<=70?"~1 hour":f.time<=180?"2–3 hours":f.time<=300?"Half day":"All day");
-    if(f.setting!=="any") bits.push(f.setting==="in"?"Indoor":"Outdoor");
-    if(state.filters.preferIndoor) bits.push("Weather: indoor-leaning");
-    $("#filterSummary").textContent=bits.length?("Filters: "+bits.join(" · ")):"";
+    if(f.who!=="any") bits.push(chipLabelFor("fWho",f.who));
+    if(f.vibe!=="any") bits.push(chipLabelFor("fVibe",f.vibe));
+    if(f.budget===0) bits.push(t("freeOnly")); else if(f.budget<999) bits.push(t("under")+f.budget);
+    if(f.time<999) bits.push(f.time<=70?t("time1"):f.time<=180?t("time23"):f.time<=300?t("halfDay"):t("allDay"));
+    if(f.setting!=="any") bits.push(chipLabelFor("fSetting",f.setting));
+    if(state.filters.preferIndoor) bits.push(t("wxIndoor"));
+    $("#filterSummary").textContent=bits.length?(t("filtersWord")+bits.join(" · ")):"";
   }
   const drawer=$("#drawer"), scrim=$("#scrim");
   const openDrawer=(o)=>{ drawer.classList.toggle("open",o); scrim.classList.toggle("open",o); };
@@ -804,45 +1161,45 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     const cm=CATS[p.cat];
     const maps=`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+" "+(p.addr||""))}`;
     const look=`https://www.google.com/search?q=${encodeURIComponent(p.name+" "+(p.addr||""))}`;
-    const info=p.info||CAT_BLURBS[p.cat]||CAT_BLURBS.generic;
-    const costNote=p.cost?`Rough estimate (~$${p.cost}/person) — actual prices vary.`:"Free.";
+    const info=WD_LANG==="es" ? (p.infoEs||CAT_BLURBS_ES[p.cat]||p.info||CAT_BLURBS[p.cat]||"") : (p.info||CAT_BLURBS[p.cat]||CAT_BLURBS.generic);
+    const costNote=p.cost? t("costEst")(p.cost) : t("free")+".";
     return `<div class="stop"><div class="stopLabel ${cls}">${label}</div>
       <div class="stopName">${cm.icon} ${p.name}</div>
-      <div class="stopMeta">${cm.label}${p.dist!=null?" · "+p.dist+" mi away":""} · ~${fmtTime(p.dur)} · ${p.cost?("~$"+p.cost+"/person"):"Free"}
+      <div class="stopMeta">${catLabel(p.cat)}${p.dist!=null? t("distSeg")(p.dist):""} \u00B7 ~${fmtTime(p.dur)} \u00B7 ${p.cost?("~$"+p.cost+t("perPerson")):t("free")}
       ${p.addr?`<br>${p.addr}`:""}</div>
-      <div class="tapHint">Tap for info ▾</div>
+      <div class="tapHint">${t("tapInfo")}</div>
       <div class="detail"><div class="dInfo">${info}</div>
-      <div class="dRow">Type: ${cm.label} · ${p.io==="in"?"Indoor":p.io==="out"?"Outdoor":"Indoor / outdoor"} · Cost: ${costNote}</div>
-      ${p.hours?`<div class="dRow">Hours (from the map): ${p.hours}</div>`:""}
-      <div class="dLinks"><a href="${maps}" target="_blank" rel="noopener">Directions</a><a href="${look}" target="_blank" rel="noopener">Look it up (photos & reviews)</a>${p.website?`<a href="${p.website}" target="_blank" rel="noopener">Website</a>`:""}</div></div></div>`;
+      <div class="dRow">${t("type")}: ${catLabel(p.cat)} \u00B7 ${p.io==="in"?t("indoor"):p.io==="out"?t("outdoor"):t("inOut")} \u00B7 ${t("cost")}: ${costNote}</div>
+      ${p.hours?`<div class="dRow">${t("hoursFromMap")}: ${p.hours}</div>`:""}
+      <div class="dLinks"><a href="${maps}" target="_blank" rel="noopener">${t("directions")}</a><a href="${look}" target="_blank" rel="noopener">${t("lookUp")}</a>${p.website?`<a href="${p.website}" target="_blank" rel="noopener">${t("website")}</a>`:""}</div></div></div>`;
   }
   function renderPlan(){
     const plan=state.plan; if(!plan) return;
-    const labels=[["MAIN EVENT",""],["SIDE QUEST","side"],["CLOSER","closer"]];
+    const labels=[[t("planLabels")[0],""],[t("planLabels")[1],"side"],[t("planLabels")[2],"closer"]];
     $("#planCard").innerHTML=
-      `<div class="planHead"><span class="ttl">Your plan — ${state.label||state.zip}</span><span class="pill">${plan.stops.length} stops</span></div>`
-      + plan.stops.map((p,i)=>stopHTML(p,labels[i][0],labels[i][1])).join("")
-      + `<div class="totals"><div class="totalBox"><b>${plan.totalCost?("~$"+plan.totalCost):"Free"}</b><small>per person est.</small></div>
-         <div class="totalBox"><b>${fmtTime(plan.totalTime)}</b><small>total time</small></div>
-         <div class="totalBox"><b>${state.places.length}</b><small>spots nearby</small></div></div>`;
+      `<div class="planHead"><span class="ttl">${t("yourPlan")} \u2014 ${state.label||state.zip}</span><span class="pill">${plan.stops.length} ${t("stops")}</span></div>`
+      + plan.stops.map((pl,i)=>stopHTML(pl,labels[i][0],labels[i][1])).join("")
+      + `<div class="totals"><div class="totalBox"><b>${plan.totalCost?("~$"+plan.totalCost):t("free")}</b><small>${t("perPersonEst")}</small></div>
+         <div class="totalBox"><b>${fmtTime(plan.totalTime)}</b><small>${t("totalTime")}</small></div>
+         <div class="totalBox"><b>${state.places.length}</b><small>${t("spotsNearby")}</small></div></div>`;
     $("#result").style.display="block";
     document.querySelectorAll("#planCard .stop").forEach(st=>{
       st.addEventListener("click",(e)=>{
         if(e.target.closest("a")) return;
         const d=st.querySelector(".detail"), h=st.querySelector(".tapHint");
         const open=d.classList.toggle("open");
-        if(h) h.textContent=open?"Tap to close ▴":"Tap for info ▾";
+        if(h) h.textContent=open?t("tapClose"):t("tapInfo");
       });
     });
     if($("#mapWrap").style.display==="block") drawMap();
-    $("#lockBtn").textContent=state.lockedMain?"Main Locked 🔒 (tap to unlock)":"Lock Main Event";
+    $("#lockBtn").textContent=state.lockedMain?t("locked"):t("lock");
     $("#lockBtn").classList.toggle("on",!!state.lockedMain);
   }
 
   let wdMap=null, wdLayer=null;
   function drawMap(){
     const plan=state.plan; if(!plan) return;
-    if(typeof L==="undefined"){ $("#map").innerHTML="<div style=\"padding:16px\">Map could not load — check your connection and try again.</div>"; return; }
+    if(typeof L==="undefined"){ $("#map").innerHTML="<div style=\"padding:16px\">"+t("mapFail")+"</div>"; return; }
     const stops=plan.stops.filter(x=>x.lat!=null&&x.lon!=null);
     if(!stops.length) return;
     if(!wdMap){
@@ -851,25 +1208,25 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     }
     if(wdLayer) wdLayer.remove();
     wdLayer=L.layerGroup().addTo(wdMap);
-    const labels=["MAIN EVENT","SIDE QUEST","CLOSER"];
+    const labels=t("planLabels");
     const pts=[];
     stops.forEach((pl,i)=>{
       const cm=CATS[pl.cat]||{};
       const icon=L.divIcon({className:"",html:'<div class="pinNum">'+(i+1)+'</div>',iconSize:[28,28],iconAnchor:[14,14]});
       const gmaps="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(pl.name+" "+(pl.addr||""));
       L.marker([pl.lat,pl.lon],{icon:icon}).addTo(wdLayer)
-        .bindPopup("<b>"+(i+1)+". "+pl.name+"</b><br>"+(labels[i]||"")+" · "+(cm.label||"")+(pl.dist!=null?" · "+pl.dist+" mi away":"")+'<br><a href="'+gmaps+'" target="_blank" rel="noopener">Directions</a>');
+        .bindPopup("<b>"+(i+1)+". "+pl.name+"</b><br>"+(labels[i]||"")+" · "+catLabel(pl.cat)+(pl.dist!=null? t("distSeg")(pl.dist):"")+'<br><a href="'+gmaps+'" target="_blank" rel="noopener">"+t("directions")+"</a>');
       pts.push([pl.lat,pl.lon]);
     });
     if(pts.length>1) L.polyline(pts,{color:"#0aa88a",weight:3,opacity:.75,dashArray:"6 6"}).addTo(wdLayer);
-    if(state.center){ L.circleMarker([state.center.lat,state.center.lon],{radius:6,color:"#7c4dff",weight:2,fillColor:"#7c4dff",fillOpacity:.9}).addTo(wdLayer).bindPopup("You searched here"); pts.push([state.center.lat,state.center.lon]); }
+    if(state.center){ L.circleMarker([state.center.lat,state.center.lon],{radius:6,color:"#7c4dff",weight:2,fillColor:"#7c4dff",fillOpacity:.9}).addTo(wdLayer).bindPopup(t("searchedHere")); pts.push([state.center.lat,state.center.lon]); }
     wdMap.fitBounds(L.latLngBounds(pts).pad(0.18));
     setTimeout(()=>{ try{ wdMap.invalidateSize(); }catch(e){} },80);
   }
   $("#mapBtn").onclick=()=>{
     const wrap=$("#mapWrap"); const open=wrap.style.display==="block";
     wrap.style.display=open?"none":"block";
-    $("#mapBtn").textContent=open?"View on Map 🗺":"Hide Map";
+    $("#mapBtn").textContent=open?t("map"):t("hideMap");
     if(!open) drawMap();
   };
   function saveHistory(){
@@ -893,7 +1250,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     const cacheKey=raw.toLowerCase();
     const cached=getCache(cacheKey);
     if(cached){ state.places=cached.places; state.label=cached.label; state.weather=cached.weather||null; state.center=cached.center||null; return; }
-    $("#zipNote").textContent="Finding spots near "+raw+"\u2026";
+    $("#zipNote").textContent=t("finding")(raw);
     let g=null;
     const picked=(!isZip && state.picked && state.picked.key===cacheKey)?state.picked:null;
     if(picked){ g={lat:picked.lat, lon:picked.lon, label:picked.label, postcode:picked.postcode||null}; }
@@ -927,10 +1284,35 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     state.filters.preferIndoor=false;
     if(!w){ pill.textContent=""; return; }
     const rainy=w.code>=51, hot=w.temp>=100, cold=w.temp<=38;
-    let note=`${w.temp}°F right now`;
-    if(rainy||hot||cold){ state.filters.preferIndoor=true; note+=" — leaning indoor for you"; }
+    let note=`${w.temp}${t("wxNow")}`;
+    if(rainy||hot||cold){ state.filters.preferIndoor=true; note+=t("wxLean"); }
     pill.textContent=note; renderFilterSummary();
   }
+
+
+  function applyLang(){
+    document.documentElement.lang=(WD_LANG==="es"?"es":"en");
+    $("#tagline").textContent=t("tagline");
+    $("#zip").placeholder=t("zipPh");
+    $("#locBtn").textContent=t("loc");
+    if(!$("#rollBtn").disabled) $("#rollBtn").textContent=t("roll");
+    $("#againBtn").textContent=t("again");
+    $("#copyBtn").textContent=t("copy");
+    $("#mapBtn").textContent=($("#mapWrap").style.display==="block")?t("hideMap"):t("map");
+    $("#histLabel").textContent=t("history");
+    $("#footNote").innerHTML=t("foot");
+    $("#dFilters").textContent=t("filters");
+    $("#dWho").textContent=t("fWho"); $("#dVibe").textContent=t("fVibe"); $("#dBudget").textContent=t("fBudget"); $("#dTime").textContent=t("fTime"); $("#dSetting").textContent=t("fSetting");
+    $("#drawerClose").textContent=t("done");
+    $("#gSmall").textContent=t("hungry"); $("#gBold").textContent=t("grub");
+    $("#menuBtn").setAttribute("aria-label", t("filters"));
+    document.querySelectorAll("#langToggle span[data-l]").forEach(sp=>sp.classList.toggle("on", sp.dataset.l===WD_LANG));
+    buildChips(); renderFilterSummary(); applyWeather();
+    if(state.plan) renderPlan();
+    if($("#mapWrap").style.display==="block") drawMap();
+  }
+  $("#langToggle").onclick=()=>{ WD_LANG=(WD_LANG==="es"?"en":"es"); try{ localStorage.setItem("whatdo_lang",WD_LANG); }catch(e){} applyLang(); };
+  applyLang();
 
   /* ---- search autosuggest (Photon type-ahead + starter-pack cities) ---- */
   let sugTimer=null, sugSeq=0;
@@ -971,7 +1353,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
           const nm=pr.name||pr.city||""; if(!nm) return null;
           const label=nm+(pr.state?", "+pr.state:"");
           if(seen.has(label.toLowerCase())) return null; seen.add(label.toLowerCase());
-          const sub=[(pr.city&&pr.city!==nm)?pr.city:null, pr.postcode||null].filter(Boolean).join(" \u00B7 ")||"Tap to use this place";
+          const sub=[(pr.city&&pr.city!==nm)?pr.city:null, pr.postcode||null].filter(Boolean).join(" \u00B7 ")||t("tapUse");
           return {label:label, sub:sub, picked:{lat:cc[1], lon:cc[0], label:label, postcode:pr.postcode||null}};
         }).filter(Boolean);
         renderSuggest(local.concat(items));
@@ -983,19 +1365,19 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     hideSuggest();
     const raw=$("#zip").value.trim();
     const isZip=/^\d{5}$/.test(raw);
-    if(!isZip && raw.replace(/[^a-zA-Z ]/g,"").trim().length<2){ $("#zipNote").textContent="Enter a ZIP code or a city name first."; return; }
-    state.zip=raw; $("#rollBtn").disabled=true; $("#rollBtn").textContent="ROLLING\u2026";
+    if(!isZip && raw.replace(/[^a-zA-Z ]/g,"").trim().length<2){ $("#zipNote").textContent=t("needInput"); return; }
+    state.zip=raw; $("#rollBtn").disabled=true; $("#rollBtn").textContent=t("rolling");
     try{
       if(!state.places.length || state._zipLoaded!==raw.toLowerCase()){ await ensurePlaces(raw); state._zipLoaded=raw.toLowerCase(); }
       applyWeather();
-      if(!state.places.length){ $("#zipNote").textContent="Couldn't find spots for that — check the spelling and try again."; return; }
+      if(!state.places.length){ $("#zipNote").textContent=t("noSpots"); return; }
       $("#zipNote").textContent="";
       const plan=buildPlan(state.places,state.filters,state.lockedMain);
-      if(!plan){ $("#zipNote").textContent="No plan fits those filters here — loosen one and roll again."; return; }
+      if(!plan){ $("#zipNote").textContent=t("noPlan"); return; }
       state.plan=plan; renderPlan(); saveHistory();
     }catch(e){
-      $("#zipNote").textContent="Lookup hiccup — try again in a sec.";
-    }finally{ $("#rollBtn").disabled=false; $("#rollBtn").textContent="WHAT DO? \ud83c\udfb2"; }
+      $("#zipNote").textContent=t("hiccup");
+    }finally{ $("#rollBtn").disabled=false; $("#rollBtn").textContent=t("roll"); }
   }
   $("#rollBtn").onclick=roll;
   $("#againBtn").onclick=roll;
@@ -1004,26 +1386,26 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
   $("#copyBtn").onclick=async()=>{
     if(!state.plan) return;
     const txt=planText(state.plan,state.zip);
-    try{ await navigator.clipboard.writeText(txt); $("#copyBtn").textContent="Copied ✓"; setTimeout(()=>$("#copyBtn").textContent="Copy Plan to Text",1500); }
-    catch(e){ $("#copyBtn").textContent="Copy blocked — long-press the plan"; }
+    try{ await navigator.clipboard.writeText(txt); $("#copyBtn").textContent=t("copied"); setTimeout(()=>$("#copyBtn").textContent=t("copy"),1500); }
+    catch(e){ $("#copyBtn").textContent=t("copyBlocked"); }
   };
   $("#locBtn").onclick=()=>{
-    if(!navigator.geolocation){ $("#zipNote").textContent="Location not available on this device."; return; }
-    $("#zipNote").textContent="Getting your location…";
+    if(!navigator.geolocation){ $("#zipNote").textContent=t("locNA"); return; }
+    $("#zipNote").textContent=t("gettingLoc");
     navigator.geolocation.getCurrentPosition(async(pos)=>{
       try{
         const {latitude:lat,longitude:lon}=pos.coords;
         const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
         const j=await r.json(); const zip=(j.address&&j.address.postcode||"").slice(0,5);
         const cityName=(j.address&&(j.address.city||j.address.town||j.address.village))||"";
-        if(zip){ $("#zip").value=zip; roll(); } else if(cityName){ $("#zip").value=cityName; roll(); } else $("#zipNote").textContent="Couldn't get a place from your location.";
-      }catch(e){ $("#zipNote").textContent="Location lookup failed."; }
-    },()=>{ $("#zipNote").textContent="Location permission denied — type your ZIP instead."; });
+        if(zip){ $("#zip").value=zip; roll(); } else if(cityName){ $("#zip").value=cityName; roll(); } else $("#zipNote").textContent=t("locFailCity");
+      }catch(e){ $("#zipNote").textContent=t("locFail"); }
+    },()=>{ $("#zipNote").textContent=t("locDenied"); });
   };
 }
 
 /* Node/test export */
-if(typeof module!=="undefined" && module.exports){ module.exports={CATS,CAT_BLURBS,SEED_INFO,catFromTags,placesFromElements,seedForZip,seedForCity,seedForQuery,buildPlan,planText,placeOK,DEFAULT_FILTERS,haversineMi,fetchPlaces,geocodeZip,geocodeCity,pickGeocodeResult,SEED_CENTERS}; }
+if(typeof module!=="undefined" && module.exports){ module.exports={CATS,CAT_BLURBS,CAT_BLURBS_ES,SEED_INFO,SEED_INFO_ES,setLang:(l)=>{WD_LANG=l;},getLang:()=>WD_LANG,catLabel,catFromTags,placesFromElements,seedForZip,seedForCity,seedForQuery,buildPlan,planText,placeOK,DEFAULT_FILTERS,haversineMi,fetchPlaces,geocodeZip,geocodeCity,pickGeocodeResult,SEED_CENTERS}; }
 </script>
 </body>
 </html>
