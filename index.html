@@ -695,7 +695,15 @@ const SEED_INFO = {
  "Snow Valley Mountain Resort": "The first resort you hit driving up to Big Bear — smaller, mellower, with a big sledding and snow-play scene for kids.",
  "SkyPark at Santa's Village": "A Christmas-themed adventure park in the pines by Lake Arrowhead — Santa's Village rides, trails, and year-round holiday energy in the mountains.",
  "Big Bear Lake": "The big alpine lake town of SoCal — in winter it's the ski-trip base camp; the lake, the village, and snowy cabin streets all in one.",
- "Lake Arrowhead": "The Alps of Southern California — a forested lake village with a storybook main street. Private lake, public village: shop, eat, and take the Queen boat tour."
+ "Lake Arrowhead": "The Alps of Southern California — a forested lake village with a storybook main street. Private lake, public village: shop, eat, and take the Queen boat tour.",
+ "Mad River Mountain": "Ohio's largest ski area, on the state's highest slopes near Bellefontaine — skiing, snowboarding, and a big tubing park. About 50 minutes northwest of Worthington; the default Ohio ski day.",
+ "Snow Trails": "Ohio's first ski area (1961) in the Possum Run valley by Mansfield — mellow slopes, night skiing, and a tubing park. About an hour north.",
+ "Clear Fork Resort": "A small, scrappy local ski hill in the Mohican country hills — cheap, uncrowded, and good for learning. About an hour northeast.",
+ "OhioHealth Ice Haus": "The Blue Jackets' practice rink attached to Nationwide Arena — public skate sessions downtown between the pros' sessions.",
+ "Chiller Ice Rinks Dublin": "The Chiller's Dublin rink — public skating, stick-and-puck, and lessons on the northwest side.",
+ "Boston Mills Ski Resort": "Half of the Boston Mills-Brandywine pair in the Cuyahoga Valley — the steeper, older-school hill. About 50 minutes from Youngstown; the valley's ski run.",
+ "Brandywine Ski Resort": "The bigger, beginner-friendlier half of the pair — plus Polar Blast snow tubing next door. Night skiing is the local move.",
+ "Alpine Valley Ski Area": "A family ski hill in the Geauga County snow belt — the lake-effect dumps make it the snowiest corner of Ohio. About an hour from Youngstown."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -1073,7 +1081,15 @@ const SEED_INFO_ES = {
  "Snow Valley Mountain Resort": "La primera estación que encuentras subiendo a Big Bear — más pequeña y tranquila, con una gran zona de trineos y juegos en la nieve para niños.",
  "SkyPark at Santa's Village": "Un parque de aventuras con tema navideño entre los pinos junto a Lake Arrowhead — atracciones de Santa's Village, senderos y energía de fiestas todo el año en la montaña.",
  "Big Bear Lake": "El gran pueblo lacustre alpino del sur de California — en invierno es el campamento base para esquiar; el lago, el pueblo y las calles nevadas de cabañas en uno solo.",
- "Lake Arrowhead": "Los Alpes del sur de California — un pueblo lacustre entre bosques con una calle principal de cuento. Lago privado, pueblo público: compra, come y toma el tour en el barco Queen."
+ "Lake Arrowhead": "Los Alpes del sur de California — un pueblo lacustre entre bosques con una calle principal de cuento. Lago privado, pueblo público: compra, come y toma el tour en el barco Queen.",
+ "Mad River Mountain": "La estación de esquí más grande de Ohio, sobre las laderas más altas del estado cerca de Bellefontaine — esquí, snowboard y un parque grande de tubing. A unos 50 minutos al noroeste de Worthington; el día de esquí clásico de Ohio.",
+ "Snow Trails": "La primera estación de esquí de Ohio (1961), en el valle de Possum Run junto a Mansfield — pistas tranquilas, esquí nocturno y parque de tubing. A una hora al norte, más o menos.",
+ "Clear Fork Resort": "Una estación de esquí local, pequeña y guerrera, en las colinas del territorio Mohican — barata, sin multitudes y buena para aprender. A una hora al noreste, más o menos.",
+ "OhioHealth Ice Haus": "La pista de práctica de los Blue Jackets, junto al Nationwide Arena — sesiones públicas de patinaje en el centro entre las sesiones de los profesionales.",
+ "Chiller Ice Rinks Dublin": "La pista de The Chiller en Dublin — patinaje público, stick-and-puck y clases en el lado noroeste.",
+ "Boston Mills Ski Resort": "La mitad del dúo Boston Mills-Brandywine en el valle de Cuyahoga — la ladera más empinada y a la antigua. A unos 50 minutos de Youngstown; la escapada de esquí del valle.",
+ "Brandywine Ski Resort": "La mitad más grande y amigable para principiantes del dúo — más el tubing de Polar Blast al lado. El esquí nocturno es el plan local.",
+ "Alpine Valley Ski Area": "Una estación familiar en el cinturón de nieve del condado de Geauga — el efecto lago lo convierte en el rincón con más nieve de Ohio. A una hora de Youngstown, más o menos."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -1312,7 +1328,10 @@ const SEEDS = {
     seedPlace("Lake Milton State Park","beach","Lake Milton, OH",41.098,-80.9752),
     seedPlace("Berlin Lake","nature","North Benton, OH",41.0001,-81.0214),
     seedPlace("Firestone Park","park","Columbiana, OH",40.8906,-80.6857),
-    seedPlace("West Branch State Park","nature","Ravenna, OH",41.1414,-81.1163)
+    seedPlace("West Branch State Park","nature","Ravenna, OH",41.1414,-81.1163),
+    seedPlace("Boston Mills Ski Resort","snow","Peninsula, OH",41.2641,-81.5639),
+    seedPlace("Brandywine Ski Resort","snow","Sagamore Hills, OH",41.2847,-81.5553),
+    seedPlace("Alpine Valley Ski Area","snow","Chesterland, OH",41.5258,-81.2602)
   ],
   "432":[
     seedPlace("Easton Town Center","market","Columbus, OH",40.0529,-82.9151),
@@ -1392,7 +1411,12 @@ const SEEDS = {
     seedPlace("Wyandot Popcorn Museum","museum","Marion, OH",40.5873,-83.1271),
     seedPlace("Ariel-Foundation Park","park","Mount Vernon, OH",40.3864,-82.4952),
     seedPlace("Mohican State Park","nature","Loudonville, OH",40.6075,-82.2693),
-    seedPlace("Malabar Farm State Park","nature","Lucas, OH",40.6483,-82.3906)
+    seedPlace("Malabar Farm State Park","nature","Lucas, OH",40.6483,-82.3906),
+    seedPlace("Mad River Mountain","snow","Zanesfield, OH",40.3172,-83.6753),
+    seedPlace("Snow Trails","snow","Mansfield, OH",40.6711,-82.5027),
+    seedPlace("Clear Fork Resort","snow","Butler, OH",40.5937,-82.4116),
+    seedPlace("OhioHealth Ice Haus","ice","Columbus, OH",39.9685,-83.0066),
+    seedPlace("Chiller Ice Rinks Dublin","ice","Dublin, OH",40.1006,-83.1874)
   ],
   "934":[ // San Luis Obispo + Pismo Beach + Avila Beach
     seedPlace("Mission San Luis Obispo de Tolosa","museum","San Luis Obispo, CA",35.2808,-120.665),
