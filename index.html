@@ -614,7 +614,33 @@ const SEED_INFO = {
  "Buckeye Lake State Park": "Ohio's oldest state park, on the big recreational lake east of town — swimming beach, boating, and lakeside bars. Summer day-trip mode, about 40 minutes.",
  "Old Man's Cave": "Hocking Hills' greatest hit — a towering recess cave in a hemlock gorge with waterfalls and stone bridges. About an hour from Worthington and worth every minute; weekends get packed.",
  "Ash Cave": "A 700-foot-wide horseshoe cave with a waterfall pouring over the rim — the biggest recess cave in Ohio, on an easy paved path in Hocking Hills.",
- "Cedar Falls": "The most water volume of any fall in Hocking Hills — a hemlock-shaded cascade between Old Man's Cave and Ash Cave. Not actually cedars; early settlers misnamed the hemlocks."
+ "Cedar Falls": "The most water volume of any fall in Hocking Hills — a hemlock-shaded cascade between Old Man's Cave and Ash Cave. Not actually cedars; early settlers misnamed the hemlocks.",
+ "Delaware State Park": "Delaware Lake's state park just north of town — a big swim beach, marina, and fishing on the reservoir.",
+ "Blue Limestone Park": "A spring-fed old limestone quarry in town turned swimming and fishing hole — the water is that impossible blue-green.",
+ "Gallant Woods Park": "Preservation Parks' old-growth forest preserve — big trees, a nature center, and quiet trails west of Delaware.",
+ "Shale Hollow Park": "A little gorge gem — a stream cutting through shale cliffs with concretion stones, plus a natural play area. Preservation Parks' prettiest small park.",
+ "Highlands Park Aquatic Center": "Westerville's outdoor water park — slides, a lazy river, and a big leisure pool. Summer only.",
+ "Hanby House": "The Hanby family home — an Underground Railroad stop and the house of the composer of 'Up on the Housetop', written right here. Small house, deep history.",
+ "Liberty Park": "Liberty Township's big park by Powell — splash pad, playgrounds, trails, and fields on Home Road.",
+ "Emily Traphagen Preserve": "A quiet Preservation Parks preserve in Powell — meadow and woods trails for a low-key walk.",
+ "Mt. Gilead State Park": "A small, peaceful state park between Columbus and Mansfield — two little lakes, fishing, and woods. About 45 minutes north.",
+ "Warren G. Harding Home": "President Harding's home and his 1920 front-porch campaign HQ — restored house plus the Harding Presidential Center next door. About 50 minutes north.",
+ "Wyandot Popcorn Museum": "The world's only popcorn museum — antique poppers under a circus tent inside Heritage Hall. Marion was a popcorn capital; this is peak Ohio quirky.",
+ "Ariel-Foundation Park": "A 250-acre park built around a ruined glass factory — a Rastin observation tower, lakes, and industrial ruins as art. About 50 minutes northeast and genuinely unique.",
+ "Mohican State Park": "Ohio's adventure country — the Clear Fork gorge, covered bridge, fire tower, and river livery land. About an hour northeast; the other big nature day trip.",
+ "Malabar Farm State Park": "Louis Bromfield's working farm — the Big House where Bogart and Bacall got married, farm tours, and maple syrup in spring. About an hour northeast.",
+ "Tod Park": "Girard's main park — ball fields, playgrounds, and the community pool scene in summer.",
+ "Churchill Park": "Liberty Township's park at Churchill — fields, playground, and picnic space serving the Girard-Liberty side.",
+ "Mauthe Park": "Struthers' park on the Yellow Creek side — playgrounds, fields, and the summer concert crowd.",
+ "Roosevelt Park": "Campbell's neighborhood park — fields, courts, and picnic shade just east of Youngstown.",
+ "Avalon at Squaw Creek": "The Avalon golf course at Squaw Creek — a classic Warren-area country club course that's open for public play options.",
+ "Yankee Lake": "The little lake village in Brookfield — a pay-fishing lake and party spot that's been a local summer tradition forever.",
+ "Howland Township Park": "Howland's township park — trails, fields, and a bandshell on the Warren side of the valley.",
+ "Newton Falls Covered Bridge": "The 1831 covered bridge over the Mahoning River — Ohio's second-oldest, and the town's whole identity. Quick, photogenic stop about 30 minutes west.",
+ "Lake Milton State Park": "A 1,700-acre lake west of Youngstown — swim beach, boating, and fishing, about 25 minutes out. The valley's lake day.",
+ "Berlin Lake": "A big quiet reservoir southwest of Youngstown — fishing, boating, and shoreline camping, about 35 minutes out.",
+ "Firestone Park": "Harvey Firestone's hometown park in Columbiana — a lake, an amphitheater, and one of Ohio's prettiest small-town parks, about 30 minutes south.",
+ "West Branch State Park": "A big lake state park on the Michael J. Kirwan reservoir — beach, boating, and 20 miles of trails, about 40 minutes west."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -914,7 +940,33 @@ const SEED_INFO_ES = {
  "Buckeye Lake State Park": "El parque estatal más antiguo de Ohio, en el gran lago recreativo al este — playa para nadar, botes y bares a la orilla. Modo escapada de verano, a unos 40 minutos.",
  "Old Man's Cave": "El mayor éxito de Hocking Hills — una cueva enorme en un cañón de cicuta con cascadas y puentes de piedra. A una hora de Worthington, más o menos, y vale cada minuto; los fines de semana se llena.",
  "Ash Cave": "Una cueva en forma de herradura de 700 pies de ancho con una cascada cayendo desde el borde — la cueva empotrada más grande de Ohio, por un sendero pavimentado fácil en Hocking Hills.",
- "Cedar Falls": "La cascada con más volumen de agua de Hocking Hills — caída con sombra de cicutas entre Old Man's Cave y Ash Cave. En realidad no hay cedros; los primeros colonos confundieron las cicutas."
+ "Cedar Falls": "La cascada con más volumen de agua de Hocking Hills — caída con sombra de cicutas entre Old Man's Cave y Ash Cave. En realidad no hay cedros; los primeros colonos confundieron las cicutas.",
+ "Delaware State Park": "El parque estatal del lago Delaware, justo al norte del pueblo — una playa grande para nadar, marina y pesca en el embalse.",
+ "Blue Limestone Park": "Una antigua cantera de caliza alimentada por manantiales, en el pueblo, convertida en lugar para nadar y pescar — el agua es de un azul verdoso imposible.",
+ "Gallant Woods Park": "La reserva de bosque antiguo de Preservation Parks — árboles grandes, un centro de naturaleza y senderos tranquilos al oeste de Delaware.",
+ "Shale Hollow Park": "Una joya en forma de cañoncito — un arroyo cortando acantilados de esquisto con piedras de concreción, más un área de juego natural. El parque pequeño más bonito de Preservation Parks.",
+ "Highlands Park Aquatic Center": "El parque acuático al aire libre de Westerville — toboganes, río lento y una alberca grande de recreo. Solo en verano.",
+ "Hanby House": "La casa de la familia Hanby — parada del Ferrocarril Subterráneo y hogar del compositor de 'Up on the Housetop', escrita aquí mismo. Casa pequeña, historia profunda.",
+ "Liberty Park": "El parque grande de Liberty Township junto a Powell — área de chorros, juegos, senderos y canchas en Home Road.",
+ "Emily Traphagen Preserve": "Una reserva tranquila de Preservation Parks en Powell — senderos entre prado y bosque para una caminata relajada.",
+ "Mt. Gilead State Park": "Un parque estatal pequeño y pacífico entre Columbus y Mansfield — dos laguitos, pesca y bosque. A unos 45 minutos al norte.",
+ "Warren G. Harding Home": "La casa del presidente Harding y sede de su campaña desde el porche en 1920 — casa restaurada más el Centro Presidencial Harding al lado. A unos 50 minutos al norte.",
+ "Wyandot Popcorn Museum": "El único museo de palomitas del mundo — máquinas antiguas de palomitas bajo una carpa de circo dentro de Heritage Hall. Marion fue capital palomitera; esto es Ohio curioso al máximo.",
+ "Ariel-Foundation Park": "Un parque de 250 acres construido alrededor de una fábrica de vidrio en ruinas — la torre de observación Rastin, lagos y ruinas industriales como arte. A unos 50 minutos al noreste y genuinamente único.",
+ "Mohican State Park": "La tierra de aventura de Ohio — el cañón del Clear Fork, puente cubierto, torre de incendios y zona de renta de río. A una hora al noreste, más o menos; la otra gran escapada a la naturaleza.",
+ "Malabar Farm State Park": "La granja activa de Louis Bromfield — la Casa Grande donde se casaron Bogart y Bacall, tours por la granja y jarabe de arce en primavera. A una hora al noreste, más o menos.",
+ "Tod Park": "El parque principal de Girard — canchas, juegos y la alberca comunitaria en verano.",
+ "Churchill Park": "El parque de Liberty Township en Churchill — canchas, juegos y espacio de picnic para el lado de Girard-Liberty.",
+ "Mauthe Park": "El parque de Struthers del lado de Yellow Creek — juegos, canchas y la gente de los conciertos de verano.",
+ "Roosevelt Park": "El parque vecinal de Campbell — canchas, juegos y sombra para picnic, justo al este de Youngstown.",
+ "Avalon at Squaw Creek": "El campo de golf Avalon en Squaw Creek — un campo clásico tipo club campestre del área de Warren, con opciones de juego público.",
+ "Yankee Lake": "El pueblito lacustre de Brookfield — un lago de pesca con pago y lugar de fiesta que ha sido tradición local de verano desde siempre.",
+ "Howland Township Park": "El parque municipal de Howland — senderos, canchas y una concha acústica en el lado de Warren del valle.",
+ "Newton Falls Covered Bridge": "El puente cubierto de 1831 sobre el río Mahoning — el segundo más antiguo de Ohio y la identidad completa del pueblo. Parada rápida y fotogénica a unos 30 minutos al oeste.",
+ "Lake Milton State Park": "Un lago de 1,700 acres al oeste de Youngstown — playa para nadar, botes y pesca, a unos 25 minutos. El día de lago del valle.",
+ "Berlin Lake": "Un embalse grande y tranquilo al suroeste de Youngstown — pesca, botes y camping a la orilla, a unos 35 minutos.",
+ "Firestone Park": "El parque del pueblo natal de Harvey Firestone, en Columbiana — un lago, un anfiteatro y uno de los parques de pueblo más bonitos de Ohio, a unos 30 minutos al sur.",
+ "West Branch State Park": "Un parque estatal grande junto al embalse Michael J. Kirwan — playa, botes y 20 millas de senderos, a unos 40 minutos al oeste."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -1098,7 +1150,19 @@ const SEEDS = {
     seedPlace("Bears Den","nature","Youngstown, OH",41.0843,-80.6837),
     seedPlace("Poland Municipal Forest","nature","Poland, OH",41.0121,-80.6223),
     seedPlace("Yellow Creek Park","park","Struthers, OH",41.0467,-80.5871),
-    seedPlace("Extreme Air Trampoline Park","sports","Niles, OH",41.2181,-80.7455)
+    seedPlace("Extreme Air Trampoline Park","sports","Niles, OH",41.2181,-80.7455),
+    seedPlace("Tod Park","park","Girard, OH",41.167,-80.7043),
+    seedPlace("Churchill Park","park","Liberty Township, OH",41.1593,-80.6686),
+    seedPlace("Mauthe Park","park","Struthers, OH",41.0428,-80.5971),
+    seedPlace("Roosevelt Park","park","Campbell, OH",41.0869,-80.5799),
+    seedPlace("Avalon at Squaw Creek","sports","Vienna, OH",41.2243,-80.6617),
+    seedPlace("Yankee Lake","nature","Brookfield, OH",41.2667,-80.568),
+    seedPlace("Howland Township Park","park","Howland, OH",41.2489,-80.7516),
+    seedPlace("Newton Falls Covered Bridge","viewpoint","Newton Falls, OH",41.1881,-80.9714),
+    seedPlace("Lake Milton State Park","beach","Lake Milton, OH",41.098,-80.9752),
+    seedPlace("Berlin Lake","nature","North Benton, OH",41.0001,-81.0214),
+    seedPlace("Firestone Park","park","Columbiana, OH",40.8906,-80.6857),
+    seedPlace("West Branch State Park","nature","Ravenna, OH",41.1414,-81.1163)
   ],
   "432":[
     seedPlace("Easton Town Center","market","Columbus, OH",40.0529,-82.9151),
@@ -1164,7 +1228,21 @@ const SEEDS = {
     seedPlace("Buckeye Lake State Park","beach","Buckeye Lake, OH",39.9321,-82.4783),
     seedPlace("Old Man's Cave","nature","Logan, OH",39.4307,-82.5385),
     seedPlace("Ash Cave","nature","Logan, OH",39.3994,-82.5443),
-    seedPlace("Cedar Falls","nature","Logan, OH",39.419,-82.5249)
+    seedPlace("Cedar Falls","nature","Logan, OH",39.419,-82.5249),
+    seedPlace("Delaware State Park","nature","Delaware, OH",40.397,-83.0637),
+    seedPlace("Blue Limestone Park","park","Delaware, OH",40.3009,-83.0805),
+    seedPlace("Gallant Woods Park","nature","Delaware, OH",40.3506,-83.1148),
+    seedPlace("Shale Hollow Park","nature","Lewis Center, OH",40.2054,-83.0383),
+    seedPlace("Highlands Park Aquatic Center","attraction","Westerville, OH",40.1166,-82.9054),
+    seedPlace("Hanby House","museum","Westerville, OH",40.1262,-82.9376),
+    seedPlace("Liberty Park","park","Powell, OH",40.1917,-83.083),
+    seedPlace("Emily Traphagen Preserve","nature","Powell, OH",40.1738,-83.1177),
+    seedPlace("Mt. Gilead State Park","nature","Mount Gilead, OH",40.5516,-82.8092),
+    seedPlace("Warren G. Harding Home","museum","Marion, OH",40.5865,-83.1216),
+    seedPlace("Wyandot Popcorn Museum","museum","Marion, OH",40.5873,-83.1271),
+    seedPlace("Ariel-Foundation Park","park","Mount Vernon, OH",40.3864,-82.4952),
+    seedPlace("Mohican State Park","nature","Loudonville, OH",40.6075,-82.2693),
+    seedPlace("Malabar Farm State Park","nature","Lucas, OH",40.6483,-82.3906)
   ],
   "934":[ // San Luis Obispo + Pismo Beach + Avila Beach
     seedPlace("Mission San Luis Obispo de Tolosa","museum","San Luis Obispo, CA",35.2808,-120.665),
@@ -1236,7 +1314,7 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","dublin":"432","powell":"432","delaware":"432","newark":"432","logan":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932"};
+const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","dublin":"432","powell":"432","delaware":"432","newark":"432","logan":"432","delaware":"432","lewis center":"432","marion":"432","mount vernon":"432","mount gilead":"432","loudonville":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","girard":"445","struthers":"445","campbell":"445","vienna":"445","newton falls":"445","lake milton":"445","columbiana":"445","ravenna":"445","howland":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932"};
 const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818],"youngstown":[41.0998,-80.6495],"boardman":[41.0229,-80.66],"austintown":[41.0919,-80.7449],"canfield":[41.0251,-80.7606],"warren":[41.2375,-80.8184],"niles":[41.1798,-80.7644]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
