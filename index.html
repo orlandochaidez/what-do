@@ -513,7 +513,26 @@ const SEED_INFO = {
  "Camp Nelson": "Tiny mountain village on the Tule River at 4,800 feet — a meadow, a general store, river access, and the last stop before the high country. Cooler air the second you get out of the car.",
  "Mountain Home State Forest": "A state forest of giant sequoias right next to Balch Park — groves, fishing ponds, and campgrounds most tourists never find. Check current conditions before you go; parts are still recovering from the 2020 Castle Fire.",
  "Dome Rock": "A smooth granite dome near Ponderosa with a short scramble to the top — huge views over the Kern River country. Rock climbers love the face; sunset is the move.",
- "Quaking Aspen": "High-country meadow and campground at about 7,000 feet up Highway 190 past Camp Nelson — aspens, a creek, and trailheads into the Golden Trout Wilderness. A full escape from valley heat."
+ "Quaking Aspen": "High-country meadow and campground at about 7,000 feet up Highway 190 past Camp Nelson — aspens, a creek, and trailheads into the Golden Trout Wilderness. A full escape from valley heat.",
+ "Valley Strong Ballpark": "Home of the Visalia Rawhide (Single-A) downtown — cheap seats, fireworks nights, and classic small-ballpark summer. Check the schedule; it's game days only.",
+ "Tulare County Museum": "The county museum inside Mooney Grove Park — pioneer cabins, old farm gear, and a huge collection of Native American baskets. Two stops in one trip.",
+ "Slick Rock Recreation Area": "Kaweah River swimming and picnic area by Lake Kaweah, on the way to Sequoia — smooth granite slabs, cold clear water. Respect the current; it runs fast in spring.",
+ "Hanford Fox Theatre": "Hanford's restored 1929 Fox Theatre on Douty Street — concerts, movies, and events in a gorgeous old palace. About 40 minutes from Porterville.",
+ "Woodward Park": "Fresno's big northeast park — 300 acres on the San Joaquin River bluffs: trails, a BMX course, a dog park, and the Shinzen Garden inside it. About 1 hour 15 from Porterville.",
+ "Storyland": "Storybook park in Roeding Park, right by the zoo — walk through Humpty Dumpty, the Three Little Pigs, and other nursery-rhyme scenes. Peak little-kid energy; pairs with the zoo next door.",
+ "Roeding Park": "Fresno's classic central park — 90 acres of lawns, lakes, and big trees, home to the Chaffee Zoo and Storyland. The park itself is the picnic-and-stroll base camp.",
+ "Fresno Art Museum": "The valley's art museum — modern and contemporary exhibits, folk art, and a sculpture garden. A quiet hour or two.",
+ "Fresno Discovery Center": "Hands-on science center in southeast Fresno — interactive exhibits, a cactus garden, and turtles everywhere. Built for curious kids.",
+ "Kearney Park": "Big county park west of Fresno around the Kearney Mansion — picnic grounds, sports fields, and tours of the French-colonial mansion. Civil War reenactment days are a whole scene.",
+ "Meux Home Museum": "An 1889 Victorian house museum downtown — the Meux family home kept just as it was, gas lamps and all. Small, strange, charming tours.",
+ "Chukchansi Park": "Downtown Fresno's ballpark — home of the Fresno Grizzlies, with concerts and events in the off season. Check the schedule before you roll.",
+ "Island Waterpark": "Fresno's water park on Shaw Ave — slides, a wave pool, and a lazy river. Summer only; the valley-heat escape hatch.",
+ "Blackbeard's Family Entertainment": "Pirate-themed family fun in Fresno — two mini golf courses, bumper boats, batting cages, and go-karts, going forever.",
+ "Oso de Oro Park": "Fresno's famous fully-accessible playground — built so kids of all abilities can play, with shade and a pond next door. A feel-good family stop.",
+ "Clovis Botanical Garden": "A free water-wise garden in Clovis — five acres showing what actually grows in valley heat. A short, pretty, educational stroll.",
+ "Millerton Lake": "San Joaquin River reservoir at Friant, about 25 minutes past Fresno — boating, swimming beaches, and bald eagles in winter. A lake day at the edge of the foothills.",
+ "Wild Water Adventure Park": "Clovis water park — 52 acres of slides, wave pools, and cabanas. Summer only. The other valley-heat escape hatch.",
+ "Tower Theatre": "The 1939 art-deco landmark of the Tower District — concerts, comedy, and films, with the district's bars and cafes all around it."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -712,7 +731,26 @@ const SEED_INFO_ES = {
  "Camp Nelson": "Pueblito de montaña sobre el río Tule, a 4,800 pies de altura — un prado, una tienda general, acceso al río y la última parada antes del terreno alto. Aire fresco en cuanto te bajas del carro.",
  "Mountain Home State Forest": "Un bosque estatal de secuoyas gigantes junto a Balch Park — arboledas, lagos para pescar y campamentos que casi ningún turista encuentra. Checa las condiciones actuales antes de ir; partes aún se recuperan del incendio Castle de 2020.",
  "Dome Rock": "Una cúpula lisa de granito cerca de Ponderosa, con una trepada corta hasta la cima — vistas enormes sobre la región del río Kern. A los escaladores les encanta la pared; el atardecer es la jugada.",
- "Quaking Aspen": "Prado y campamento de altura a unos 7,000 pies por la carretera 190, pasando Camp Nelson — álamos temblones, un arroyo y salidas de senderos hacia el Golden Trout Wilderness. Escape total del calor del valle."
+ "Quaking Aspen": "Prado y campamento de altura a unos 7,000 pies por la carretera 190, pasando Camp Nelson — álamos temblones, un arroyo y salidas de senderos hacia el Golden Trout Wilderness. Escape total del calor del valle.",
+ "Valley Strong Ballpark": "Casa de los Visalia Rawhide (Single-A) en el centro — asientos baratos, noches de fuegos artificiales y verano clásico de estadio pequeño. Checa el calendario; solo abre en días de juego.",
+ "Tulare County Museum": "El museo del condado dentro de Mooney Grove Park — cabañas pioneras, equipo agrícola antiguo y una colección enorme de canastas nativas americanas. Dos paradas en un solo viaje.",
+ "Slick Rock Recreation Area": "Área para nadar y picnic junto al río Kaweah, a orillas de Lake Kaweah, camino a Sequoia — lajas lisas de granito y agua fría y cristalina. Respeta la corriente; en primavera corre fuerte.",
+ "Hanford Fox Theatre": "El teatro Fox de Hanford, restaurado, de 1929, en Douty Street — conciertos, películas y eventos en un palacio antiguo precioso. A unos 40 minutos de Porterville.",
+ "Woodward Park": "El parque grande del noreste de Fresno — 300 acres sobre los acantilados del río San Joaquín: senderos, una pista de BMX, un parque para perros y el Jardín Shinzen adentro. A 1 hora 15 de Porterville, más o menos.",
+ "Storyland": "Parque de cuentos en Roeding Park, junto al zoológico — camina entre Humpty Dumpty, los Tres Cochinitos y otras escenas de rimas infantiles. Energía máxima de niños pequeños; combínalo con el zoológico de al lado.",
+ "Roeding Park": "El parque central clásico de Fresno — 90 acres de jardines, lagos y árboles grandes, casa del Zoológico Chaffee y de Storyland. El parque en sí es el campamento base para picnic y paseo.",
+ "Fresno Art Museum": "El museo de arte del valle — exhibiciones modernas y contemporáneas, arte popular y un jardín de esculturas. Una o dos horas tranquilas.",
+ "Fresno Discovery Center": "Centro de ciencia interactivo en el sureste de Fresno — exhibiciones interactivas, un jardín de cactus y tortugas por todos lados. Hecho para niños curiosos.",
+ "Kearney Park": "Parque grande del condado al oeste de Fresno, alrededor de la Mansión Kearney — áreas de picnic, campos deportivos y tours por la mansión de estilo colonial francés. Los días de recreación de la Guerra Civil son todo un espectáculo.",
+ "Meux Home Museum": "Una casa-museo victoriana de 1889 en el centro — la casa de la familia Meux conservada tal como era, lámparas de gas incluidas. Tours pequeños, raros y encantadores.",
+ "Chukchansi Park": "El estadio del centro de Fresno — casa de los Fresno Grizzlies, con conciertos y eventos fuera de temporada. Checa el calendario antes de ir.",
+ "Island Waterpark": "El parque acuático de Fresno en Shaw Ave — toboganes, alberca de olas y río lento. Solo en verano; la salida de emergencia contra el calor del valle.",
+ "Blackbeard's Family Entertainment": "Diversión familiar con tema de piratas en Fresno — dos campos de minigolf, lanchitas de choque, jaulas de bateo y go-karts, desde siempre.",
+ "Oso de Oro Park": "El famoso parque de juegos totalmente accesible de Fresno — construido para que niños de todas las capacidades puedan jugar, con sombra y un lago al lado. Una parada familiar que se siente bien.",
+ "Clovis Botanical Garden": "Un jardín gratuito de bajo consumo de agua en Clovis — cinco acres que muestran lo que sí crece con el calor del valle. Un paseo corto, bonito y educativo.",
+ "Millerton Lake": "Embalse del río San Joaquín en Friant, a unos 25 minutos pasando Fresno — botes, playas para nadar y águilas calvas en invierno. Un día de lago al borde de las faldas de la Sierra.",
+ "Wild Water Adventure Park": "Parque acuático de Clovis — 52 acres de toboganes, albercas de olas y cabañas. Solo en verano. La otra salida de emergencia contra el calor del valle.",
+ "Tower Theatre": "El ícono art déco de 1939 del Tower District — conciertos, comedia y cine, con los bares y cafés del distrito por todos lados."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -783,7 +821,26 @@ const SEEDS = {
     seedPlace("Colonel Allensworth State Historic Park","museum","Allensworth, CA",35.8727,-119.4019),
     seedPlace("Fresno Chaffee Zoo","zoo","Fresno, CA",36.7521,-119.8232),
     seedPlace("Forestiere Underground Gardens","museum","Fresno, CA",36.8076,-119.8818),
-    seedPlace("Shinzen Japanese Garden","garden","Fresno, CA",36.865,-119.78)
+    seedPlace("Shinzen Japanese Garden","garden","Fresno, CA",36.865,-119.78),
+    seedPlace("Valley Strong Ballpark","attraction","Visalia, CA",36.3325,-119.3047),
+    seedPlace("Tulare County Museum","museum","Visalia, CA",36.279,-119.3097),
+    seedPlace("Slick Rock Recreation Area","beach","Three Rivers, CA",36.4116,-118.9367),
+    seedPlace("Hanford Fox Theatre","theatre","Hanford, CA",36.3294,-119.646),
+    seedPlace("Woodward Park","park","Fresno, CA",36.8675,-119.7855),
+    seedPlace("Storyland","attraction","Fresno, CA",36.7509,-119.8235),
+    seedPlace("Roeding Park","park","Fresno, CA",36.7537,-119.8225),
+    seedPlace("Fresno Art Museum","museum","Fresno, CA",36.7708,-119.7726),
+    seedPlace("Fresno Discovery Center","museum","Fresno, CA",36.7681,-119.7314),
+    seedPlace("Kearney Park","park","Fresno, CA",36.7256,-119.9187),
+    seedPlace("Meux Home Museum","museum","Fresno, CA",36.7397,-119.7824),
+    seedPlace("Chukchansi Park","attraction","Fresno, CA",36.732,-119.7903),
+    seedPlace("Island Waterpark","attraction","Fresno, CA",36.8129,-119.8982),
+    seedPlace("Blackbeard's Family Entertainment","minigolf","Fresno, CA",36.7917,-119.7299),
+    seedPlace("Oso de Oro Park","playground","Fresno, CA",36.8173,-119.8296),
+    seedPlace("Clovis Botanical Garden","garden","Clovis, CA",36.8485,-119.7015),
+    seedPlace("Millerton Lake","beach","Friant, CA",36.9905,-119.6941),
+    seedPlace("Wild Water Adventure Park","attraction","Clovis, CA",36.8055,-119.5818),
+    seedPlace("Tower Theatre","theatre","Fresno, CA",36.758,-119.8015)
   ],
   "900":[ // Los Angeles
     seedPlace("Griffith Observatory","museum","Los Angeles, CA",34.1184,-118.3004),
@@ -933,7 +990,7 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","porterville":"932","visalia":"932","springville":"932"};
+const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932"};
 const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818],"youngstown":[41.0998,-80.6495],"boardman":[41.0229,-80.66],"austintown":[41.0919,-80.7449],"canfield":[41.0251,-80.7606],"warren":[41.2375,-80.8184],"niles":[41.1798,-80.7644]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
