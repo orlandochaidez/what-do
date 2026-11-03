@@ -659,7 +659,29 @@ const SEED_INFO = {
  "Fort Tejon State Historic Park": "An 1854 army fort in the Grapevine canyon — restored barracks, dragoon history, and huge valley oaks. Civil War reenactment days are the big draw. About 45 minutes south.",
  "Outlets at Tejon": "The outlet mall at the base of the Grapevine on I-5 — the Tejon Ranch shopping stop everyone makes between Bakersfield and LA.",
  "Mount Pinos": "At 8,831 feet, the highest point around — an easy summit walk from the Nordic Base by Frazier Park, with stargazing that's famous statewide.",
- "Hungry Valley SVRA": "4,000 acres of off-road trails at Gorman — bring the OHV or just watch the hill climbs. Another world, 45 minutes south."
+ "Hungry Valley SVRA": "4,000 acres of off-road trails at Gorman — bring the OHV or just watch the hill climbs. Another world, 45 minutes south.",
+ "Yosemite Valley": "The Valley — El Capitan, Half Dome, Yosemite Falls, and the Merced River in one mile-wide granite cathedral. About 1 hour 30 from Fresno (2+ from Porterville); summer entry reservations can apply, so check nps.gov before the big drive.",
+ "Glacier Point": "The overlook 3,200 feet above Yosemite Valley — Half Dome in your face, the whole Sierra behind it. Glacier Point Road is seasonal (roughly late spring to late fall).",
+ "Mariposa Grove of Giant Sequoias": "Yosemite's big-tree grove near the south entrance — 500+ giant sequoias including the Grizzly Giant and the California Tunnel Tree. Shuttle from the welcome plaza.",
+ "Shaver Lake": "The Sierra lake at 5,400 feet — swimming, boating, and pines about an hour above Fresno. The classic valley escape hatch from summer heat.",
+ "Bass Lake": "Warm-water Sierra lake near Oakhurst on the way to Yosemite — swim beaches, boat rentals, and lakeside resorts. You might recognize it from The Great Outdoors.",
+ "Pine Flat Lake": "The Kings River reservoir in the foothills east of Fresno — boating, fishing, and swim areas about 45 minutes from Porterville.",
+ "Hume Lake": "A serene little mountain lake between Kings Canyon and Sequoia — swim beach, canoes, and a flat 2.6-mile loop trail. Pairs with the Grant Grove day.",
+ "Tunnel Log": "A fallen giant sequoia you drive through on the Crescent Meadow road — the most 1930s-road-trip photo in the park. Seasonal road; check it's open.",
+ "San Luis National Wildlife Refuge": "Wetlands and grasslands west of Merced with an auto tour route — elk, waterfowl, and big valley skies. Best in winter when the birds pile in.",
+ "Merced National Wildlife Refuge": "Famous for winter sandhill cranes and snow geese by the thousands at sunset — the fly-in is a whole show. Auto tour route, free.",
+ "Pixley National Wildlife Refuge": "A small refuge between Porterville and Bakersfield where sandhill cranes winter on the old valley floor. Short trails, big birds, quiet.",
+ "Pinnacles National Park": "California's otherworldly volcanic park — rock spires, talus caves, and California condors riding the thermals. East side via King City is the close entrance from the coast ranges; bring water, it cooks in summer.",
+ "Carrizo Plain National Monument": "A vast empty grassland valley between SLO and Bakersfield — Soda Lake, the San Andreas Fault in plain sight, and spring wildflower superblooms that make national news. Dirt roads, no services, bring everything.",
+ "Bixby Creek Bridge": "The most photographed bridge in California — a 1932 concrete arch 260 feet over a Big Sur canyon. About 2 hours up Highway 1 from SLO; pull over, take the shot.",
+ "McWay Falls": "An 80-foot waterfall that pours straight onto a Big Sur cove beach — the postcard shot from the Julia Pfeiffer Burns overlook trail. Short walk, huge payoff.",
+ "Pfeiffer Beach": "Big Sur's wild local beach — purple sand streaks, crashing surf (no swimming), and the famous Keyhole Rock sunset shot. Down a twisty unmarked road off Highway 1.",
+ "Point Lobos State Natural Reserve": "Called the crown jewel of the state parks — sea lions, otters, cypress groves, and turquoise coves on easy trails by Carmel. Arrive early; parking fills.",
+ "Asilomar State Beach": "A mile of dunes, tide pools, and boardwalk in Pacific Grove — sunset walks and surfers, next door to Monterey.",
+ "Monterey Bay Aquarium": "The world-class aquarium on Cannery Row — kelp forest, sea otters, and the Open Sea gallery. Tickets book ahead on weekends; it's about 2 hours from SLO.",
+ "Elkhorn Slough": "One of California's great estuaries — kayak among sea otters, seals, and hundreds of bird species at Moss Landing. Rentals and tours right at the harbor.",
+ "Garrapata State Park": "Unmarked gates along Highway 1 south of Carmel open to bluffs, coves, and calla-lily canyons — Big Sur's quieter doorstep.",
+ "Audubon Kern River Preserve": "Audubon's cottonwood-willow forest preserve on the South Fork Kern — one of the best birding spots in the state, with trails into the riparian jungle. About an hour from Bakersfield."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -1004,7 +1026,29 @@ const SEED_INFO_ES = {
  "Fort Tejon State Historic Park": "Un fuerte del ejército de 1854 en el cañón del Grapevine — barracones restaurados, historia de dragones y encinos enormes del valle. Los días de recreación de la Guerra Civil son el gran atractivo. A unos 45 minutos al sur.",
  "Outlets at Tejon": "El centro de outlets al pie del Grapevine sobre la I-5 — la parada de compras de Tejon Ranch que todos hacen entre Bakersfield y Los Ángeles.",
  "Mount Pinos": "Con 8,831 pies, el punto más alto de la zona — una caminata fácil a la cumbre desde la Base Nórdica junto a Frazier Park, con observación de estrellas famosa en todo el estado.",
- "Hungry Valley SVRA": "4,000 acres de rutas off-road en Gorman — trae tu vehículo todo terreno o solo mira las subidas. Otro mundo, a 45 minutos al sur."
+ "Hungry Valley SVRA": "4,000 acres de rutas off-road en Gorman — trae tu vehículo todo terreno o solo mira las subidas. Otro mundo, a 45 minutos al sur.",
+ "Yosemite Valley": "El Valle — El Capitán, Half Dome, las cascadas de Yosemite y el río Merced en una catedral de granito de una milla de ancho. A 1 hora 30 de Fresno, más o menos (2+ desde Porterville); en verano puede haber reservación de entrada, así que checa nps.gov antes del viaje grande.",
+ "Glacier Point": "El mirador a 3,200 pies sobre el Valle de Yosemite — Half Dome frente a ti y toda la Sierra detrás. Glacier Point Road es estacional (de finales de primavera a finales de otoño, aprox.).",
+ "Mariposa Grove of Giant Sequoias": "El bosque de árboles gigantes de Yosemite, junto a la entrada sur — más de 500 secoyas gigantes, incluyendo el Grizzly Giant y el California Tunnel Tree. Hay shuttle desde la plaza de bienvenida.",
+ "Shaver Lake": "El lago de la Sierra a 5,400 pies — natación, botes y pinos a una hora sobre Fresno, más o menos. La clásica escapada del valle contra el calor del verano.",
+ "Bass Lake": "Lago cálido de la Sierra cerca de Oakhurst, camino a Yosemite — playas para nadar, renta de botes y resorts a la orilla. Tal vez lo reconozcas de la película The Great Outdoors.",
+ "Pine Flat Lake": "El embalse del río Kings en las faldas al este de Fresno — botes, pesca y áreas para nadar a unos 45 minutos de Porterville.",
+ "Hume Lake": "Un laguito sereno de montaña entre Kings Canyon y Sequoia — playa para nadar, canoas y un sendero plano de 2.6 millas alrededor. Combina con el día de Grant Grove.",
+ "Tunnel Log": "Una secoya gigante caída por la que pasas en carro sobre el camino de Crescent Meadow — la foto más estilo road-trip de los años 30 del parque. Camino estacional; verifica que esté abierto.",
+ "San Luis National Wildlife Refuge": "Humedales y pastizales al oeste de Merced con ruta en carro — alces, aves acuáticas y cielos enormes del valle. Mejor en invierno, cuando llegan las aves en masa.",
+ "Merced National Wildlife Refuge": "Famoso por las grullas y gansos de nieve invernales, por miles al atardecer — la llegada volando es todo un espectáculo. Ruta en carro, gratis.",
+ "Pixley National Wildlife Refuge": "Un refugio pequeño entre Porterville y Bakersfield donde las grullas pasan el invierno sobre el antiguo valle. Senderos cortos, aves grandes, tranquilidad.",
+ "Pinnacles National Park": "El parque volcánico de otro mundo de California — agujas de roca, cuevas de talud y cóndores de California planeando en las térmicas. El lado este, por King City, es la entrada cercana desde la costa; lleva agua, en verano se cocina.",
+ "Carrizo Plain National Monument": "Un valle enorme y vacío de pastizales entre SLO y Bakersfield — Soda Lake, la falla de San Andrés a plena vista y floraciones primaverales que salen en las noticias nacionales. Caminos de tierra, sin servicios, trae todo.",
+ "Bixby Creek Bridge": "El puente más fotografiado de California — un arco de concreto de 1932 a 260 pies sobre un cañón de Big Sur. A unas 2 horas por la Highway 1 desde SLO; detente y toma la foto.",
+ "McWay Falls": "Una cascada de 80 pies que cae directo sobre una playa en una caleta de Big Sur — la foto de postal desde el sendero mirador de Julia Pfeiffer Burns. Caminata corta, recompensa enorme.",
+ "Pfeiffer Beach": "La playa salvaje y local de Big Sur — vetas de arena morada, oleaje fuerte (no nadar) y la famosa foto al atardecer de Keyhole Rock. Por un camino torcido y sin letreros desde la Highway 1.",
+ "Point Lobos State Natural Reserve": "Llamada la joya de la corona de los parques estatales — leones marinos, nutrias, bosques de cipreses y caletas turquesa en senderos fáciles junto a Carmel. Llega temprano; el estacionamiento se llena.",
+ "Asilomar State Beach": "Una milla de dunas, pozas de marea y pasarela en Pacific Grove — paseos al atardecer y surfistas, junto a Monterey.",
+ "Monterey Bay Aquarium": "El acuario de clase mundial en Cannery Row — bosque de kelp, nutrias marinas y la galería Open Sea. Los boletos se reservan antes en fines de semana; está a unas 2 horas de SLO.",
+ "Elkhorn Slough": "Uno de los grandes estuarios de California — kayak entre nutrias marinas, focas y cientos de especies de aves en Moss Landing. Rentas y tours justo en el puerto.",
+ "Garrapata State Park": "Puertas sin letreros a lo largo de la Highway 1, al sur de Carmel, que abren a acantilados, caletas y cañones de calas — el umbral más tranquilo de Big Sur.",
+ "Audubon Kern River Preserve": "La reserva de bosque de álamos y sauces de Audubon en el South Fork del Kern — uno de los mejores lugares para observar aves del estado, con senderos hacia la jungla ribereña. A una hora de Bakersfield, más o menos."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -1091,7 +1135,8 @@ const SEEDS = {
     seedPlace("Fort Tejon State Historic Park","museum","Lebec, CA",34.8693,-118.9026),
     seedPlace("Outlets at Tejon","market","Arvin, CA",34.9856,-118.9416),
     seedPlace("Mount Pinos","nature","Frazier Park, CA",34.8128,-119.1454),
-    seedPlace("Hungry Valley SVRA","nature","Gorman, CA",34.759,-118.8552)
+    seedPlace("Hungry Valley SVRA","nature","Gorman, CA",34.759,-118.8552),
+    seedPlace("Audubon Kern River Preserve","nature","Weldon, CA",35.6694,-118.3162)
   ],
   "932":[ // Porterville + Visalia + Sequoia ring (within ~2 hrs)
     seedPlace("Zalud House Museum","museum","Porterville, CA",36.0729,-119.0176),
@@ -1137,7 +1182,18 @@ const SEEDS = {
     seedPlace("Clovis Botanical Garden","garden","Clovis, CA",36.8485,-119.7015),
     seedPlace("Millerton Lake","beach","Friant, CA",36.9905,-119.6941),
     seedPlace("Wild Water Adventure Park","attraction","Clovis, CA",36.8055,-119.5818),
-    seedPlace("Tower Theatre","theatre","Fresno, CA",36.758,-119.8015)
+    seedPlace("Tower Theatre","theatre","Fresno, CA",36.758,-119.8015),
+    seedPlace("Yosemite Valley","nature","Yosemite National Park, CA",37.7327,-119.6057),
+    seedPlace("Glacier Point","viewpoint","Yosemite National Park, CA",37.7307,-119.5737),
+    seedPlace("Mariposa Grove of Giant Sequoias","nature","Yosemite National Park, CA",37.5068,-119.6306),
+    seedPlace("Shaver Lake","beach","Shaver Lake, CA",37.0969,-119.3202),
+    seedPlace("Bass Lake","beach","Bass Lake, CA",37.3247,-119.5663),
+    seedPlace("Pine Flat Lake","beach","Piedra, CA",36.8745,-119.2752),
+    seedPlace("Hume Lake","nature","Hume, CA",36.7906,-118.9058),
+    seedPlace("Tunnel Log","viewpoint","Sequoia National Park, CA",36.5525,-118.7614),
+    seedPlace("San Luis National Wildlife Refuge","nature","Los Banos, CA",37.2628,-120.8937),
+    seedPlace("Merced National Wildlife Refuge","nature","Merced, CA",37.2705,-120.7227),
+    seedPlace("Pixley National Wildlife Refuge","nature","Pixley, CA",35.9205,-119.3735)
   ],
   "900":[ // Los Angeles
     seedPlace("Griffith Observatory","museum","Los Angeles, CA",34.1184,-118.3004),
@@ -1362,7 +1418,17 @@ const SEEDS = {
     seedPlace("The Luffa Farm","attraction","Nipomo, CA",35.0464,-120.5443),
     seedPlace("Waller Park","park","Santa Maria, CA",34.9,-120.4421),
     seedPlace("Santa Maria Valley Discovery Museum","museum","Santa Maria, CA",34.9454,-120.435),
-    seedPlace("Guadalupe-Nipomo Dunes","nature","Guadalupe, CA",35.0065,-120.6177)
+    seedPlace("Guadalupe-Nipomo Dunes","nature","Guadalupe, CA",35.0065,-120.6177),
+    seedPlace("Pinnacles National Park","nature","Paicines, CA",36.4863,-121.1711),
+    seedPlace("Carrizo Plain National Monument","nature","Santa Margarita, CA",35.1146,-119.7234),
+    seedPlace("Bixby Creek Bridge","viewpoint","Big Sur, CA",36.3716,-121.9019),
+    seedPlace("McWay Falls","nature","Big Sur, CA",36.1578,-121.6724),
+    seedPlace("Pfeiffer Beach","beach","Big Sur, CA",36.2394,-121.8176),
+    seedPlace("Point Lobos State Natural Reserve","nature","Carmel, CA",36.5147,-121.9428),
+    seedPlace("Asilomar State Beach","beach","Pacific Grove, CA",36.6241,-121.9401),
+    seedPlace("Monterey Bay Aquarium","zoo","Monterey, CA",36.6181,-121.9017),
+    seedPlace("Elkhorn Slough","nature","Moss Landing, CA",36.8125,-121.7758),
+    seedPlace("Garrapata State Park","nature","Carmel, CA",36.4736,-121.9056)
   ]
 };
 function seedForZip(zip){
@@ -1372,7 +1438,7 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","tehachapi":"933","kernville":"933","lake isabella":"933","wofford heights":"933","mojave":"933","ridgecrest":"933","taft":"933","shafter":"933","frazier park":"933","lebec":"933","boron":"933","randsburg":"933","bodfish":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","dublin":"432","powell":"432","delaware":"432","newark":"432","logan":"432","delaware":"432","lewis center":"432","marion":"432","mount vernon":"432","mount gilead":"432","loudonville":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","girard":"445","struthers":"445","campbell":"445","vienna":"445","newton falls":"445","lake milton":"445","columbiana":"445","ravenna":"445","howland":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932"};
+const CITY_SEED_KEYS={"bakersfield":"933","tehachapi":"933","kernville":"933","lake isabella":"933","wofford heights":"933","mojave":"933","ridgecrest":"933","taft":"933","shafter":"933","frazier park":"933","lebec":"933","boron":"933","randsburg":"933","bodfish":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","monterey":"934","carmel":"934","big sur":"934","pacific grove":"934","moss landing":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","dublin":"432","powell":"432","delaware":"432","newark":"432","logan":"432","delaware":"432","lewis center":"432","marion":"432","mount vernon":"432","mount gilead":"432","loudonville":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","girard":"445","struthers":"445","campbell":"445","vienna":"445","newton falls":"445","lake milton":"445","columbiana":"445","ravenna":"445","howland":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932","yosemite":"932","oakhurst":"932","shaver lake":"932","los banos":"932"};
 const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818],"youngstown":[41.0998,-80.6495],"boardman":[41.0229,-80.66],"austintown":[41.0919,-80.7449],"canfield":[41.0251,-80.7606],"warren":[41.2375,-80.8184],"niles":[41.1798,-80.7644]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
