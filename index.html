@@ -480,7 +480,14 @@ const SEED_INFO = {
  "Bears Den": "A jumble of giant sandstone boulders and squeeze-through rock passages tucked in the middle of Mill Creek — a hidden little adventure off the gorge trails.",
  "Poland Municipal Forest": "Poland's beloved woods — tall pines, easy walking trails, and a covered bridge over Yellow Creek. The quiet, shady reset.",
  "Yellow Creek Park": "Creekside park in Struthers — trails along Yellow Creek, picnic grounds, and the stone Hopewell Furnace left over from the 1800s iron days.",
- "Extreme Air Trampoline Park": "Trampoline park by the Eastwood complex — jump courts, foam pits, and ninja obstacles. Peak kid-energy disposal."
+ "Extreme Air Trampoline Park": "Trampoline park by the Eastwood complex — jump courts, foam pits, and ninja obstacles. Peak kid-energy disposal.",
+ "Blacklick Woods Metro Park": "Metro park in Reynoldsburg famous for its canopy walk — a boardwalk 40 feet up in the treetops (opened 2024) — plus beech-maple forest trails and a nature center.",
+ "Rocky Fork Metro Park": "Metro park on Rocky Fork Creek at the Westerville-New Albany edge — wooded trails, a dog park, and picnic shelters tucked in the pines.",
+ "Rose Run Park": "New Albany's centerpiece park — the Rose Run stream, lawns, and bridges linking the library, the school campus, and the Hinson Amphitheatre. The village's front porch.",
+ "Friendship Park": "Gahanna park on Big Walnut Creek — storybook grounds with a gazebo, a fishing pond, and creekside trails.",
+ "Woodside Green Park": "Gahanna neighborhood park on the Big Walnut trail — playground, sports courts, and creek access.",
+ "Hoover Reservoir Park": "The park at Hoover Dam on Sunbury Road — 4,700 acres of water and woods: fishing, boat launches, birdwatching (bald eagles nest here), the Brent Hambrick disc golf course, and sunsets over the reservoir.",
+ "ZipZone Outdoor Adventures": "Zip lines and a treetop adventure park in the woods at Camp Mary Orton, off North High Street — guided canopy tours and 60+ climbing challenges. Reservations required, and it's seasonal (closed in winter)."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -646,7 +653,14 @@ const SEED_INFO_ES = {
  "Bears Den": "Un montón de rocas gigantes de arenisca y pasajes estrechos entre piedras, escondido en medio de Mill Creek — una aventurita escondida junto a los senderos de la cañada.",
  "Poland Municipal Forest": "El bosque querido de Poland — pinos altos, senderos fáciles para caminar y un puente cubierto sobre Yellow Creek. El respiro tranquilo y con sombra.",
  "Yellow Creek Park": "Parque junto al arroyo en Struthers — senderos por Yellow Creek, áreas de picnic y el horno de piedra Hopewell, reliquia de la época del hierro de los 1800.",
- "Extreme Air Trampoline Park": "Parque de trampolines junto al complejo Eastwood — canchas de salto, fosas de espuma y obstáculos ninja. Deshecho máximo de energía infantil."
+ "Extreme Air Trampoline Park": "Parque de trampolines junto al complejo Eastwood — canchas de salto, fosas de espuma y obstáculos ninja. Deshecho máximo de energía infantil.",
+ "Blacklick Woods Metro Park": "Parque metropolitano en Reynoldsburg famoso por su paseo entre las copas — una pasarela a 40 pies de altura entre los árboles (abierta en 2024) — más senderos por un bosque de hayas y arces y un centro de naturaleza.",
+ "Rocky Fork Metro Park": "Parque metropolitano sobre el arroyo Rocky Fork, en el límite entre Westerville y New Albany — senderos boscosos, un parque para perros y pabellones de picnic entre los pinos.",
+ "Rose Run Park": "El parque central de New Albany — el arroyo Rose Run, jardines y puentes que unen la biblioteca, el campus escolar y el anfiteatro Hinson. La puerta principal del pueblo.",
+ "Friendship Park": "Parque de Gahanna junto al arroyo Big Walnut — terrenos de cuento con una glorieta, un lago para pescar y senderos junto al arroyo.",
+ "Woodside Green Park": "Parque de barrio en Gahanna, sobre el sendero del Big Walnut — juegos, canchas deportivas y acceso al arroyo.",
+ "Hoover Reservoir Park": "El parque junto a la presa Hoover, en Sunbury Road — 4,700 acres de agua y bosque: pesca, rampas para botes, observación de aves (aquí anidan águilas calvas), el campo de disc golf Brent Hambrick y atardeceres sobre el embalse.",
+ "ZipZone Outdoor Adventures": "Tirolesas y un parque de aventura entre los árboles del bosque de Camp Mary Orton, por North High Street — tours guiados entre las copas y más de 60 retos para escalar. Se requiere reservación y es por temporada (cerrado en invierno)."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -788,7 +802,14 @@ const SEEDS = {
     seedPlace("Whetstone Park","park","Columbus, OH",40.0432,-83.0262),
     seedPlace("Columbus Park of Roses","garden","Columbus, OH",40.0436,-83.0255),
     seedPlace("Highbanks Metro Park","nature","Powell, OH",40.1518,-83.025),
-    seedPlace("AMC Dine-In Easton 30","cinema","Columbus, OH",40.0513,-82.9153)
+    seedPlace("AMC Dine-In Easton 30","cinema","Columbus, OH",40.0513,-82.9153),
+    seedPlace("Blacklick Woods Metro Park","nature","Reynoldsburg, OH",39.9371,-82.8111),
+    seedPlace("Rocky Fork Metro Park","nature","Westerville, OH",40.1191,-82.8006),
+    seedPlace("Rose Run Park","park","New Albany, OH",40.0824,-82.8167),
+    seedPlace("Friendship Park","park","Gahanna, OH",40.0141,-82.8751),
+    seedPlace("Woodside Green Park","park","Gahanna, OH",40.0438,-82.8808),
+    seedPlace("Hoover Reservoir Park","nature","Westerville, OH",40.1092,-82.8866),
+    seedPlace("ZipZone Outdoor Adventures","attraction","Columbus, OH",40.1255,-83.0164)
   ],
   "934":[ // San Luis Obispo + Pismo Beach + Avila Beach
     seedPlace("Mission San Luis Obispo de Tolosa","museum","San Luis Obispo, CA",35.2808,-120.665),
