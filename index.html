@@ -578,7 +578,12 @@ const SEED_INFO = {
  "Kern National Wildlife Refuge": "Vast restored wetlands northwest of town — an auto tour route through ponds packed with waterfowl in winter. The valley as it was 150 years ago. About 50 minutes.",
  "Stars Theatre Restaurant": "Dinner theatre downtown — dinner served at your table, then a full stage musical or comedy. The date-night classic.",
  "The Padre Hotel": "The 1928 Padre — Bakersfield's haunted-history landmark hotel, now the downtown nightlife anchor with bars and a rooftop scene. Go for the energy, stay for the ghost stories.",
- "Temblor Brewing Company": "Bakersfield's craft brewery on Buck Owens Blvd — big taproom, trivia and comedy nights, and food trucks. The local-beer hangout."
+ "Temblor Brewing Company": "Bakersfield's craft brewery on Buck Owens Blvd — big taproom, trivia and comedy nights, and food trucks. The local-beer hangout.",
+ "Sandrini's Public House": -119.0199,
+ "Tiki-Ko": -119.0178,
+ "The Well Comedy Club": -119.0195,
+ "Ethel's Old Corral Cafe": -118.9565,
+ "Lengthwise Brewing Company": -119.0881
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -842,7 +847,12 @@ const SEED_INFO_ES = {
  "Kern National Wildlife Refuge": "Humedales restaurados enormes al noroeste de la ciudad — una ruta en carro por estanques llenos de aves acuáticas en invierno. El valle como era hace 150 años. A unos 50 minutos.",
  "Stars Theatre Restaurant": "Teatro con cena en el centro — la cena se sirve en tu mesa y luego un musical o comedia completa en el escenario. El clásico para una cita.",
  "The Padre Hotel": "El Padre de 1928 — el hotel emblemático de Bakersfield, con su historia de fantasmas, hoy el ancla de la vida nocturna del centro con bares y ambiente en la azotea. Ve por la energía, quédate por las historias de fantasmas.",
- "Temblor Brewing Company": "La cervecería artesanal de Bakersfield en Buck Owens Blvd — taproom grande, noches de trivia y comedia, y food trucks. El lugar para la cerveza local."
+ "Temblor Brewing Company": "La cervecería artesanal de Bakersfield en Buck Owens Blvd — taproom grande, noches de trivia y comedia, y food trucks. El lugar para la cerveza local.",
+ "Sandrini's Public House": "Downtown underground gastropub since 2005 — deep whiskey list, live music most nights, kitchen open late. The grown-up downtown night.",
+ "Tiki-Ko": "Full-immersion tiki bar downtown — Mai Tais, Navy Grogs, and the Sinking Ship Room upstairs. Bakersfield's little tropical escape since 2016.",
+ "The Well Comedy Club": "The Central Valley's full-time comedy club downtown — stand-up Thu–Sat, open mics, and touring names. Check the calendar for who's on.",
+ "Ethel's Old Corral Cafe": "Legendary roadhouse bar and grill out on Alfred Harrell Hwy — live bands on weekends, hitching posts for horses, and a lot that fits RVs and bikes alike. Pure Kern County.",
+ "Lengthwise Brewing Company": "Local brewery-pub at The District — house IPAs, pub food, and a big patio on District Blvd."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -904,7 +914,12 @@ const SEEDS = {
     seedPlace("Kern National Wildlife Refuge","nature","Delano, CA",35.756,-119.6163),
     seedPlace("Stars Theatre Restaurant","theatre","Bakersfield, CA",35.3769,-119.0195),
     seedPlace("The Padre Hotel","nightlife","Bakersfield, CA",35.3756,-119.0215),
-    seedPlace("Temblor Brewing Company","nightlife","Bakersfield, CA",35.3889,-119.0422)
+    seedPlace("Temblor Brewing Company","nightlife","Bakersfield, CA",35.3889,-119.0422),
+    seedPlace("Sandrini's Public House","nightlife","Bakersfield, CA",35.3769,-119.0199),
+    seedPlace("Tiki-Ko","nightlife","Bakersfield, CA",35.3768,-119.0178),
+    seedPlace("The Well Comedy Club","nightlife","Bakersfield, CA",35.3751,-119.0195),
+    seedPlace("Ethel's Old Corral Cafe","nightlife","Bakersfield, CA",35.4186,-118.9565),
+    seedPlace("Lengthwise Brewing Company","nightlife","Bakersfield, CA",35.3136,-119.0881)
   ],
   "932":[ // Porterville + Visalia + Sequoia ring (within ~2 hrs)
     seedPlace("Zalud House Museum","museum","Porterville, CA",36.0729,-119.0176),
