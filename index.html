@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
 <title>What Do? — Things To Do Roulette</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 :root{
   --bg:#f7f5f0; --card:#ffffff; --ink:#1d1d22; --muted:#6d6d76;
@@ -90,6 +91,11 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
 .chip.sel{border-color:var(--accent); background:rgba(10,168,138,.14); font-weight:700;}
 #drawerClose{width:100%; padding:13px; border:none; border-radius:12px; background:linear-gradient(120deg,var(--accent),var(--accent2)); color:#fff; font-weight:800; font-size:15px; cursor:pointer; margin-top:4px;}
 .foot{text-align:center; color:var(--muted); font-size:12px; margin-top:28px; line-height:1.5;}
+
+  #mapWrap{display:none;margin-top:12px;}
+  #map{height:330px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--chip);}
+  .pinNum{width:28px;height:28px;border-radius:50%;background:#0aa88a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);}
+  .leaflet-container{font:inherit;}
 </style>
 </head>
 <body>
@@ -111,12 +117,14 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
 
   <div id="result">
     <div class="planCard" id="planCard"></div>
+    <div id="mapWrap"><div id="map"></div></div>
     <div class="btnRow">
       <button class="btn primary" id="againBtn" type="button">Roll Again 🎲</button>
       <button class="btn" id="lockBtn" type="button">Lock Main Event</button>
     </div>
     <div class="btnRow">
       <button class="btn" id="copyBtn" type="button">Copy Plan to Text</button>
+      <button class="btn" id="mapBtn" type="button">View on Map 🗺</button>
     </div>
   </div>
 
@@ -139,6 +147,7 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
   <button id="drawerClose" type="button">Done</button>
 </aside>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 "use strict";
 /* ================= What Do? — core engine (pure, testable) ================= */
@@ -574,7 +583,7 @@ async function fetchWeather(lat,lon){
 
 /* ================= UI (browser only) ================= */
 if(typeof document!=="undefined" && document.getElementById("rollBtn")){
-  const state={places:[], zip:"", label:"", plan:null, lockedMain:null, weather:null,
+  const state={places:[], zip:"", label:"", plan:null, lockedMain:null, weather:null, center:null,
     filters:Object.assign({},DEFAULT_FILTERS)};
   const FILTER_DEFS={
     fWho:[["any","Anyone"],["solo","Solo"],["date","Date"],["friends","Friends"],["family","Family / Kids"]],
@@ -644,9 +653,44 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
         if(h) h.textContent=open?"Tap to close ▴":"Tap for info ▾";
       });
     });
+    if($("#mapWrap").style.display==="block") drawMap();
     $("#lockBtn").textContent=state.lockedMain?"Main Locked 🔒 (tap to unlock)":"Lock Main Event";
     $("#lockBtn").classList.toggle("on",!!state.lockedMain);
   }
+
+  let wdMap=null, wdLayer=null;
+  function drawMap(){
+    const plan=state.plan; if(!plan) return;
+    if(typeof L==="undefined"){ $("#map").innerHTML="<div style=\"padding:16px\">Map could not load — check your connection and try again.</div>"; return; }
+    const stops=plan.stops.filter(x=>x.lat!=null&&x.lon!=null);
+    if(!stops.length) return;
+    if(!wdMap){
+      wdMap=L.map("map");
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap contributors"}).addTo(wdMap);
+    }
+    if(wdLayer) wdLayer.remove();
+    wdLayer=L.layerGroup().addTo(wdMap);
+    const labels=["MAIN EVENT","SIDE QUEST","CLOSER"];
+    const pts=[];
+    stops.forEach((pl,i)=>{
+      const cm=CATS[pl.cat]||{};
+      const icon=L.divIcon({className:"",html:'<div class="pinNum">'+(i+1)+'</div>',iconSize:[28,28],iconAnchor:[14,14]});
+      const gmaps="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(pl.name+" "+(pl.addr||""));
+      L.marker([pl.lat,pl.lon],{icon:icon}).addTo(wdLayer)
+        .bindPopup("<b>"+(i+1)+". "+pl.name+"</b><br>"+(labels[i]||"")+" · "+(cm.label||"")+(pl.dist!=null?" · "+pl.dist+" mi away":"")+'<br><a href="'+gmaps+'" target="_blank" rel="noopener">Directions</a>');
+      pts.push([pl.lat,pl.lon]);
+    });
+    if(pts.length>1) L.polyline(pts,{color:"#0aa88a",weight:3,opacity:.75,dashArray:"6 6"}).addTo(wdLayer);
+    if(state.center){ L.circleMarker([state.center.lat,state.center.lon],{radius:6,color:"#7c4dff",weight:2,fillColor:"#7c4dff",fillOpacity:.9}).addTo(wdLayer).bindPopup("You searched here"); pts.push([state.center.lat,state.center.lon]); }
+    wdMap.fitBounds(L.latLngBounds(pts).pad(0.18));
+    setTimeout(()=>{ try{ wdMap.invalidateSize(); }catch(e){} },80);
+  }
+  $("#mapBtn").onclick=()=>{
+    const wrap=$("#mapWrap"); const open=wrap.style.display==="block";
+    wrap.style.display=open?"none":"block";
+    $("#mapBtn").textContent=open?"View on Map 🗺":"Hide Map";
+    if(!open) drawMap();
+  };
   function saveHistory(){
     try{
       const h=JSON.parse(localStorage.getItem("whatdo_history")||"[]");
@@ -667,7 +711,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     const isZip=/^\d{5}$/.test(raw);
     const cacheKey=raw.toLowerCase();
     const cached=getCache(cacheKey);
-    if(cached){ state.places=cached.places; state.label=cached.label; state.weather=cached.weather||null; return; }
+    if(cached){ state.places=cached.places; state.label=cached.label; state.weather=cached.weather||null; state.center=cached.center||null; return; }
     $("#zipNote").textContent="Finding spots near "+raw+"\u2026";
     let g=null;
     try{ g=isZip?await geocodeZip(raw):await geocodeCity(raw); }catch(e){ g=null; }
@@ -679,7 +723,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
       if(!c) throw new Error("geocode failed");
       g={lat:c[0], lon:c[1], label:raw};
     }
-    state.label=g.label;
+    state.label=g.label; state.center={lat:g.lat,lon:g.lon};
     let places=[];
     const wxPromise=fetchWeather(g.lat,g.lon);
     try{ places=await fetchPlaces(g.lat,g.lon); }catch(e){ places=[]; }
@@ -693,7 +737,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     places.sort((a,b)=>(a.dist||99)-(b.dist||99));
     state.places=places;
     state.weather=await wxPromise;
-    setCache(cacheKey,{places,label:g.label,weather:state.weather});
+    setCache(cacheKey,{places,label:g.label,weather:state.weather,center:state.center});
   }
   function applyWeather(){
     const w=state.weather, pill=$("#wxPill");
