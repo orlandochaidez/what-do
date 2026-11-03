@@ -508,7 +508,12 @@ const SEED_INFO = {
  "Colonel Allensworth State Historic Park": "The only town in California founded by African Americans (1908), now a state park of restored buildings — schoolhouse, church, and homes. About 45 minutes southwest.",
  "Fresno Chaffee Zoo": "One of the best mid-size zoos in the country — African Safari savanna, sea lion cove, and a rainforest. About 1 hour 15 from Porterville, and worth the drive.",
  "Forestiere Underground Gardens": "A Sicilian immigrant hand-dug this underground villa over 40 years — rooms, courtyards, and fruit trees below the Fresno hardpan. Guided tours; genuinely one of a kind.",
- "Shinzen Japanese Garden": "Five acres of Japanese garden inside Woodward Park — koi ponds, a teahouse, and the Clark Bonsai Collection. Peak calm, about 1 hour 15 away."
+ "Shinzen Japanese Garden": "Five acres of Japanese garden inside Woodward Park — koi ponds, a teahouse, and the Clark Bonsai Collection. Peak calm, about 1 hour 15 away.",
+ "Coffee Camp": "The locals' river spot — Upper and Lower Coffee Camp day-use areas on the Middle Fork of the Tule River, 9 miles east of Springville on Highway 190. Swim holes, fishing, and picnic tables under the oaks. Despite the name it's day use only (no camping), $12 per vehicle — and the Forest Service isn't kidding: the river is cold, fast, and the rocks are slippery.",
+ "Camp Nelson": "Tiny mountain village on the Tule River at 4,800 feet — a meadow, a general store, river access, and the last stop before the high country. Cooler air the second you get out of the car.",
+ "Mountain Home State Forest": "A state forest of giant sequoias right next to Balch Park — groves, fishing ponds, and campgrounds most tourists never find. Check current conditions before you go; parts are still recovering from the 2020 Castle Fire.",
+ "Dome Rock": "A smooth granite dome near Ponderosa with a short scramble to the top — huge views over the Kern River country. Rock climbers love the face; sunset is the move.",
+ "Quaking Aspen": "High-country meadow and campground at about 7,000 feet up Highway 190 past Camp Nelson — aspens, a creek, and trailheads into the Golden Trout Wilderness. A full escape from valley heat."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -702,7 +707,12 @@ const SEED_INFO_ES = {
  "Colonel Allensworth State Historic Park": "El único pueblo de California fundado por afroamericanos (1908), hoy un parque estatal de edificios restaurados — escuela, iglesia y casas. A unos 45 minutos al suroeste.",
  "Fresno Chaffee Zoo": "Uno de los mejores zoológicos medianos del país — sabana Safari africana, caleta de leones marinos y una selva tropical. A 1 hora 15 de Porterville, y vale la manejada.",
  "Forestiere Underground Gardens": "Un inmigrante siciliano excavó a mano esta villa subterránea durante 40 años — cuartos, patios y árboles frutales bajo la tierra dura de Fresno. Tours guiados; de verdad, único en su tipo.",
- "Shinzen Japanese Garden": "Cinco acres de jardín japonés dentro de Woodward Park — estanques de koi, una casa de té y la Colección de Bonsáis Clark. Calma máxima, a 1 hora 15, más o menos."
+ "Shinzen Japanese Garden": "Cinco acres de jardín japonés dentro de Woodward Park — estanques de koi, una casa de té y la Colección de Bonsáis Clark. Calma máxima, a 1 hora 15, más o menos.",
+ "Coffee Camp": "El lugar de río de los locales — las áreas de uso diurno Upper y Lower Coffee Camp sobre el ramal medio del río Tule, 9 millas al este de Springville por la carretera 190. Pozas para nadar, pesca y mesas de picnic bajo los encinos. A pesar del nombre es solo uso diurno (no se acampa), $12 por vehículo — y el Servicio Forestal no bromea: el río es frío, rápido y las rocas resbalan.",
+ "Camp Nelson": "Pueblito de montaña sobre el río Tule, a 4,800 pies de altura — un prado, una tienda general, acceso al río y la última parada antes del terreno alto. Aire fresco en cuanto te bajas del carro.",
+ "Mountain Home State Forest": "Un bosque estatal de secuoyas gigantes junto a Balch Park — arboledas, lagos para pescar y campamentos que casi ningún turista encuentra. Checa las condiciones actuales antes de ir; partes aún se recuperan del incendio Castle de 2020.",
+ "Dome Rock": "Una cúpula lisa de granito cerca de Ponderosa, con una trepada corta hasta la cima — vistas enormes sobre la región del río Kern. A los escaladores les encanta la pared; el atardecer es la jugada.",
+ "Quaking Aspen": "Prado y campamento de altura a unos 7,000 pies por la carretera 190, pasando Camp Nelson — álamos temblones, un arroyo y salidas de senderos hacia el Golden Trout Wilderness. Escape total del calor del valle."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -764,6 +774,11 @@ const SEEDS = {
     seedPlace("General Grant Tree","nature","Kings Canyon National Park, CA",36.7481,-118.9711),
     seedPlace("Trail of 100 Giants","nature","Sequoia National Forest, CA",35.9787,-118.592),
     seedPlace("Balch Park","nature","Springville, CA",36.2243,-118.6754),
+    seedPlace("Coffee Camp","beach","Springville, CA",36.1495,-118.747),
+    seedPlace("Camp Nelson","nature","Camp Nelson, CA",36.1429,-118.6101),
+    seedPlace("Mountain Home State Forest","nature","Springville, CA",36.2347,-118.6828),
+    seedPlace("Dome Rock","viewpoint","Ponderosa, CA",36.0669,-118.5309),
+    seedPlace("Quaking Aspen","nature","Camp Nelson, CA",36.1216,-118.5459),
     seedPlace("Lake Isabella","beach","Lake Isabella, CA",35.6383,-118.4845),
     seedPlace("Colonel Allensworth State Historic Park","museum","Allensworth, CA",35.8727,-119.4019),
     seedPlace("Fresno Chaffee Zoo","zoo","Fresno, CA",36.7521,-119.8232),
@@ -918,7 +933,7 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","porterville":"932","visalia":"932"};
+const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","porterville":"932","visalia":"932","springville":"932"};
 const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818],"youngstown":[41.0998,-80.6495],"boardman":[41.0229,-80.66],"austintown":[41.0919,-80.7449],"canfield":[41.0251,-80.7606],"warren":[41.2375,-80.8184],"niles":[41.1798,-80.7644]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
