@@ -96,6 +96,13 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
   #map{height:330px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--chip);}
   .pinNum{width:28px;height:28px;border-radius:50%;background:#0aa88a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);}
   .leaflet-container{font:inherit;}
+
+  #suggest{display:none;text-align:left;max-width:520px;margin:0 auto 8px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
+  .sugItem{padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--line);}
+  .sugItem:last-child{border-bottom:none;}
+  .sugItem:active{background:var(--chip);}
+  .sugItem .sl{font-weight:600;font-size:15px;}
+  .sugItem .ss{color:var(--muted);font-size:12px;margin-top:1px;}
 </style>
 </head>
 <body>
@@ -109,6 +116,7 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
     <input id="zip" autocomplete="off" placeholder="ZIP or city name" maxlength="40">
     <button id="locBtn" type="button">Use my location</button>
   </div>
+  <div id="suggest"></div>
   <div id="zipNote"></div>
   <div id="wxPill"></div>
 
@@ -371,7 +379,13 @@ const SEED_INFO = {
  "Ohio Railway Museum": "Vintage trains in Worthington — streetcars, locomotives, and short train rides on open days (mostly weekends, seasonal). A sleeper pick for train nerds and kids.",
  "Village Green": "The heart of Old Worthington — a classic New England-style village green with concerts, markets, and festivals across the year.",
  "Whetstone Park": "Big Clintonville park on the Olentangy — trails, fishing pond, athletic fields, and the Park of Roses inside it.",
- "Columbus Park of Roses": "One of the largest municipal rose gardens in the country — 12,000+ roses inside Whetstone Park, peaking in June. Free, and peak date-night stroll material."
+ "Columbus Park of Roses": "One of the largest municipal rose gardens in the country — 12,000+ roses inside Whetstone Park, peaking in June. Free, and peak date-night stroll material.",
+ "Flight Adventure Park": "Indoor trampoline and adventure park on Buck Owens Blvd — some 40,000 sq ft of trampolines, a ninja course, and inflatables. The burn-the-kids'-energy pick.",
+ "The Empty Space": "Donation-based community theater — plays, comedy, and an art gallery under one roof at its Woodmere Drive home in the south part of town. Unsold seats go pay-what-you-can at showtime.",
+ "Central Park at Mill Creek": "Downtown's only park — a green strip along the Mill Creek canal right by the art museum, with a little lake, spray fountains, and the Mill Creek bridge. The downtown stroll.",
+ "Reading Cinemas Valley Plaza": "The movie theater inside Valley Plaza Mall — pair the movie with the food court and make it a whole mall run.",
+ "Highbanks Metro Park": "The big one — 1,200 acres of forest above the Olentangy River, with high bluffs, ravine trails, and a nature center. This pin is the nature center; the park has a few entrances, all worth it.",
+ "AMC Dine-In Easton 30": "The 30-screen AMC right inside Easton Town Center — dine-in recliners, the default Easton movie move."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||""}; }
 const SEEDS = {
@@ -412,7 +426,11 @@ const SEEDS = {
     seedPlace("North Kern Golf Course","sports","Bakersfield, CA",35.5194,-119.1125),
     seedPlace("Kern River Golf Course","sports","Bakersfield, CA",35.4375,-118.8573),
     seedPlace("Rio Bravo Country Club","sports","Bakersfield, CA",35.4049,-118.8382),
-    seedPlace("Sundale Country Club","sports","Bakersfield, CA",35.34,-119.0672)
+    seedPlace("Sundale Country Club","sports","Bakersfield, CA",35.34,-119.0672),
+    seedPlace("Flight Adventure Park","sports","Bakersfield, CA",35.3889,-119.0416),
+    seedPlace("The Empty Space","theatre","Bakersfield, CA",35.3078,-119.0625),
+    seedPlace("Central Park at Mill Creek","park","Bakersfield, CA",35.3744,-119.0088),
+    seedPlace("Reading Cinemas Valley Plaza","cinema","Bakersfield, CA",35.3394,-119.0323)
   ],
   "900":[ // Los Angeles
     seedPlace("Griffith Observatory","museum","Los Angeles, CA",34.1184,-118.3004),
@@ -459,7 +477,9 @@ const SEEDS = {
     seedPlace("Ohio Railway Museum","museum","Worthington, OH",40.0932,-83.0034),
     seedPlace("Village Green","park","Worthington, OH",40.0884,-83.0178),
     seedPlace("Whetstone Park","park","Columbus, OH",40.0432,-83.0262),
-    seedPlace("Columbus Park of Roses","garden","Columbus, OH",40.0436,-83.0255)
+    seedPlace("Columbus Park of Roses","garden","Columbus, OH",40.0436,-83.0255),
+    seedPlace("Highbanks Metro Park","nature","Powell, OH",40.1518,-83.025),
+    seedPlace("AMC Dine-In Easton 30","cinema","Columbus, OH",40.0513,-82.9153)
   ],
   "934":[ // San Luis Obispo + Pismo Beach + Avila Beach
     seedPlace("Mission San Luis Obispo de Tolosa","museum","San Luis Obispo, CA",35.2808,-120.665),
@@ -632,7 +652,7 @@ async function fetchWeather(lat,lon){
 
 /* ================= UI (browser only) ================= */
 if(typeof document!=="undefined" && document.getElementById("rollBtn")){
-  const state={places:[], zip:"", label:"", plan:null, lockedMain:null, weather:null, center:null,
+  const state={places:[], zip:"", label:"", plan:null, lockedMain:null, weather:null, center:null, picked:null,
     filters:Object.assign({},DEFAULT_FILTERS)};
   const FILTER_DEFS={
     fWho:[["any","Anyone"],["solo","Solo"],["date","Date"],["friends","Friends"],["family","Family / Kids"]],
@@ -763,7 +783,9 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     if(cached){ state.places=cached.places; state.label=cached.label; state.weather=cached.weather||null; state.center=cached.center||null; return; }
     $("#zipNote").textContent="Finding spots near "+raw+"\u2026";
     let g=null;
-    try{ g=isZip?await geocodeZip(raw):await geocodeCity(raw); }catch(e){ g=null; }
+    const picked=(!isZip && state.picked && state.picked.key===cacheKey)?state.picked:null;
+    if(picked){ g={lat:picked.lat, lon:picked.lon, label:picked.label, postcode:picked.postcode||null}; }
+    else { try{ g=isZip?await geocodeZip(raw):await geocodeCity(raw); }catch(e){ g=null; } }
     let seedZip=isZip?raw:null;
     if(g && g.postcode) seedZip=g.postcode;
     if(!g){
@@ -797,7 +819,57 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     if(rainy||hot||cold){ state.filters.preferIndoor=true; note+=" — leaning indoor for you"; }
     pill.textContent=note; renderFilterSummary();
   }
+
+  /* ---- search autosuggest (Photon type-ahead + starter-pack cities) ---- */
+  const PACK_CITY_SUGGEST=[["Bakersfield, CA","bakersfield"],["Los Angeles, CA","los angeles"],["Chicago, IL","chicago"],["San Luis Obispo, CA","san luis obispo"],["Pismo Beach, CA","pismo beach"],["Avila Beach, CA","avila beach"],["Columbus, OH","columbus"],["Worthington, OH","worthington"],["Westerville, OH","westerville"],["Gahanna, OH","gahanna"]];
+  let sugTimer=null, sugSeq=0;
+  function hideSuggest(){ $("#suggest").style.display="none"; }
+  function renderSuggest(items){
+    const box=$("#suggest");
+    if(!items.length){ hideSuggest(); return; }
+    box.innerHTML="";
+    items.forEach(it=>{
+      const d=document.createElement("div"); d.className="sugItem";
+      const a=document.createElement("div"); a.className="sl"; a.textContent=it.label;
+      const b=document.createElement("div"); b.className="ss"; b.textContent=it.sub;
+      d.appendChild(a); d.appendChild(b);
+      d.addEventListener("pointerdown",(e)=>{ e.preventDefault();
+        $("#zip").value=it.label;
+        if(it.picked) state.picked=Object.assign({}, it.picked, {key:it.label.toLowerCase()});
+        hideSuggest();
+      });
+      box.appendChild(d);
+    });
+    box.style.display="block";
+  }
+  $("#zip").addEventListener("input", ()=>{
+    const v=$("#zip").value;
+    if(state.picked && v.trim().toLowerCase()!==state.picked.key) state.picked=null;
+    const q=v.trim().toLowerCase();
+    if(/^\d/.test(q)||q.length<3){ hideSuggest(); return; }
+    const local=PACK_CITY_SUGGEST.filter(x=>x[1].includes(q)||x[0].toLowerCase().includes(q)).map(x=>({label:x[0],sub:"\u2B50 Starter-pack city \u2014 extra hand-picked spots",picked:null}));
+    renderSuggest(local);
+    clearTimeout(sugTimer); const seq=++sugSeq;
+    sugTimer=setTimeout(async()=>{
+      try{
+        const r=await fetch("https://photon.komoot.io/api/?q="+encodeURIComponent(v.trim())+"&limit=6&lang=en");
+        const j=await r.json(); if(seq!==sugSeq) return;
+        const seen=new Set(local.map(x=>x.label.toLowerCase()));
+        const items=(j.features||[]).filter(f=>f.properties&&f.properties.countrycode==="US").map(f=>{
+          const pr=f.properties, cc=f.geometry.coordinates;
+          const nm=pr.name||pr.city||""; if(!nm) return null;
+          const label=nm+(pr.state?", "+pr.state:"");
+          if(seen.has(label.toLowerCase())) return null; seen.add(label.toLowerCase());
+          const sub=[(pr.city&&pr.city!==nm)?pr.city:null, pr.postcode||null].filter(Boolean).join(" \u00B7 ")||"Tap to use this place";
+          return {label:label, sub:sub, picked:{lat:cc[1], lon:cc[0], label:label, postcode:pr.postcode||null}};
+        }).filter(Boolean);
+        renderSuggest(local.concat(items));
+      }catch(e){}
+    },280);
+  });
+  $("#zip").addEventListener("blur", ()=>setTimeout(hideSuggest,200));
   async function roll(){
+    hideSuggest();
     const raw=$("#zip").value.trim();
     const isZip=/^\d{5}$/.test(raw);
     if(!isZip && raw.replace(/[^a-zA-Z ]/g,"").trim().length<2){ $("#zipNote").textContent="Enter a ZIP code or a city name first."; return; }
