@@ -703,7 +703,44 @@ const SEED_INFO = {
  "Chiller Ice Rinks Dublin": "The Chiller's Dublin rink — public skating, stick-and-puck, and lessons on the northwest side.",
  "Boston Mills Ski Resort": "Half of the Boston Mills-Brandywine pair in the Cuyahoga Valley — the steeper, older-school hill. About 50 minutes from Youngstown; the valley's ski run.",
  "Brandywine Ski Resort": "The bigger, beginner-friendlier half of the pair — plus Polar Blast snow tubing next door. Night skiing is the local move.",
- "Alpine Valley Ski Area": "A family ski hill in the Geauga County snow belt — the lake-effect dumps make it the snowiest corner of Ohio. About an hour from Youngstown."
+ "Alpine Valley Ski Area": "A family ski hill in the Geauga County snow belt — the lake-effect dumps make it the snowiest corner of Ohio. About an hour from Youngstown.",
+ "Legoland California": "The brick-built theme park — 60+ rides, a water park, and Miniland's tiny LEGO cities. Built for kids 2-12 but the builds wow everybody.",
+ "The Flower Fields": "Fifty acres of ranunculus blooming in stripes above the coast, roughly March through Mother's Day — the most colorful hillside in North County.",
+ "Leo Carrillo Ranch Historic Park": "The 1930s adobe ranch of Leo Carrillo (Pancho from The Cisco Kid) — historic buildings, gardens, and free-roaming peacocks.",
+ "Carlsbad State Beach": "The warm-water beach below the Carlsbad seawall — walk the rail-trail above it, then drop down for a swim.",
+ "Museum of Making Music": "Five centuries of instruments you can see, hear, and some you can play — a small, clever museum by the Legoland hill.",
+ "Lake Calavera": "A lake inside an ancient volcanic plug — loop trails and the cone of Mount Calavera above it all.",
+ "Batiquitos Lagoon": "A protected coastal lagoon with a flat nature trail — egrets, herons, and some of the best birding on the coast.",
+ "Oceanside Pier": "At 1,942 feet, one of the longest wooden piers on the West Coast — fishermen, pelicans, and the sunset show nightly.",
+ "California Surf Museum": "Surf history done right — Bethany Hamilton's shark-bitten board, vintage boards, and rotating local legends.",
+ "Mission San Luis Rey": "The 'King of the Missions' (1798) — the largest of California's missions, with a museum, gardens, and a quiet lavender labyrinth.",
+ "Buena Vista Lagoon": "A freshwater lagoon straddling Oceanside and Carlsbad — the Audubon nature center and easy shoreline birding.",
+ "Guajome Regional Park": "300 acres of meadows, two ponds, and oaks on the old Rancho Guajome — North County's easy nature escape.",
+ "San Diego Zoo Safari Park": "1,800 acres of savanna in the San Pasqual Valley — herds roam huge field enclosures, and the Africa Tram rolls you past them. Half a zoo day at minimum.",
+ "San Diego Children's Discovery Museum": "Hands-on science and garden play for the under-10 crowd, right in downtown Escondido.",
+ "California Center for the Arts": "Escondido's performing arts center — concerts, theater, and a free museum gallery in the complex.",
+ "Stone Brewing World Bistro & Gardens": "Stone's original one-acre beer garden — boulders, fire pits, koi ponds, and the beer that started the San Diego craft wave.",
+ "Dixon Lake": "A stocked fishing lake above Escondido with shaded picnic grounds — famous for its giant stocked trout and catfish derbies.",
+ "Lake Hodges": "The reservoir under the I-15 bridge — miles of trail around it, fishing, and the bicycle/pedestrian bridge, one of the world's longest stress-ribbon bridges.",
+ "San Elijo Lagoon": "A 1,000-acre ecological reserve between Solana Beach and Encinitas — trails through six habitats to the ocean's edge.",
+ "San Diego Botanic Garden": "37 acres and 4 miles of trails through 29 themed gardens — bamboo groves, a tropical rainforest, and desert worlds.",
+ "Moonlight State Beach": "Encinitas' everything beach — volleyball courts, fire pits, a snack shack, and gentle waves for learning to surf.",
+ "Swami's Beach": "The legendary reef break under the golden Self-Realization temple — watch world-class surfers, explore the tidepools at low tide.",
+ "Self-Realization Fellowship Meditation Gardens": "Cliff-top meditation gardens above Swami's — koi ponds, flowering terraces, and the quietest ocean views in Encinitas. Free.",
+ "Cardiff State Beach": "Cardiff's long flat beach by San Elijo Lagoon — dog-friendly at the south end, sunset crowds at the Chart House bluff.",
+ "Annie's Canyon Trail": "A slot canyon in the middle of suburbia — squeeze through sandstone slots and climb the ladders to a lagoon viewpoint.",
+ "Del Mar Racetrack": "'Where the turf meets the surf' — Bing Crosby's 1937 racetrack. Seasonal meets (summer + fall); concerts and events fill the gaps.",
+ "Torrey Pines State Natural Reserve": "Home of America's rarest pine, on eroded cliffs above the Pacific — short hikes, huge views, and hang gliders riding the updrafts.",
+ "Torrey Pines Gliderport": "Watch paragliders launch off the La Jolla cliffs — or tandem up yourself. The free spectator show is half the fun.",
+ "Birch Aquarium at Scripps": "Scripps Institution's aquarium on the bluff — seahorses, a kelp forest tank, and the best ocean-science view combo in town.",
+ "La Jolla Cove": "A tiny protected cove in an ecological reserve — sea lions on the rocks, clear water for snorkeling, and the village right above.",
+ "Double Peak Park": "On a clear day from this 1,644-ft summit: the Pacific, Palomar, and all of North County. Drive-up park with a short summit path.",
+ "Alta Vista Botanical Gardens": "A volunteer-built garden hill in Brengle Terrace Park — themed gardens, sculptures, and a children's garden. Small fee.",
+ "Wave Waterpark": "Vista's city waterpark — slides, a lazy river, and a flow rider. Summer season; the local kids' default.",
+ "Antique Gas & Steam Engine Museum": "55 acres of working antique farm machinery — steam tractors, a sawmill, and a blacksmith, with big threshing shows twice a year.",
+ "Bates Nut Farm": "The famous pumpkin patch farm (since 1921) — fall pumpkins, year-round farm animals, hay mazes, and the country store.",
+ "Pala Casino Spa Resort": "The Pala Band's casino resort under the Palomar hills — gaming, a pool oasis, and concerts; North County's night-out anchor.",
+ "San Onofre State Beach": "Surf history's home break zone (Lower Trestles sits at its south end) — bluff-top camping, long beaches, and the old 'San O' locals scene. ~15 min north of Oceanside."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -1089,7 +1126,44 @@ const SEED_INFO_ES = {
  "Chiller Ice Rinks Dublin": "La pista de The Chiller en Dublin — patinaje público, stick-and-puck y clases en el lado noroeste.",
  "Boston Mills Ski Resort": "La mitad del dúo Boston Mills-Brandywine en el valle de Cuyahoga — la ladera más empinada y a la antigua. A unos 50 minutos de Youngstown; la escapada de esquí del valle.",
  "Brandywine Ski Resort": "La mitad más grande y amigable para principiantes del dúo — más el tubing de Polar Blast al lado. El esquí nocturno es el plan local.",
- "Alpine Valley Ski Area": "Una estación familiar en el cinturón de nieve del condado de Geauga — el efecto lago lo convierte en el rincón con más nieve de Ohio. A una hora de Youngstown, más o menos."
+ "Alpine Valley Ski Area": "Una estación familiar en el cinturón de nieve del condado de Geauga — el efecto lago lo convierte en el rincón con más nieve de Ohio. A una hora de Youngstown, más o menos.",
+ "Legoland California": "El parque temático hecho de bloques — más de 60 atracciones, parque acuático y las ciudades en miniatura de Miniland. Pensado para niños de 2 a 12, pero las construcciones asombran a todos.",
+ "The Flower Fields": "Cincuenta acres de ranúnculos floreciendo en franjas sobre la costa, más o menos de marzo al Día de las Madres — la ladera más colorida de North County.",
+ "Leo Carrillo Ranch Historic Park": "El rancho de adobe de los años 30 de Leo Carrillo (Pancho en The Cisco Kid) — edificios históricos, jardines y pavos reales sueltos.",
+ "Carlsbad State Beach": "La playa de agua templada bajo el malecón de Carlsbad — camina el sendero de arriba y luego baja a nadar.",
+ "Museum of Making Music": "Cinco siglos de instrumentos para ver, escuchar y algunos para tocar — un museo pequeño e ingenioso junto a la loma de Legoland.",
+ "Lake Calavera": "Un lago dentro de un antiguo tapón volcánico — senderos en circuito y el cono del Mount Calavera dominando el paisaje.",
+ "Batiquitos Lagoon": "Una laguna costera protegida con sendero plano de naturaleza — garzas y algunas de las mejores observaciones de aves de la costa.",
+ "Oceanside Pier": "Con 1,942 pies, uno de los muelles de madera más largos de la costa oeste — pescadores, pelícanos y el espectáculo del atardecer cada noche.",
+ "California Surf Museum": "Historia del surf bien contada — la tabla mordida por tiburón de Bethany Hamilton, tablas clásicas y leyendas locales en rotación.",
+ "Mission San Luis Rey": "El «Rey de las Misiones» (1798) — la más grande de las misiones de California, con museo, jardines y un tranquilo laberinto de lavanda.",
+ "Buena Vista Lagoon": "Una laguna de agua dulce entre Oceanside y Carlsbad — el centro de naturaleza de Audubon y observación de aves fácil en la orilla.",
+ "Guajome Regional Park": "300 acres de praderas, dos estanques y encinos en el viejo Rancho Guajome — el escape fácil a la naturaleza de North County.",
+ "San Diego Zoo Safari Park": "1,800 acres de sabana en el valle de San Pasqual — las manadas recorren encierros enormes y el Africa Tram te lleva entre ellas. Medio día de zoológico como mínimo.",
+ "San Diego Children's Discovery Museum": "Ciencia práctica y juegos de jardín para los menores de 10 años, justo en el centro de Escondido.",
+ "California Center for the Arts": "El centro de artes escénicas de Escondido — conciertos, teatro y una galería museo gratuita en el complejo.",
+ "Stone Brewing World Bistro & Gardens": "El jardín cervecero original de Stone, de un acre — rocas, fogatas, estanques con koi y la cerveza que inició la ola artesanal de San Diego.",
+ "Dixon Lake": "Un lago de pesca abastecido sobre Escondido con áreas de picnic sombreadas — famoso por sus truchas gigantes y torneos de bagre.",
+ "Lake Hodges": "El embalse bajo el puente del I-15 — millas de sendero alrededor, pesca y el puente peatonal y ciclista, uno de los puentes de cinta tensada más largos del mundo.",
+ "San Elijo Lagoon": "Una reserva ecológica de 1,000 acres entre Solana Beach y Encinitas — senderos por seis hábitats hasta la orilla del océano.",
+ "San Diego Botanic Garden": "37 acres y 4 millas de senderos por 29 jardines temáticos — bambúes, una selva tropical y mundos desérticos.",
+ "Moonlight State Beach": "La playa completa de Encinitas — canchas de voleibol, fogatas, antojitos y olas suaves para aprender a surfear.",
+ "Swami's Beach": "El legendario rompiente de arrecife bajo el templo dorado de Self-Realization — mira surfistas de clase mundial y explora las pozas de marea en marea baja.",
+ "Self-Realization Fellowship Meditation Gardens": "Jardines de meditación sobre el acantilado de Swami's — estanques con koi, terrazas floridas y las vistas al océano más tranquilas de Encinitas. Gratis.",
+ "Cardiff State Beach": "La playa larga y plana de Cardiff junto a la laguna San Elijo — perros permitidos al sur y atardeceres junto al acantilado del Chart House.",
+ "Annie's Canyon Trail": "Un cañón de ranura en medio de los suburbios — pasa entre paredes de arenisca y sube las escaleras hasta un mirador de la laguna.",
+ "Del Mar Racetrack": "«Donde el pasto se encuentra con el mar» — el hipódromo de Bing Crosby de 1937. Temporadas de verano y otoño; conciertos y eventos llenan el resto.",
+ "Torrey Pines State Natural Reserve": "Hogar del pino más raro de América, sobre acantilados erosionados frente al Pacífico — caminatas cortas, vistas enormes y alas delta en las corrientes.",
+ "Torrey Pines Gliderport": "Mira despegar los parapentes de los acantilados de La Jolla — o súbete en tándem. El espectáculo gratuito es la mitad de la diversión.",
+ "Birch Aquarium at Scripps": "El acuario de la Institución Scripps sobre el acantilado — caballitos de mar, un tanque de bosque de kelp y la mejor combinación de ciencia y vista al océano.",
+ "La Jolla Cove": "Una caleta protegida en una reserva ecológica — leones marinos en las rocas, agua clara para snorkel y el pueblo justo arriba.",
+ "Double Peak Park": "En un día claro desde esta cima de 1,644 pies: el Pacífico, Palomar y todo North County. Parque con acceso en auto y un sendero corto a la cima.",
+ "Alta Vista Botanical Gardens": "Un jardín construido por voluntarios en la loma del parque Brengle Terrace — jardines temáticos, esculturas y jardín infantil. Cuota pequeña.",
+ "Wave Waterpark": "El parque acuático municipal de Vista — toboganes, río lento y simulador de olas. Temporada de verano; el favorito de los niños locales.",
+ "Antique Gas & Steam Engine Museum": "55 acres de maquinaria agrícola antigua en funcionamiento — tractores de vapor, un aserradero y una herrería, con grandes exhibiciones dos veces al año.",
+ "Bates Nut Farm": "La famosa granja de calabazas (desde 1921) — calabazas en otoño, animales todo el año, laberintos de paja y la tienda campestre.",
+ "Pala Casino Spa Resort": "El casino resort de la banda Pala bajo las colinas de Palomar — juegos, una alberca oasis y conciertos; el centro de la vida nocturna de North County.",
+ "San Onofre State Beach": "La zona natal del surf histórico (Lower Trestles está en su extremo sur) — camping sobre el acantilado, playas largas y la escena clásica de San O. A ~15 min al norte de Oceanside."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -1489,6 +1563,45 @@ const SEEDS = {
     seedPlace("Monterey Bay Aquarium","zoo","Monterey, CA",36.6181,-121.9017),
     seedPlace("Elkhorn Slough","nature","Moss Landing, CA",36.8125,-121.7758),
     seedPlace("Garrapata State Park","nature","Carmel, CA",36.4736,-121.9056)
+  ],
+  "920": [
+    seedPlace("Legoland California","attraction","Carlsbad, CA",33.1279,-117.3117),
+    seedPlace("The Flower Fields","garden","Carlsbad, CA",33.1288,-117.3198),
+    seedPlace("Leo Carrillo Ranch Historic Park","park","Carlsbad, CA",33.1191,-117.2374),
+    seedPlace("Carlsbad State Beach","beach","Carlsbad, CA",33.1508,-117.3485),
+    seedPlace("Museum of Making Music","museum","Carlsbad, CA",33.1272,-117.317),
+    seedPlace("Lake Calavera","nature","Carlsbad, CA",33.1706,-117.2849),
+    seedPlace("Batiquitos Lagoon","nature","Carlsbad, CA",33.0884,-117.3058),
+    seedPlace("Oceanside Pier","viewpoint","Oceanside, CA",33.1942,-117.3846),
+    seedPlace("California Surf Museum","museum","Oceanside, CA",33.1964,-117.3814),
+    seedPlace("Mission San Luis Rey","museum","Oceanside, CA",33.2324,-117.3194),
+    seedPlace("Buena Vista Lagoon","nature","Oceanside, CA",33.1695,-117.3522),
+    seedPlace("Guajome Regional Park","park","Oceanside, CA",33.236,-117.2617),
+    seedPlace("San Diego Zoo Safari Park","zoo","Escondido, CA",33.0981,-116.9965),
+    seedPlace("San Diego Children's Discovery Museum","museum","Escondido, CA",33.1246,-117.0824),
+    seedPlace("California Center for the Arts","theatre","Escondido, CA",33.1229,-117.0855),
+    seedPlace("Stone Brewing World Bistro & Gardens","nightlife","Escondido, CA",33.1166,-117.12),
+    seedPlace("Dixon Lake","nature","Escondido, CA",33.1609,-117.0448),
+    seedPlace("Lake Hodges","nature","Escondido, CA",33.0602,-117.098),
+    seedPlace("San Elijo Lagoon","nature","Encinitas, CA",33.0143,-117.255),
+    seedPlace("San Diego Botanic Garden","garden","Encinitas, CA",33.054,-117.2812),
+    seedPlace("Moonlight State Beach","beach","Encinitas, CA",33.0483,-117.2951),
+    seedPlace("Swami's Beach","beach","Encinitas, CA",33.0466,-117.2564),
+    seedPlace("Self-Realization Fellowship Meditation Gardens","garden","Encinitas, CA",33.0353,-117.2919),
+    seedPlace("Cardiff State Beach","beach","Cardiff, CA",33.0105,-117.2796),
+    seedPlace("Annie's Canyon Trail","nature","Solana Beach, CA",33.0055,-117.2639),
+    seedPlace("Del Mar Racetrack","attraction","Del Mar, CA",32.9764,-117.2578),
+    seedPlace("Torrey Pines State Natural Reserve","nature","San Diego, CA",32.9161,-117.2482),
+    seedPlace("Torrey Pines Gliderport","attraction","San Diego, CA",32.8899,-117.2471),
+    seedPlace("Birch Aquarium at Scripps","zoo","San Diego, CA",32.8659,-117.2506),
+    seedPlace("La Jolla Cove","beach","San Diego, CA",32.8504,-117.273),
+    seedPlace("Double Peak Park","viewpoint","San Marcos, CA",33.1092,-117.1772),
+    seedPlace("Alta Vista Botanical Gardens","garden","Vista, CA",33.2102,-117.2194),
+    seedPlace("Wave Waterpark","attraction","Vista, CA",33.1995,-117.2462),
+    seedPlace("Antique Gas & Steam Engine Museum","museum","Vista, CA",33.2291,-117.2545),
+    seedPlace("Bates Nut Farm","attraction","Valley Center, CA",33.2085,-116.982),
+    seedPlace("Pala Casino Spa Resort","nightlife","Pala, CA",33.3631,-117.0847),
+    seedPlace("San Onofre State Beach","beach","San Clemente, CA",33.4225,-117.5807)
   ]
 };
 function seedForZip(zip){
@@ -1498,8 +1611,8 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","tehachapi":"933","kernville":"933","lake isabella":"933","wofford heights":"933","mojave":"933","ridgecrest":"933","taft":"933","shafter":"933","frazier park":"933","lebec":"933","boron":"933","randsburg":"933","bodfish":"933","los angeles":"900","big bear lake":"900","wrightwood":"900","running springs":"900","lake arrowhead":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","monterey":"934","carmel":"934","big sur":"934","pacific grove":"934","moss landing":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","dublin":"432","powell":"432","delaware":"432","newark":"432","logan":"432","delaware":"432","lewis center":"432","marion":"432","mount vernon":"432","mount gilead":"432","loudonville":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","girard":"445","struthers":"445","campbell":"445","vienna":"445","newton falls":"445","lake milton":"445","columbiana":"445","ravenna":"445","howland":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932","yosemite":"932","oakhurst":"932","shaver lake":"932","los banos":"932","lakeshore":"932"};
-const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818],"youngstown":[41.0998,-80.6495],"boardman":[41.0229,-80.66],"austintown":[41.0919,-80.7449],"canfield":[41.0251,-80.7606],"warren":[41.2375,-80.8184],"niles":[41.1798,-80.7644]};
+const CITY_SEED_KEYS={"bakersfield": "933", "tehachapi": "933", "kernville": "933", "lake isabella": "933", "wofford heights": "933", "mojave": "933", "ridgecrest": "933", "taft": "933", "shafter": "933", "frazier park": "933", "lebec": "933", "boron": "933", "randsburg": "933", "bodfish": "933", "los angeles": "900", "big bear lake": "900", "wrightwood": "900", "running springs": "900", "lake arrowhead": "900", "chicago": "606", "san luis obispo": "934", "pismo beach": "934", "avila beach": "934", "morro bay": "934", "los osos": "934", "atascadero": "934", "paso robles": "934", "cambria": "934", "cayucos": "934", "san simeon": "934", "arroyo grande": "934", "grover beach": "934", "nipomo": "934", "santa maria": "934", "guadalupe": "934", "monterey": "934", "carmel": "934", "big sur": "934", "pacific grove": "934", "moss landing": "934", "slo": "934", "columbus": "432", "worthington": "432", "westerville": "432", "gahanna": "432", "dublin": "432", "powell": "432", "delaware": "432", "newark": "432", "logan": "432", "lewis center": "432", "marion": "432", "mount vernon": "432", "mount gilead": "432", "loudonville": "432", "youngstown": "445", "boardman": "445", "austintown": "445", "canfield": "445", "warren": "445", "niles": "445", "girard": "445", "struthers": "445", "campbell": "445", "vienna": "445", "newton falls": "445", "lake milton": "445", "columbiana": "445", "ravenna": "445", "howland": "445", "porterville": "932", "visalia": "932", "springville": "932", "fresno": "932", "clovis": "932", "yosemite": "932", "oakhurst": "932", "shaver lake": "932", "los banos": "932", "lakeshore": "932", "oceanside": "920", "carlsbad": "920", "vista": "920", "san marcos": "920", "escondido": "920", "encinitas": "920", "solana beach": "920", "del mar": "920", "fallbrook": "920", "valley center": "920", "la jolla": "920", "cardiff": "920", "rancho santa fe": "920"};
+const SEED_CITY_CENTERS={"bakersfield": [35.3733, -119.0476], "los angeles": [34.084, -118.29], "chicago": [41.8781, -87.6298], "san luis obispo": [35.2703, -120.6582], "pismo beach": [35.1428, -120.6453], "avila beach": [35.1786, -120.7357], "slo": [35.2703, -120.6582], "columbus": [40.0529, -82.9151], "worthington": [40.0884, -83.0178], "westerville": [40.1013, -82.8977], "gahanna": [40.0203, -82.8818], "youngstown": [41.0998, -80.6495], "boardman": [41.0229, -80.66], "austintown": [41.0919, -80.7449], "canfield": [41.0251, -80.7606], "warren": [41.2375, -80.8184], "niles": [41.1798, -80.7644], "oceanside": [33.1959, -117.3795], "carlsbad": [33.1581, -117.3506], "escondido": [33.1247, -117.0809], "encinitas": [33.0486, -117.2903], "la jolla": [32.8497, -117.2709], "san marcos": [33.1434, -117.1661], "vista": [33.2, -117.2425], "solana beach": [32.991, -117.271], "del mar": [32.9595, -117.2653], "fallbrook": [33.3765, -117.2511], "valley center": [33.2188, -116.982], "cardiff": [33.02, -117.278]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
   const k=CITY_SEED_KEYS[normCity(city)];
@@ -1566,7 +1679,7 @@ function planText(plan,zip){
 /* ================= Live lookup ================= */
 const OVERPASS_URLS=["https://overpass-api.de/api/interpreter","https://overpass.private.coffee/api/interpreter","https://overpass.kumi.systems/api/interpreter","https://overpass.nchc.org.tw/api/interpreter"];
 const zipCacheKey="whatdo_zipcache3";
-const SEED_CENTERS={"445":[41.0998,-80.6495],"430":[40.1168,-82.9612],"432":[40.0529,-82.9151],"932":[36.0652,-119.0168],"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
+const SEED_CENTERS={"920":[33.1581,-117.3506],"445":[41.0998,-80.6495],"430":[40.1168,-82.9612],"432":[40.0529,-82.9151],"932":[36.0652,-119.0168],"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
 function fetchT(url,opts,ms){
   ms=ms||10000;
   if(typeof AbortController==="undefined") return fetch(url,opts);
