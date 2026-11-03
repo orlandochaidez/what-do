@@ -532,7 +532,35 @@ const SEED_INFO = {
  "Clovis Botanical Garden": "A free water-wise garden in Clovis — five acres showing what actually grows in valley heat. A short, pretty, educational stroll.",
  "Millerton Lake": "San Joaquin River reservoir at Friant, about 25 minutes past Fresno — boating, swimming beaches, and bald eagles in winter. A lake day at the edge of the foothills.",
  "Wild Water Adventure Park": "Clovis water park — 52 acres of slides, wave pools, and cabanas. Summer only. The other valley-heat escape hatch.",
- "Tower Theatre": "The 1939 art-deco landmark of the Tower District — concerts, comedy, and films, with the district's bars and cafes all around it."
+ "Tower Theatre": "The 1939 art-deco landmark of the Tower District — concerts, comedy, and films, with the district's bars and cafes all around it.",
+ "San Luis Obispo Botanical Garden": "Five acres of Mediterranean-climate gardens inside El Chorro Park — plants from all five Mediterranean regions of the world, free to wander.",
+ "Terrace Hill": "The little open-space hill in the middle of SLO neighborhoods — a short climb to a full 360 of the city and the Nine Sisters. Local sunset secret.",
+ "Sinsheimer Park": "SLO's sports park by the stadium — disc golf course, playgrounds, and ball fields along the creek.",
+ "Architecture Graveyard": "Cal Poly's Poly Canyon design village — decades of experimental student-built structures scattered up a canyon trail. Weird, free, and photogenic.",
+ "Palm Theatre": "SLO's indie/art-house cinema downtown since 1988 — the solar-powered, couch-seat, film-nerd pick.",
+ "Fremont Theater": "The big neon 1938 movie palace on Monterey Street — first-run movies plus concerts and events under the marquee.",
+ "Charles Paddock Zoo": "The Central Coast's zoo in Atascadero — red pandas, tigers, and meerkats in a compact, shady park setting. Easy half-day with kids.",
+ "Atascadero Lake Park": "Park on Atascadero Lake right by the zoo — playground, picnic lawns, and paddle-boat energy. Pair it with the zoo next door.",
+ "Sensorio Paso Robles": "A hillside of tens of thousands of glowing fiber-optic lights you walk through at dusk — the Field of Light. Ticketed evenings, about 35 minutes from SLO, and it books out.",
+ "Ravine Waterpark": "Paso Robles' water park — slides, wave pool, and a lazy river for when the north county is cooking. Summer only.",
+ "Morro Rock": "The 576-foot volcanic plug standing guard over Morro Bay harbor — walk the beach at its base, watch otters and peregrine falcons. The Central Coast's most famous silhouette.",
+ "Morro Bay State Park": "Bay-side state park — heron rookery, salt marsh boardwalk, and kayak launches on calm estuary water. Birdwatching HQ.",
+ "Montaña de Oro State Park": "'Mountain of Gold' — rugged bluffs, hidden coves, and the Bluff Trail, an easy cliff-top walk with nonstop ocean. The wild coast pick, 25 minutes from SLO.",
+ "Los Osos Oaks State Reserve": "An ancient grove of coast live oaks, some 800 years old, draped in moss on easy sandy trails. Quiet and a little enchanted.",
+ "Elfin Forest": "A boardwalk loop through a pygmy oak forest on the bay — 200-year-old oaks stunted to shrub height by the salt wind, with estuary views.",
+ "Cayucos Pier": "The wooden pier of the last old-school California beach town — surf, sand, and the whole slow Cayucos strip behind you.",
+ "Moonstone Beach": "Cambria's boardwalk beach — a mile of cliff-top path, tide pools, and polished moonstones in the sand at low tide. Peak sunset stroll.",
+ "Fiscalini Ranch Preserve": "450 acres of bluff-top meadow and Monterey pine forest saved by the town of Cambria — the Bluff Trail is the sunset walk.",
+ "Hearst Castle": "Hearst's hilltop palace — 165 rooms, Neptune Pool, and zebra leftovers on the ranch below. Tour tickets book ahead; it's about 50 minutes up the coast from SLO and a whole event.",
+ "Elephant Seal Vista Point": "Thousands of elephant seals hauled out on the beach below the boardwalk, just north of Hearst Castle — loud, huge, and free. Peak season is winter.",
+ "Village of Arroyo Grande & Swinging Bridge": "Old-town Arroyo Grande — the 1875 swinging bridge over the creek, roosters wandering the village, and antique shops on Branch Street.",
+ "Lopez Lake": "The Five Cities' lake — boating, fishing, waterslides at Mustang Waterpark next door, and oak-shaded camping up Lopez Drive.",
+ "Nipomo Regional Park": "Big oak-shaded county park in Nipomo — sports fields, playgrounds, and picnic space under the oaks.",
+ "Dana Adobe": "The 1839 Dana Adobe — one of California's oldest adobe homes, on the old El Camino Real. Small museum, deep rancho history.",
+ "The Luffa Farm": "A working farm growing luffa sponges (yes, they grow on vines) — quirky little tours and a gift shop in Nipomo. Peak random-roadside energy.",
+ "Waller Park": "Santa Maria's big lake park — pedal boats, ducks, disc golf, and picnic lawns. The city's living room, about 35 minutes from SLO.",
+ "Santa Maria Valley Discovery Museum": "Hands-on discovery museum downtown — building, climbing, and water-play zones for kids in the heart of Santa Maria.",
+ "Guadalupe-Nipomo Dunes": "One of the largest coastal dune systems left in California — towering sand, rare plants, and the lost Cecil B. DeMille movie set buried somewhere out there."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -750,7 +778,35 @@ const SEED_INFO_ES = {
  "Clovis Botanical Garden": "Un jardín gratuito de bajo consumo de agua en Clovis — cinco acres que muestran lo que sí crece con el calor del valle. Un paseo corto, bonito y educativo.",
  "Millerton Lake": "Embalse del río San Joaquín en Friant, a unos 25 minutos pasando Fresno — botes, playas para nadar y águilas calvas en invierno. Un día de lago al borde de las faldas de la Sierra.",
  "Wild Water Adventure Park": "Parque acuático de Clovis — 52 acres de toboganes, albercas de olas y cabañas. Solo en verano. La otra salida de emergencia contra el calor del valle.",
- "Tower Theatre": "El ícono art déco de 1939 del Tower District — conciertos, comedia y cine, con los bares y cafés del distrito por todos lados."
+ "Tower Theatre": "El ícono art déco de 1939 del Tower District — conciertos, comedia y cine, con los bares y cafés del distrito por todos lados.",
+ "San Luis Obispo Botanical Garden": "Cinco acres de jardines de clima mediterráneo dentro de El Chorro Park — plantas de las cinco regiones mediterráneas del mundo, gratis para pasear.",
+ "Terrace Hill": "La colina de espacio abierto en medio de los barrios de SLO — una subida corta a una vista completa de 360° de la ciudad y las Nine Sisters. El secreto local para el atardecer.",
+ "Sinsheimer Park": "El parque deportivo de SLO junto al estadio — campo de disc golf, juegos y canchas a lo largo del arroyo.",
+ "Architecture Graveyard": "El pueblo de diseño Poly Canyon de Cal Poly — décadas de estructuras experimentales construidas por estudiantes a lo largo de un sendero en el cañón. Raro, gratis y fotogénico.",
+ "Palm Theatre": "El cine independiente de arte de SLO, en el centro desde 1988 — con energía solar, asientos tipo sillón y selección para cinéfilos.",
+ "Fremont Theater": "El gran palacio de cine de 1938, con neón, en Monterey Street — estrenos, más conciertos y eventos bajo la marquesina.",
+ "Charles Paddock Zoo": "El zoológico de la Costa Central, en Atascadero — pandas rojos, tigres y suricatas en un parque compacto y con sombra. Medio día fácil con niños.",
+ "Atascadero Lake Park": "Parque junto al lago de Atascadero, al lado del zoológico — juegos, jardines para picnic y ambiente de botes de pedales. Combínalo con el zoológico vecino.",
+ "Sensorio Paso Robles": "Una ladera de decenas de miles de luces de fibra óptica brillantes por la que caminas al anochecer — el Field of Light. Noches con boleto, a unos 35 minutos de SLO, y se agota.",
+ "Ravine Waterpark": "El parque acuático de Paso Robles — toboganes, alberca de olas y río lento para cuando el norte del condado se está cocinando. Solo en verano.",
+ "Morro Rock": "El tapón volcánico de 576 pies que vigila el puerto de Morro Bay — camina la playa a su base y mira nutrias y halcones peregrinos. La silueta más famosa de la Costa Central.",
+ "Morro Bay State Park": "Parque estatal a orillas de la bahía — garzas anidando, pasarela sobre el marisma y salidas en kayak en agua tranquila de estuario. Central de observación de aves.",
+ "Montaña de Oro State Park": "'Montaña de Oro' — acantilados rugosos, caletas escondidas y el Bluff Trail, una caminata fácil sobre los acantilados con océano sin parar. La opción de costa salvaje, a 25 minutos de SLO.",
+ "Los Osos Oaks State Reserve": "Un bosque antiguo de encinos costeros, algunos de 800 años, cubiertos de musgo sobre senderos arenosos fáciles. Tranquilo y un poco encantado.",
+ "Elfin Forest": "Un circuito de pasarela por un bosque de encinos pigmeos junto a la bahía — encinos de 200 años encogidos a altura de arbusto por el viento salado, con vistas al estuario.",
+ "Cayucos Pier": "El muelle de madera del último pueblo playero a la antigua de California — surf, arena y toda la tranquila franja de Cayucos detrás de ti.",
+ "Moonstone Beach": "La playa con pasarela de Cambria — una milla de sendero sobre el acantilado, pozas de marea y piedras lunares pulidas en la arena con marea baja. El mejor paseo al atardecer.",
+ "Fiscalini Ranch Preserve": "450 acres de prado sobre acantilados y bosque de pinos de Monterey, salvados por el pueblo de Cambria — el Bluff Trail es el paseo al atardecer.",
+ "Hearst Castle": "El palacio de Hearst en la colina — 165 cuartos, la alberca Neptune y cebras que quedaron en el rancho. Los boletos de tour se reservan antes; está a unos 50 minutos costa arriba desde SLO y es todo un evento.",
+ "Elephant Seal Vista Point": "Miles de elefantes marinos descansando en la playa bajo la pasarela, justo al norte de Hearst Castle — ruidosos, enormes y gratis. La mejor temporada es el invierno.",
+ "Village of Arroyo Grande & Swinging Bridge": "El viejo Arroyo Grande — el puente colgante de 1875 sobre el arroyo, gallos paseando por el pueblo y tiendas de antigüedades en Branch Street.",
+ "Lopez Lake": "El lago de las Cinco Ciudades — botes, pesca, los toboganes de Mustang Waterpark al lado y camping con sombra de encinos por Lopez Drive.",
+ "Nipomo Regional Park": "Parque grande del condado en Nipomo, con sombra de encinos — canchas deportivas, juegos y espacio de picnic bajo los encinos.",
+ "Dana Adobe": "El Dana Adobe de 1839 — una de las casas de adobe más antiguas de California, sobre el viejo Camino Real. Museo pequeño, historia ranchera profunda.",
+ "The Luffa Farm": "Una granja activa que cultiva esponjas de lufa (sí, crecen en enredaderas) — tours curiosos y una tiendita en Nipomo. Energía máxima de atracción rara de carretera.",
+ "Waller Park": "El parque grande con lago de Santa Maria — botes de pedales, patos, disc golf y jardines para picnic. La sala de estar de la ciudad, a unos 35 minutos de SLO.",
+ "Santa Maria Valley Discovery Museum": "Museo interactivo de descubrimientos en el centro — zonas para construir, trepar y jugar con agua para niños, en el corazón de Santa Maria.",
+ "Guadalupe-Nipomo Dunes": "Uno de los sistemas de dunas costeras más grandes que quedan en California — arena imponente, plantas raras y el set de película perdido de Cecil B. DeMille enterrado en algún lugar ahí fuera."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -980,7 +1036,35 @@ const SEEDS = {
     seedPlace("Avila Hot Springs","attraction","Avila Beach, CA",35.1807,-120.7029),
     seedPlace("Sycamore Mineral Springs","attraction","Avila Beach, CA",35.1867,-120.7141),
     seedPlace("Point San Luis Lighthouse","museum","Avila Beach, CA",35.1604,-120.7608),
-    seedPlace("Ontario Ridge Trail","nature","Avila Beach, CA",35.1829,-120.7176)
+    seedPlace("Ontario Ridge Trail","nature","Avila Beach, CA",35.1829,-120.7176),
+    seedPlace("San Luis Obispo Botanical Garden","garden","San Luis Obispo, CA",35.3318,-120.7286),
+    seedPlace("Terrace Hill","viewpoint","San Luis Obispo, CA",35.2735,-120.6508),
+    seedPlace("Sinsheimer Park","park","San Luis Obispo, CA",35.2672,-120.6482),
+    seedPlace("Architecture Graveyard","attraction","San Luis Obispo, CA",35.3152,-120.6531),
+    seedPlace("Palm Theatre","cinema","San Luis Obispo, CA",35.2814,-120.6638),
+    seedPlace("Fremont Theater","cinema","San Luis Obispo, CA",35.2819,-120.6605),
+    seedPlace("Charles Paddock Zoo","zoo","Atascadero, CA",35.4666,-120.6704),
+    seedPlace("Atascadero Lake Park","park","Atascadero, CA",35.4675,-120.6686),
+    seedPlace("Sensorio Paso Robles","attraction","Paso Robles, CA",35.6533,-120.6255),
+    seedPlace("Ravine Waterpark","attraction","Paso Robles, CA",35.6462,-120.6434),
+    seedPlace("Morro Rock","viewpoint","Morro Bay, CA",35.3697,-120.8677),
+    seedPlace("Morro Bay State Park","nature","Morro Bay, CA",35.3428,-120.826),
+    seedPlace("Monta\u00f1a de Oro State Park","nature","Los Osos, CA",35.2938,-120.8616),
+    seedPlace("Los Osos Oaks State Reserve","nature","Los Osos, CA",35.3035,-120.8181),
+    seedPlace("Elfin Forest","nature","Los Osos, CA",35.3319,-120.8254),
+    seedPlace("Cayucos Pier","beach","Cayucos, CA",35.4479,-120.9068),
+    seedPlace("Moonstone Beach","beach","Cambria, CA",35.5749,-121.1137),
+    seedPlace("Fiscalini Ranch Preserve","nature","Cambria, CA",35.5565,-121.095),
+    seedPlace("Hearst Castle","museum","San Simeon, CA",35.6487,-121.1858),
+    seedPlace("Elephant Seal Vista Point","nature","San Simeon, CA",35.6635,-121.2585),
+    seedPlace("Village of Arroyo Grande & Swinging Bridge","attraction","Arroyo Grande, CA",35.1233,-120.577),
+    seedPlace("Lopez Lake","beach","Arroyo Grande, CA",35.2011,-120.4844),
+    seedPlace("Nipomo Regional Park","park","Nipomo, CA",35.0324,-120.5015),
+    seedPlace("Dana Adobe","museum","Nipomo, CA",35.0278,-120.469),
+    seedPlace("The Luffa Farm","attraction","Nipomo, CA",35.0464,-120.5443),
+    seedPlace("Waller Park","park","Santa Maria, CA",34.9,-120.4421),
+    seedPlace("Santa Maria Valley Discovery Museum","museum","Santa Maria, CA",34.9454,-120.435),
+    seedPlace("Guadalupe-Nipomo Dunes","nature","Guadalupe, CA",35.0065,-120.6177)
   ]
 };
 function seedForZip(zip){
@@ -990,7 +1074,7 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932"};
+const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932"};
 const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818],"youngstown":[41.0998,-80.6495],"boardman":[41.0229,-80.66],"austintown":[41.0919,-80.7449],"canfield":[41.0251,-80.7606],"warren":[41.2375,-80.8184],"niles":[41.1798,-80.7644]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
