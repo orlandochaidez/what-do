@@ -266,7 +266,7 @@ const CAT_BLURBS_ES = {
  "generic": "Un lugar sacado del mapa — toca 'Buscar' para ver fotos, reseñas y horarios."
 };
 const CLOSER_CATS = ["viewpoint","cafe","garden","park","gallery","market"];
-const MAIN_CATS   = ["zoo","attraction","museum","park","nature","cinema","bowling","sports","beach","theatre","minigolf","ice"];
+const MAIN_CATS   = ["zoo","attraction","museum","park","nature","cinema","bowling","sports","beach","theatre","minigolf","ice","nightlife"];
 
 function catFromTags(t){
   const L=t.leisure||"", T=t.tourism||"", A=t.amenity||"", N=t.natural||"";
@@ -560,7 +560,25 @@ const SEED_INFO = {
  "The Luffa Farm": "A working farm growing luffa sponges (yes, they grow on vines) — quirky little tours and a gift shop in Nipomo. Peak random-roadside energy.",
  "Waller Park": "Santa Maria's big lake park — pedal boats, ducks, disc golf, and picnic lawns. The city's living room, about 35 minutes from SLO.",
  "Santa Maria Valley Discovery Museum": "Hands-on discovery museum downtown — building, climbing, and water-play zones for kids in the heart of Santa Maria.",
- "Guadalupe-Nipomo Dunes": "One of the largest coastal dune systems left in California — towering sand, rare plants, and the lost Cecil B. DeMille movie set buried somewhere out there."
+ "Guadalupe-Nipomo Dunes": "One of the largest coastal dune systems left in California — towering sand, rare plants, and the lost Cecil B. DeMille movie set buried somewhere out there.",
+ "Kern River Parkway": "The 30-mile bike and walking path along the Kern River through the whole city — river views, herons, and the Lake Ming-to-Enos Lane run. Bakersfield's outdoor spine.",
+ "Tule Elk State Natural Reserve": "A protected tule elk herd on the old valley floor west of town — viewing platform, big skies, and elk doing their thing about 30 minutes out. Bring binoculars.",
+ "Wind Wolves Preserve": "The largest nonprofit nature preserve on the West Coast — 93,000 acres of grassland and mountains south of town, free trails, wildflowers in spring. About 45 minutes and a whole different world.",
+ "Buena Vista Lake": "Buena Vista Aquatic Rec Area — Lake Webb for swimming, boating, and fishing about 30 minutes southwest. The county's summer lake day.",
+ "Lake Woollomes": "Quiet little county lake park near Delano — fishing, picnic shelters, and zero crowd, about 40 minutes north.",
+ "Murray Family Farms": "The Big Red Barn on Highway 58 — farm fun park with animals, slides, a jumping pillow, and you-pick fruit in season. Kid chaos, farm edition.",
+ "The Marketplace": "The Ming Ave shopping strip — Regal movies, restaurants, and stores in one walkable center. The default southwest-side wander.",
+ "Heritage Park": "East-side neighborhood park with sports fields, playgrounds, and picnic shade.",
+ "Emerald Cove Park": "Clean newer park in the northwest — playground, wide lawns, and a pond loop.",
+ "Tevis Park": "Southwest park with fields, courts, and playground space — the neighborhood all-purpose stop.",
+ "Riverview Park": "Oildale's river-side park on Roberts Lane — big trees, fields, and Kern River Parkway trail access.",
+ "Jefferson Park": "One of the city's oldest parks, on the east side — mature trees, a pool in summer, and picnic lawns.",
+ "Buttonwillow Raceway Park": "The road-racing circuit west of town — track days, club racing, and spectating about 30 minutes out. Check the event calendar; it's loud in the best way.",
+ "Auto Club Famoso Raceway": "The legendary Famoso drag strip — home of the March Meet and 70 years of nitro history. Event days only, about 30 minutes north, and your ears will know.",
+ "Kern National Wildlife Refuge": "Vast restored wetlands northwest of town — an auto tour route through ponds packed with waterfowl in winter. The valley as it was 150 years ago. About 50 minutes.",
+ "Stars Theatre Restaurant": "Dinner theatre downtown — dinner served at your table, then a full stage musical or comedy. The date-night classic.",
+ "The Padre Hotel": "The 1928 Padre — Bakersfield's haunted-history landmark hotel, now the downtown nightlife anchor with bars and a rooftop scene. Go for the energy, stay for the ghost stories.",
+ "Temblor Brewing Company": "Bakersfield's craft brewery on Buck Owens Blvd — big taproom, trivia and comedy nights, and food trucks. The local-beer hangout."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -806,7 +824,25 @@ const SEED_INFO_ES = {
  "The Luffa Farm": "Una granja activa que cultiva esponjas de lufa (sí, crecen en enredaderas) — tours curiosos y una tiendita en Nipomo. Energía máxima de atracción rara de carretera.",
  "Waller Park": "El parque grande con lago de Santa Maria — botes de pedales, patos, disc golf y jardines para picnic. La sala de estar de la ciudad, a unos 35 minutos de SLO.",
  "Santa Maria Valley Discovery Museum": "Museo interactivo de descubrimientos en el centro — zonas para construir, trepar y jugar con agua para niños, en el corazón de Santa Maria.",
- "Guadalupe-Nipomo Dunes": "Uno de los sistemas de dunas costeras más grandes que quedan en California — arena imponente, plantas raras y el set de película perdido de Cecil B. DeMille enterrado en algún lugar ahí fuera."
+ "Guadalupe-Nipomo Dunes": "Uno de los sistemas de dunas costeras más grandes que quedan en California — arena imponente, plantas raras y el set de película perdido de Cecil B. DeMille enterrado en algún lugar ahí fuera.",
+ "Kern River Parkway": "El sendero de 30 millas para bici y caminata a lo largo del río Kern por toda la ciudad — vistas al río, garzas y el tramo de Lake Ming a Enos Lane. La columna vertebral al aire libre de Bakersfield.",
+ "Tule Elk State Natural Reserve": "Una manada protegida de alces tule en el antiguo valle, al oeste de la ciudad — plataforma de observación, cielos enormes y alces en lo suyo a unos 30 minutos. Trae binoculares.",
+ "Wind Wolves Preserve": "La reserva natural sin fines de lucro más grande de la Costa Oeste — 93,000 acres de pastizales y montañas al sur de la ciudad, senderos gratuitos y flores silvestres en primavera. A unos 45 minutos y es otro mundo.",
+ "Buena Vista Lake": "Buena Vista Aquatic Rec Area — Lake Webb para nadar, pasear en bote y pescar, a unos 30 minutos al suroeste. El día de lago del condado en verano.",
+ "Lake Woollomes": "Un parque lacustre tranquilo del condado, cerca de Delano — pesca, ramadas para picnic y cero multitudes, a unos 40 minutos al norte.",
+ "Murray Family Farms": "El Big Red Barn en la Highway 58 — parque de diversión agrícola con animales, toboganes, brincolín gigante y fruta para cosechar en temporada. Caos infantil, edición granja.",
+ "The Marketplace": "La franja comercial de Ming Ave — cine Regal, restaurantes y tiendas en un solo centro caminable. La vuelta clásica del suroeste de la ciudad.",
+ "Heritage Park": "Parque del este de la ciudad con canchas deportivas, juegos y sombra para picnic.",
+ "Emerald Cove Park": "Parque nuevo y limpio en el noroeste — juegos, jardines amplios y una vuelta alrededor del estanque.",
+ "Tevis Park": "Parque del suroeste con canchas, juegos y espacio abierto — la parada vecinal para todo.",
+ "Riverview Park": "El parque ribereño de Oildale en Roberts Lane — árboles grandes, canchas y acceso al sendero Kern River Parkway.",
+ "Jefferson Park": "Uno de los parques más antiguos de la ciudad, en el este — árboles maduros, alberca en verano y jardines para picnic.",
+ "Buttonwillow Raceway Park": "El circuito de carreras al oeste de la ciudad — días de pista, carreras de club y espectáculo a unos 30 minutos. Checa el calendario de eventos; es ruidoso de la mejor manera.",
+ "Auto Club Famoso Raceway": "La legendaria pista de arrancones Famoso — casa del March Meet y de 70 años de historia nitro. Solo en días de evento, a unos 30 minutos al norte, y tus oídos lo van a saber.",
+ "Kern National Wildlife Refuge": "Humedales restaurados enormes al noroeste de la ciudad — una ruta en carro por estanques llenos de aves acuáticas en invierno. El valle como era hace 150 años. A unos 50 minutos.",
+ "Stars Theatre Restaurant": "Teatro con cena en el centro — la cena se sirve en tu mesa y luego un musical o comedia completa en el escenario. El clásico para una cita.",
+ "The Padre Hotel": "El Padre de 1928 — el hotel emblemático de Bakersfield, con su historia de fantasmas, hoy el ancla de la vida nocturna del centro con bares y ambiente en la azotea. Ve por la energía, quédate por las historias de fantasmas.",
+ "Temblor Brewing Company": "La cervecería artesanal de Bakersfield en Buck Owens Blvd — taproom grande, noches de trivia y comedia, y food trucks. El lugar para la cerveza local."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -850,7 +886,25 @@ const SEEDS = {
     seedPlace("Flight Adventure Park","sports","Bakersfield, CA",35.3889,-119.0416),
     seedPlace("The Empty Space","theatre","Bakersfield, CA",35.3078,-119.0625),
     seedPlace("Central Park at Mill Creek","park","Bakersfield, CA",35.3744,-119.0088),
-    seedPlace("Reading Cinemas Valley Plaza","cinema","Bakersfield, CA",35.3394,-119.0323)
+    seedPlace("Reading Cinemas Valley Plaza","cinema","Bakersfield, CA",35.3394,-119.0323),
+    seedPlace("Kern River Parkway","nature","Bakersfield, CA",35.3951,-119.0288),
+    seedPlace("Tule Elk State Natural Reserve","nature","Tupman, CA",35.3155,-119.3624),
+    seedPlace("Wind Wolves Preserve","nature","Bakersfield, CA",34.9432,-119.1979),
+    seedPlace("Buena Vista Lake","beach","Taft, CA",35.225,-119.2667),
+    seedPlace("Lake Woollomes","nature","Delano, CA",35.7384,-119.179),
+    seedPlace("Murray Family Farms","attraction","Bakersfield, CA",35.2949,-118.754),
+    seedPlace("The Marketplace","market","Bakersfield, CA",35.3414,-119.1037),
+    seedPlace("Heritage Park","park","Bakersfield, CA",35.3884,-118.9688),
+    seedPlace("Emerald Cove Park","park","Bakersfield, CA",35.4003,-119.0842),
+    seedPlace("Tevis Park","park","Bakersfield, CA",35.3196,-119.1145),
+    seedPlace("Riverview Park","park","Bakersfield, CA",35.4012,-119.0281),
+    seedPlace("Jefferson Park","park","Bakersfield, CA",35.3889,-118.9861),
+    seedPlace("Buttonwillow Raceway Park","attraction","Buttonwillow, CA",35.4926,-119.5371),
+    seedPlace("Auto Club Famoso Raceway","attraction","McFarland, CA",35.5944,-119.1369),
+    seedPlace("Kern National Wildlife Refuge","nature","Delano, CA",35.756,-119.6163),
+    seedPlace("Stars Theatre Restaurant","theatre","Bakersfield, CA",35.3769,-119.0195),
+    seedPlace("The Padre Hotel","nightlife","Bakersfield, CA",35.3756,-119.0215),
+    seedPlace("Temblor Brewing Company","nightlife","Bakersfield, CA",35.3889,-119.0422)
   ],
   "932":[ // Porterville + Visalia + Sequoia ring (within ~2 hrs)
     seedPlace("Zalud House Museum","museum","Porterville, CA",36.0729,-119.0176),
