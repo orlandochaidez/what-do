@@ -583,7 +583,38 @@ const SEED_INFO = {
  "Tiki-Ko": -119.0178,
  "The Well Comedy Club": -119.0195,
  "Ethel's Old Corral Cafe": -118.9565,
- "Lengthwise Brewing Company": -119.0881
+ "Lengthwise Brewing Company": -119.0881,
+ "Ohio Statehouse": "Ohio's capitol on Capitol Square — free guided tours of the Greek Revival statehouse and its museum, right downtown.",
+ "Columbus Museum of Art": "The city's art museum — American and European collections, a hands-on creativity center, and free Sundays.",
+ "COSI": "Center of Science and Industry — the huge hands-on science museum on the river: planetarium, high-wire unicycle, and entire themed streets. Ranked among the best science museums in the country.",
+ "North Market": "Columbus's public market since 1876 — dozens of local food stalls, flowers, and spices under one roof downtown. Graze your way through it.",
+ "Short North Arts District": "The arches strip on High Street — gallery row, boutiques, murals, and bars. Gallery Hop nights (first Saturdays) are the big scene.",
+ "German Village": "The brick-street historic district south of downtown — 19th-century cottages, bookshops, bakeries, and the 32-room Book Loft maze. A wander, not a stop.",
+ "Scioto Mile": "The downtown riverfront park — fountains, swings, and skyline views along the Scioto. The city's front porch.",
+ "Topiary Park": "A living Seurat painting — topiary figures of 'A Sunday Afternoon' clipped into a downtown park. Small, free, and surreal.",
+ "Huntington Park": "Home of the Columbus Clippers (Triple-A) in the Arena District — one of the nicest minor-league parks in America. Check the schedule; dime-a-dog nights are legendary.",
+ "Ohio Stadium": "The Horseshoe — Ohio State's 102,000-seat cathedral on the Olentangy. Tours on non-game days; on game days the whole area is the event.",
+ "National Veterans Memorial and Museum": "The national veterans museum on the river — personal stories told powerful and modern. Heavy in the good way.",
+ "Goodale Park": "The city's oldest park, in Victorian Village — pond, gazebo, and ComFest energy in summer.",
+ "Schiller Park": "German Village's park — flower gardens, a fishing pond, and free summer theatre under the trees.",
+ "Antrim Park": "A lake loop on the Olentangy just south of Worthington — the run/walk/ride circuit plus fishing and ball fields. The northwest-side default.",
+ "Hayden Falls Park": "A 35-foot waterfall in a gorge hidden off Hayden Run Road — short boardwalk, big payoff, especially after rain.",
+ "Ohio Theatre": "The 1928 Spanish-baroque movie palace turned performing arts palace — Broadway tours, the Columbus Symphony, and CAPA summer movies.",
+ "Bridge Park": "Dublin's new downtown across the pedestrian bridge from old Dublin — restaurants, bars, the market hall, and riverfront lawns.",
+ "Indian Run Falls": "A waterfall gorge tucked behind a Dublin neighborhood — boardwalks over the falls, five minutes from Bridge Park.",
+ "Ballantrae Park": "The park with the giant dancing hares — a 20-foot bronze sculpture of three hares on a hill, plus trails and a spray fountain.",
+ "Muirfield Village Golf Club": "Jack Nicklaus's masterpiece and home of the Memorial Tournament — public play is limited, so check access and rates before you roll.",
+ "Safari Golf Club": "The public course by the zoo where safari animals sometimes watch from next door — a solid, affordable round.",
+ "Olentangy Indian Caverns": "Wyandotte-used caverns north of town — guided cave tours, a maze, gem mining, and minigolf on the grounds.",
+ "Battelle Darby Creek Metro Park": "The bison park — a real herd roaming restored prairie west of Columbus, plus Big Darby Creek trails and a big nature center. About 40 minutes from Worthington.",
+ "Hollywood Casino Columbus": "The west-side casino — slots, tables, poker room, and restaurants under one roof. The 21+ late-night option.",
+ "Walnut Woods Metro Park": "A forest of 100-foot white pines planted in the 1930s-70s on the southeast side — quiet trails through a green cathedral.",
+ "Dawes Arboretum": "1,900 acres of gardens, a Japanese garden, and a hedge that spells out 'Dawes Arboretum' readable from the air. About 45 minutes from Worthington.",
+ "Newark Earthworks": "The largest ancient earthworks in the world — 2,000-year-old Hopewell geometry: a perfect circle and octagon aligned to the moon. UNESCO-level history, about 45 minutes out.",
+ "Buckeye Lake State Park": "Ohio's oldest state park, on the big recreational lake east of town — swimming beach, boating, and lakeside bars. Summer day-trip mode, about 40 minutes.",
+ "Old Man's Cave": "Hocking Hills' greatest hit — a towering recess cave in a hemlock gorge with waterfalls and stone bridges. About an hour from Worthington and worth every minute; weekends get packed.",
+ "Ash Cave": "A 700-foot-wide horseshoe cave with a waterfall pouring over the rim — the biggest recess cave in Ohio, on an easy paved path in Hocking Hills.",
+ "Cedar Falls": "The most water volume of any fall in Hocking Hills — a hemlock-shaded cascade between Old Man's Cave and Ash Cave. Not actually cedars; early settlers misnamed the hemlocks."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -852,7 +883,38 @@ const SEED_INFO_ES = {
  "Tiki-Ko": "Full-immersion tiki bar downtown — Mai Tais, Navy Grogs, and the Sinking Ship Room upstairs. Bakersfield's little tropical escape since 2016.",
  "The Well Comedy Club": "The Central Valley's full-time comedy club downtown — stand-up Thu–Sat, open mics, and touring names. Check the calendar for who's on.",
  "Ethel's Old Corral Cafe": "Legendary roadhouse bar and grill out on Alfred Harrell Hwy — live bands on weekends, hitching posts for horses, and a lot that fits RVs and bikes alike. Pure Kern County.",
- "Lengthwise Brewing Company": "Local brewery-pub at The District — house IPAs, pub food, and a big patio on District Blvd."
+ "Lengthwise Brewing Company": "Local brewery-pub at The District — house IPAs, pub food, and a big patio on District Blvd.",
+ "Ohio Statehouse": "El capitolio de Ohio en Capitol Square — tours guiados gratuitos por la casa de gobierno de estilo Greek Revival y su museo, justo en el centro.",
+ "Columbus Museum of Art": "El museo de arte de la ciudad — colecciones americanas y europeas, un centro interactivo de creatividad y domingos gratis.",
+ "COSI": "El Center of Science and Industry — el enorme museo interactivo de ciencia junto al río: planetario, monociclo en cable alto y calles temáticas completas. Ranked entre los mejores museos de ciencia del país.",
+ "North Market": "El mercado público de Columbus desde 1876 — decenas de puestos locales de comida, flores y especias bajo un mismo techo en el centro. Recórrelo comiendo.",
+ "Short North Arts District": "La franja de los arcos en High Street — galerías, boutiques, murales y bares. Las noches de Gallery Hop (primeros sábados) son el gran ambiente.",
+ "German Village": "El distrito histórico de calles de ladrillo al sur del centro — casas del siglo XIX, librerías, panaderías y el laberinto de 32 cuartos del Book Loft. Es para pasear, no solo una parada.",
+ "Scioto Mile": "El parque ribereño del centro — fuentes, columpios y vistas al skyline a lo largo del Scioto. El porche delantero de la ciudad.",
+ "Topiary Park": "Una pintura viviente de Seurat — figuras de topiario de 'Una tarde de domingo' recortadas en un parque del centro. Pequeño, gratis y surrealista.",
+ "Huntington Park": "Casa de los Columbus Clippers (Triple-A) en el Arena District — uno de los estadios de ligas menores más bonitos de Estados Unidos. Checa el calendario; las noches de hot dogs a diez centavos son legendarias.",
+ "Ohio Stadium": "El Horseshoe — la catedral de Ohio State con 102,000 asientos a orillas del Olentangy. Tours en días sin juego; en días de juego, toda la zona es el evento.",
+ "National Veterans Memorial and Museum": "El museo nacional de veteranos junto al río — historias personales contadas de forma potente y moderna. Denso en el buen sentido.",
+ "Goodale Park": "El parque más antiguo de la ciudad, en Victorian Village — lago, gazebo y la energía de ComFest en verano.",
+ "Schiller Park": "El parque de German Village — jardines de flores, un lago para pescar y teatro gratuito en verano bajo los árboles.",
+ "Antrim Park": "Un circuito de lago sobre el Olentangy, justo al sur de Worthington — vuelta para correr, caminar o andar en bici, más pesca y canchas. La opción clásica del noroeste.",
+ "Hayden Falls Park": "Una cascada de 35 pies en un cañón escondido junto a Hayden Run Road — pasarela corta, gran recompensa, sobre todo después de la lluvia.",
+ "Ohio Theatre": "El palacio de cine barroco-español de 1928 convertido en palacio de artes escénicas — giras de Broadway, la Sinfónica de Columbus y cine de verano de CAPA.",
+ "Bridge Park": "El nuevo centro de Dublin, cruzando el puente peatonal desde el viejo Dublin — restaurantes, bares, el salón de mercado y jardines junto al río.",
+ "Indian Run Falls": "Un cañón con cascada escondido detrás de un vecindario de Dublin — pasarelas sobre la cascada, a cinco minutos de Bridge Park.",
+ "Ballantrae Park": "El parque de las liebres gigantes que bailan — una escultura de bronce de 20 pies con tres liebres en una colina, más senderos y una fuente de chorros.",
+ "Muirfield Village Golf Club": "La obra maestra de Jack Nicklaus y casa del Memorial Tournament — el juego público es limitado, así que verifica acceso y precios antes de ir.",
+ "Safari Golf Club": "El campo público junto al zoológico donde a veces los animales del safari miran desde al lado — una ronda sólida y económica.",
+ "Olentangy Indian Caverns": "Cavernas usadas por los Wyandotte al norte de la ciudad — tours guiados a la cueva, un laberinto, búsqueda de gemas y minigolf en el lugar.",
+ "Battelle Darby Creek Metro Park": "El parque de los bisontes — una manada de verdad pastando en pradera restaurada al oeste de Columbus, más senderos del Big Darby Creek y un gran centro de naturaleza. A unos 40 minutos de Worthington.",
+ "Hollywood Casino Columbus": "El casino del lado oeste — máquinas, mesas, sala de póker y restaurantes bajo un mismo techo. La opción nocturna para mayores de 21.",
+ "Walnut Woods Metro Park": "Un bosque de pinos blancos de 100 pies plantados entre los años 30 y 70 en el sureste — senderos tranquilos por una catedral verde.",
+ "Dawes Arboretum": "1,900 acres de jardines, un jardín japonés y un seto que deletrea 'Dawes Arboretum' legible desde el aire. A unos 45 minutos de Worthington.",
+ "Newark Earthworks": "Los movimientos de tierra antiguos más grandes del mundo — geometría Hopewell de 2,000 años: un círculo y un octágono perfectos alineados con la luna. Historia nivel UNESCO, a unos 45 minutos.",
+ "Buckeye Lake State Park": "El parque estatal más antiguo de Ohio, en el gran lago recreativo al este — playa para nadar, botes y bares a la orilla. Modo escapada de verano, a unos 40 minutos.",
+ "Old Man's Cave": "El mayor éxito de Hocking Hills — una cueva enorme en un cañón de cicuta con cascadas y puentes de piedra. A una hora de Worthington, más o menos, y vale cada minuto; los fines de semana se llena.",
+ "Ash Cave": "Una cueva en forma de herradura de 700 pies de ancho con una cascada cayendo desde el borde — la cueva empotrada más grande de Ohio, por un sendero pavimentado fácil en Hocking Hills.",
+ "Cedar Falls": "La cascada con más volumen de agua de Hocking Hills — caída con sombra de cicutas entre Old Man's Cave y Ash Cave. En realidad no hay cedros; los primeros colonos confundieron las cicutas."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -1071,7 +1133,38 @@ const SEEDS = {
     seedPlace("Woodside Green Park","park","Gahanna, OH",40.0438,-82.8808),
     seedPlace("Hoover Reservoir Park","nature","Westerville, OH",40.1092,-82.8866),
     seedPlace("ZipZone Outdoor Adventures","attraction","Columbus, OH",40.1255,-83.0164),
-    seedPlace("Alum Creek State Park","beach","Delaware, OH",40.2548,-82.9724)
+    seedPlace("Alum Creek State Park","beach","Delaware, OH",40.2548,-82.9724),
+    seedPlace("Ohio Statehouse","museum","Columbus, OH",39.9615,-82.9992),
+    seedPlace("Columbus Museum of Art","museum","Columbus, OH",39.9644,-82.9878),
+    seedPlace("COSI","museum","Columbus, OH",39.9597,-83.0067),
+    seedPlace("North Market","market","Columbus, OH",39.9716,-83.0045),
+    seedPlace("Short North Arts District","gallery","Columbus, OH",39.98,-83.0041),
+    seedPlace("German Village","attraction","Columbus, OH",39.9464,-82.9928),
+    seedPlace("Scioto Mile","park","Columbus, OH",39.9594,-83.0032),
+    seedPlace("Topiary Park","garden","Columbus, OH",39.9608,-82.9876),
+    seedPlace("Huntington Park","attraction","Columbus, OH",39.9687,-83.0109),
+    seedPlace("Ohio Stadium","viewpoint","Columbus, OH",40.0016,-83.0197),
+    seedPlace("National Veterans Memorial and Museum","museum","Columbus, OH",39.962,-83.0082),
+    seedPlace("Goodale Park","park","Columbus, OH",39.9762,-83.0071),
+    seedPlace("Schiller Park","park","Columbus, OH",39.942,-82.9927),
+    seedPlace("Antrim Park","park","Columbus, OH",40.0801,-83.0343),
+    seedPlace("Hayden Falls Park","nature","Columbus, OH",40.0598,-83.1715),
+    seedPlace("Ohio Theatre","theatre","Columbus, OH",39.9599,-82.9989),
+    seedPlace("Bridge Park","market","Dublin, OH",40.1028,-83.1087),
+    seedPlace("Indian Run Falls","nature","Dublin, OH",40.1014,-83.1198),
+    seedPlace("Ballantrae Park","park","Dublin, OH",40.0874,-83.1617),
+    seedPlace("Muirfield Village Golf Club","sports","Dublin, OH",40.1443,-83.1501),
+    seedPlace("Safari Golf Club","sports","Powell, OH",40.1501,-83.1137),
+    seedPlace("Olentangy Indian Caverns","attraction","Delaware, OH",40.1916,-83.0635),
+    seedPlace("Battelle Darby Creek Metro Park","nature","West Jefferson, OH",39.8834,-83.2196),
+    seedPlace("Hollywood Casino Columbus","nightlife","Columbus, OH",39.9491,-83.1081),
+    seedPlace("Walnut Woods Metro Park","nature","Groveport, OH",39.8395,-82.8699),
+    seedPlace("Dawes Arboretum","garden","Newark, OH",39.977,-82.4181),
+    seedPlace("Newark Earthworks","museum","Newark, OH",40.0419,-82.4281),
+    seedPlace("Buckeye Lake State Park","beach","Buckeye Lake, OH",39.9321,-82.4783),
+    seedPlace("Old Man's Cave","nature","Logan, OH",39.4307,-82.5385),
+    seedPlace("Ash Cave","nature","Logan, OH",39.3994,-82.5443),
+    seedPlace("Cedar Falls","nature","Logan, OH",39.419,-82.5249)
   ],
   "934":[ // San Luis Obispo + Pismo Beach + Avila Beach
     seedPlace("Mission San Luis Obispo de Tolosa","museum","San Luis Obispo, CA",35.2808,-120.665),
@@ -1143,7 +1236,7 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932"};
+const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","dublin":"432","powell":"432","delaware":"432","newark":"432","logan":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932"};
 const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818],"youngstown":[41.0998,-80.6495],"boardman":[41.0229,-80.66],"austintown":[41.0919,-80.7449],"canfield":[41.0251,-80.7606],"warren":[41.2375,-80.8184],"niles":[41.1798,-80.7644]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
