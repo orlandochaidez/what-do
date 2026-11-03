@@ -504,7 +504,7 @@ const SEED_INFO = {
  "General Grant Tree": "The nation's Christmas tree — a giant sequoia in Grant Grove, Kings Canyon National Park, on a short paved loop with other giants. About 2 hours from Porterville; park entry fee applies.",
  "Trail of 100 Giants": "An easy paved loop through a grove of giant sequoias in Sequoia National Forest above Springville — some trees are 1,500 years old. About an hour from Porterville, no national-park line.",
  "Balch Park": "Mountain county park above Springville — a sequoia grove, two fishing ponds, and cool air at 4,700 feet when the valley is baking.",
- "Lake Isabella": "Big Kern River reservoir in the southern Sierra — boating, fishing, windsurfing, and beach camping. About 1 hour 20 from Porterville.",
+ "Lake Isabella": "Kern's big mountain lake — swim beaches, boating, windsurfing, and fishing about an hour up the canyon. Scout Island and the marinas are the main bases.",
  "Colonel Allensworth State Historic Park": "The only town in California founded by African Americans (1908), now a state park of restored buildings — schoolhouse, church, and homes. About 45 minutes southwest.",
  "Fresno Chaffee Zoo": "One of the best mid-size zoos in the country — African Safari savanna, sea lion cove, and a rainforest. About 1 hour 15 from Porterville, and worth the drive.",
  "Forestiere Underground Gardens": "A Sicilian immigrant hand-dug this underground villa over 40 years — rooms, courtyards, and fruit trees below the Fresno hardpan. Guided tours; genuinely one of a kind.",
@@ -640,7 +640,26 @@ const SEED_INFO = {
  "Lake Milton State Park": "A 1,700-acre lake west of Youngstown — swim beach, boating, and fishing, about 25 minutes out. The valley's lake day.",
  "Berlin Lake": "A big quiet reservoir southwest of Youngstown — fishing, boating, and shoreline camping, about 35 minutes out.",
  "Firestone Park": "Harvey Firestone's hometown park in Columbiana — a lake, an amphitheater, and one of Ohio's prettiest small-town parks, about 30 minutes south.",
- "West Branch State Park": "A big lake state park on the Michael J. Kirwan reservoir — beach, boating, and 20 miles of trails, about 40 minutes west."
+ "West Branch State Park": "A big lake state park on the Michael J. Kirwan reservoir — beach, boating, and 20 miles of trails, about 40 minutes west.",
+ "Tehachapi Loop": "The world-famous railroad spiral — trains loop over themselves climbing the Tehachapi Pass. Pull off at the overlook and wait for a freight; it's engineering theater. About an hour from Bakersfield.",
+ "Tehachapi Depot Museum": "The rebuilt 1876 railroad depot in downtown Tehachapi — train history, a caboose, and front-row watching of the pass traffic.",
+ "Circle Park": "Kernville's town park on the river — shade, the rodeo grounds energy, and the Kern River running right past it.",
+ "Kern Valley Museum": "The Kern River Valley's museum — gold rush, movie-western, and river history in little Kernville. Free and full of local soul.",
+ "Silver City Ghost Town": "A rescued ghost town by Lake Isabella — 1870s mining buildings moved here and kept as a walk-through museum. Spooky, dusty, great.",
+ "Greenhorn Mountain Park": "County park in the pines above Lake Isabella — disc golf, picnic grounds, and cool mountain air when the valley is baking.",
+ "Shirley Meadow / Alta Sierra Ski Area": "Kern's little local ski hill above Lake Isabella — a couple lifts, tubing, and summer lift rides. Winter conditions vary; check before you drive up.",
+ "Red Rock Canyon State Park": "Desert cliffs and badlands in every shade of red on Highway 14 — movie-set scenery, short hikes, and huge night skies. About 1 hour 15 from Bakersfield.",
+ "Mojave Air and Space Port": "The civilian spaceport — spaceship history (SpaceShipOne flew from here), a plane boneyard you can view, and flight-test weirdness. About an hour from Bakersfield; weekend plane-spotting is the move.",
+ "Randsburg": "A living ghost town in the Rand Mountains — 1890s gold-rush main street with a working general store and soda fountain. About 1 hour 30; pair it with Red Rock Canyon.",
+ "Twenty Mule Team Museum": "Borax history in Boron — the twenty-mule-team story that hauled borax out of Death Valley, next to the open-pit mine town.",
+ "Borax Visitor Center": "The lookout over one of the world's biggest borax mines — museum, film, and a giant open pit with toy-looking haul trucks that are actually 200-tonners.",
+ "Maturango Museum": "Ridgecrest's desert museum — Coso petroglyph country history, natural history, and desert art. The gateway stop if you're heading to the high desert.",
+ "West Kern Oil Museum": "Oil country history in Taft — a full wooden derrick, boomtown photos, and the story of the Lakeview Gusher. Kern's black-gold roots.",
+ "Minter Field Air Museum": "WWII aviation museum at the old Minter Field in Shafter — training-plane history, hangars, and fly-in days.",
+ "Fort Tejon State Historic Park": "An 1854 army fort in the Grapevine canyon — restored barracks, dragoon history, and huge valley oaks. Civil War reenactment days are the big draw. About 45 minutes south.",
+ "Outlets at Tejon": "The outlet mall at the base of the Grapevine on I-5 — the Tejon Ranch shopping stop everyone makes between Bakersfield and LA.",
+ "Mount Pinos": "At 8,831 feet, the highest point around — an easy summit walk from the Nordic Base by Frazier Park, with stargazing that's famous statewide.",
+ "Hungry Valley SVRA": "4,000 acres of off-road trails at Gorman — bring the OHV or just watch the hill climbs. Another world, 45 minutes south."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -830,7 +849,7 @@ const SEED_INFO_ES = {
  "General Grant Tree": "El árbol de Navidad de la nación — una secuoya gigante en Grant Grove, Parque Nacional Kings Canyon, en un circuito corto pavimentado junto a otros gigantes. A unas 2 horas de Porterville; aplica la cuota de entrada al parque.",
  "Trail of 100 Giants": "Un circuito pavimentado y fácil entre secuoyas gigantes en el Bosque Nacional Sequoia, arriba de Springville — algunos árboles tienen 1,500 años. A una hora de Porterville, sin fila de parque nacional.",
  "Balch Park": "Parque de montaña del condado arriba de Springville — un bosque de secuoyas, dos lagos para pescar y aire fresco a 4,700 pies cuando el valle se está cocinando.",
- "Lake Isabella": "Embalse grande del río Kern en la Sierra sur — botes, pesca, windsurf y camping en la playa. A 1 hora 20 de Porterville, más o menos.",
+ "Lake Isabella": "El gran lago de montaña de Kern — playas para nadar, botes, windsurf y pesca a una hora cañón arriba, más o menos. Scout Island y las marinas son las bases principales.",
  "Colonel Allensworth State Historic Park": "El único pueblo de California fundado por afroamericanos (1908), hoy un parque estatal de edificios restaurados — escuela, iglesia y casas. A unos 45 minutos al suroeste.",
  "Fresno Chaffee Zoo": "Uno de los mejores zoológicos medianos del país — sabana Safari africana, caleta de leones marinos y una selva tropical. A 1 hora 15 de Porterville, y vale la manejada.",
  "Forestiere Underground Gardens": "Un inmigrante siciliano excavó a mano esta villa subterránea durante 40 años — cuartos, patios y árboles frutales bajo la tierra dura de Fresno. Tours guiados; de verdad, único en su tipo.",
@@ -966,7 +985,26 @@ const SEED_INFO_ES = {
  "Lake Milton State Park": "Un lago de 1,700 acres al oeste de Youngstown — playa para nadar, botes y pesca, a unos 25 minutos. El día de lago del valle.",
  "Berlin Lake": "Un embalse grande y tranquilo al suroeste de Youngstown — pesca, botes y camping a la orilla, a unos 35 minutos.",
  "Firestone Park": "El parque del pueblo natal de Harvey Firestone, en Columbiana — un lago, un anfiteatro y uno de los parques de pueblo más bonitos de Ohio, a unos 30 minutos al sur.",
- "West Branch State Park": "Un parque estatal grande junto al embalse Michael J. Kirwan — playa, botes y 20 millas de senderos, a unos 40 minutos al oeste."
+ "West Branch State Park": "Un parque estatal grande junto al embalse Michael J. Kirwan — playa, botes y 20 millas de senderos, a unos 40 minutos al oeste.",
+ "Tehachapi Loop": "La famosa espiral ferroviaria — los trenes pasan en círculo sobre sí mismos subiendo el puerto de Tehachapi. Detente en el mirador y espera un tren de carga; es teatro de ingeniería. A una hora de Bakersfield, más o menos.",
+ "Tehachapi Depot Museum": "La estación ferroviaria de 1876, reconstruida, en el centro de Tehachapi — historia de trenes, un furgón de cola y asientos de primera fila para ver el tráfico del puerto.",
+ "Circle Park": "El parque del pueblo de Kernville junto al río — sombra, ambiente de rodeo y el río Kern pasando justo al lado.",
+ "Kern Valley Museum": "El museo del valle del río Kern — fiebre del oro, westerns de película e historia del río en el pequeño Kernville. Gratis y lleno de alma local.",
+ "Silver City Ghost Town": "Un pueblo fantasma rescatado junto a Lake Isabella — edificios mineros de 1870 traídos aquí y conservados como museo caminable. Tenebroso, polvoriento, genial.",
+ "Greenhorn Mountain Park": "Parque del condado entre pinos sobre Lake Isabella — disc golf, áreas de picnic y aire fresco de montaña cuando el valle se está horneando.",
+ "Shirley Meadow / Alta Sierra Ski Area": "La pequeña estación de esquí local de Kern sobre Lake Isabella — un par de lifts, tubing y paseos en lift en verano. Las condiciones de invierno varían; verifica antes de subir.",
+ "Red Rock Canyon State Park": "Acantilados desérticos y tierras malas en todos los tonos de rojo sobre la Highway 14 — escenario de película, caminatas cortas y cielos nocturnos enormes. A 1 hora 15 de Bakersfield, más o menos.",
+ "Mojave Air and Space Port": "El puerto espacial civil — historia de naves espaciales (el SpaceShipOne voló desde aquí), un cementerio de aviones visible y rarezas de pruebas de vuelo. A una hora de Bakersfield; ir a ver aviones el fin de semana es el plan.",
+ "Randsburg": "Un pueblo fantasma viviente en las montañas Rand — calle principal de la fiebre del oro de 1890 con tienda general y fuente de sodas funcionando. A 1 hora 30, más o menos; combínalo con Red Rock Canyon.",
+ "Twenty Mule Team Museum": "Historia del bórax en Boron — la historia de los carros de veinte mulas que sacaban bórax del Valle de la Muerte, junto al pueblo de la mina a cielo abierto.",
+ "Borax Visitor Center": "El mirador sobre una de las minas de bórax más grandes del mundo — museo, película y un tajo abierto gigante con camiones que parecen de juguete pero pesan 200 toneladas.",
+ "Maturango Museum": "El museo desértico de Ridgecrest — historia del territorio de petroglifos Coso, historia natural y arte del desierto. La parada de entrada si vas hacia el desierto alto.",
+ "West Kern Oil Museum": "Historia petrolera en Taft — una torre de perforación de madera completa, fotos de la época del boom y la historia del Lakeview Gusher. Las raíces de oro negro de Kern.",
+ "Minter Field Air Museum": "Museo de aviación de la Segunda Guerra Mundial en el viejo Minter Field de Shafter — historia de aviones de entrenamiento, hangares y días de vuelo.",
+ "Fort Tejon State Historic Park": "Un fuerte del ejército de 1854 en el cañón del Grapevine — barracones restaurados, historia de dragones y encinos enormes del valle. Los días de recreación de la Guerra Civil son el gran atractivo. A unos 45 minutos al sur.",
+ "Outlets at Tejon": "El centro de outlets al pie del Grapevine sobre la I-5 — la parada de compras de Tejon Ranch que todos hacen entre Bakersfield y Los Ángeles.",
+ "Mount Pinos": "Con 8,831 pies, el punto más alto de la zona — una caminata fácil a la cumbre desde la Base Nórdica junto a Frazier Park, con observación de estrellas famosa en todo el estado.",
+ "Hungry Valley SVRA": "4,000 acres de rutas off-road en Gorman — trae tu vehículo todo terreno o solo mira las subidas. Otro mundo, a 45 minutos al sur."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -1033,7 +1071,27 @@ const SEEDS = {
     seedPlace("Tiki-Ko","nightlife","Bakersfield, CA",35.3768,-119.0178),
     seedPlace("The Well Comedy Club","nightlife","Bakersfield, CA",35.3751,-119.0195),
     seedPlace("Ethel's Old Corral Cafe","nightlife","Bakersfield, CA",35.4186,-118.9565),
-    seedPlace("Lengthwise Brewing Company","nightlife","Bakersfield, CA",35.3136,-119.0881)
+    seedPlace("Lengthwise Brewing Company","nightlife","Bakersfield, CA",35.3136,-119.0881),
+    seedPlace("Tehachapi Loop","viewpoint","Tehachapi, CA",35.2002,-118.5384),
+    seedPlace("Tehachapi Depot Museum","museum","Tehachapi, CA",35.1324,-118.4478),
+    seedPlace("Circle Park","park","Kernville, CA",35.7551,-118.4251),
+    seedPlace("Kern Valley Museum","museum","Kernville, CA",35.7552,-118.4268),
+    seedPlace("Silver City Ghost Town","museum","Bodfish, CA",35.5978,-118.4916),
+    seedPlace("Lake Isabella","beach","Lake Isabella, CA",35.6383,-118.4845),
+    seedPlace("Greenhorn Mountain Park","park","Wofford Heights, CA",35.7357,-118.5552),
+    seedPlace("Shirley Meadow / Alta Sierra Ski Area","sports","Wofford Heights, CA",35.711,-118.5601),
+    seedPlace("Red Rock Canyon State Park","nature","Mojave, CA",35.3734,-117.9901),
+    seedPlace("Mojave Air and Space Port","attraction","Mojave, CA",35.0593,-118.1528),
+    seedPlace("Randsburg","attraction","Randsburg, CA",35.3694,-117.6599),
+    seedPlace("Twenty Mule Team Museum","museum","Boron, CA",34.9994,-117.6507),
+    seedPlace("Borax Visitor Center","museum","Boron, CA",35.0299,-117.6874),
+    seedPlace("Maturango Museum","museum","Ridgecrest, CA",35.6303,-117.6694),
+    seedPlace("West Kern Oil Museum","museum","Taft, CA",35.1331,-119.4482),
+    seedPlace("Minter Field Air Museum","museum","Shafter, CA",35.5031,-119.1823),
+    seedPlace("Fort Tejon State Historic Park","museum","Lebec, CA",34.8693,-118.9026),
+    seedPlace("Outlets at Tejon","market","Arvin, CA",34.9856,-118.9416),
+    seedPlace("Mount Pinos","nature","Frazier Park, CA",34.8128,-119.1454),
+    seedPlace("Hungry Valley SVRA","nature","Gorman, CA",34.759,-118.8552)
   ],
   "932":[ // Porterville + Visalia + Sequoia ring (within ~2 hrs)
     seedPlace("Zalud House Museum","museum","Porterville, CA",36.0729,-119.0176),
@@ -1314,7 +1372,7 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","dublin":"432","powell":"432","delaware":"432","newark":"432","logan":"432","delaware":"432","lewis center":"432","marion":"432","mount vernon":"432","mount gilead":"432","loudonville":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","girard":"445","struthers":"445","campbell":"445","vienna":"445","newton falls":"445","lake milton":"445","columbiana":"445","ravenna":"445","howland":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932"};
+const CITY_SEED_KEYS={"bakersfield":"933","tehachapi":"933","kernville":"933","lake isabella":"933","wofford heights":"933","mojave":"933","ridgecrest":"933","taft":"933","shafter":"933","frazier park":"933","lebec":"933","boron":"933","randsburg":"933","bodfish":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","dublin":"432","powell":"432","delaware":"432","newark":"432","logan":"432","delaware":"432","lewis center":"432","marion":"432","mount vernon":"432","mount gilead":"432","loudonville":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","girard":"445","struthers":"445","campbell":"445","vienna":"445","newton falls":"445","lake milton":"445","columbiana":"445","ravenna":"445","howland":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932"};
 const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818],"youngstown":[41.0998,-80.6495],"boardman":[41.0229,-80.66],"austintown":[41.0919,-80.7449],"canfield":[41.0251,-80.7606],"warren":[41.2375,-80.8184],"niles":[41.1798,-80.7644]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
