@@ -209,7 +209,8 @@ const CATS = {
   bowling:   {label:"Bowling", labelEs:"Boliche", icon:"🎳", dur:90,  cost:15, io:"in",  vibes:["active","nightlife"], who:["date","friends","family"]},
   minigolf:  {label:"Mini Golf", labelEs:"Minigolf", icon:"⛳", dur:60,  cost:12, io:"out", vibes:["active"], who:["date","friends","family"]},
   sports:    {label:"Sports / Rec", labelEs:"Deportes / Recreación", icon:"🏀", dur:90,  cost:10, io:"both",vibes:["active"], who:["solo","friends","family"]},
-  ice:       {label:"Ice Rink", labelEs:"Pista de hielo", icon:"⛸️", dur:90,  cost:14, io:"in",  vibes:["active"], who:["date","friends","family"]},
+  ice:       {label:"Ice Rink", labelEs:"Pista de hielo", icon:"⛸️", dur:90,  cost:14, io:"in",  vibes:["active","winter"], who:["date","friends","family"]},
+  snow:      {label:"Snow & Ski", labelEs:"Nieve y esquí", icon:"🎿", dur:240, cost:55, io:"out", vibes:["winter","active","outdoors"], who:["solo","date","friends","family"]},
   playground:{label:"Playground", labelEs:"Juegos infantiles", icon:"🛝", dur:60,  cost:0,  io:"out", vibes:["outdoors","active"], who:["family"]},
   library:   {label:"Library", labelEs:"Biblioteca", icon:"📚", dur:60,  cost:0,  io:"in",  vibes:["chill","artsy"], who:["solo","family"]},
   nature:    {label:"Nature / Trail", labelEs:"Naturaleza / Senderos", icon:"🥾", dur:120, cost:0,  io:"out", vibes:["outdoors","active","chill"], who:["solo","date","friends","family"]},
@@ -233,6 +234,7 @@ const CAT_BLURBS = {
   minigolf:"Mini golf — a round usually takes about an hour.",
   sports:"A sports or recreation center — courts, fields, or drop-in activities.",
   ice:"An ice rink — public skate sessions usually land near the estimate, skates included.",
+  snow:"A ski or snow-play spot — lift tickets, rentals, and tubing usually land near the estimate. Always check snow conditions and road controls before you drive up.",
   playground:"A playground — a let-the-kids-burn-energy stop.",
   library:"A public library — quiet, free, and often hosting events.",
   nature:"Nature — trails, reserves, or wild coast. Bring water and check the weather.",
@@ -256,6 +258,7 @@ const CAT_BLURBS_ES = {
  "minigolf": "Minigolf — una ronda suele tardar como una hora.",
  "sports": "Un centro deportivo o recreativo — canchas, campos o actividades sin reservar.",
  "ice": "Una pista de hielo — la sesión pública suele quedar cerca del estimado, patines incluidos.",
+ "snow": "Un lugar de esquí o juegos en la nieve — boletos de lift, rentas y tubing suelen quedar cerca del estimado. Siempre checa las condiciones de nieve y los controles de carretera antes de manejar.",
  "playground": "Un área de juegos — la parada para que los niños quemen energía.",
  "library": "Una biblioteca pública — tranquila, gratis, y seguido con eventos.",
  "nature": "Naturaleza — senderos, reservas o costa. Lleva agua y checa el clima.",
@@ -266,7 +269,7 @@ const CAT_BLURBS_ES = {
  "generic": "Un lugar sacado del mapa — toca 'Buscar' para ver fotos, reseñas y horarios."
 };
 const CLOSER_CATS = ["viewpoint","cafe","garden","park","gallery","market"];
-const MAIN_CATS   = ["zoo","attraction","museum","park","nature","cinema","bowling","sports","beach","theatre","minigolf","ice","nightlife"];
+const MAIN_CATS   = ["zoo","attraction","museum","park","nature","cinema","bowling","sports","beach","theatre","minigolf","ice","nightlife","snow"];
 
 function catFromTags(t){
   const L=t.leisure||"", T=t.tourism||"", A=t.amenity||"", N=t.natural||"";
@@ -681,7 +684,18 @@ const SEED_INFO = {
  "Monterey Bay Aquarium": "The world-class aquarium on Cannery Row — kelp forest, sea otters, and the Open Sea gallery. Tickets book ahead on weekends; it's about 2 hours from SLO.",
  "Elkhorn Slough": "One of California's great estuaries — kayak among sea otters, seals, and hundreds of bird species at Moss Landing. Rentals and tours right at the harbor.",
  "Garrapata State Park": "Unmarked gates along Highway 1 south of Carmel open to bluffs, coves, and calla-lily canyons — Big Sur's quieter doorstep.",
- "Audubon Kern River Preserve": "Audubon's cottonwood-willow forest preserve on the South Fork Kern — one of the best birding spots in the state, with trails into the riparian jungle. About an hour from Bakersfield."
+ "Audubon Kern River Preserve": "Audubon's cottonwood-willow forest preserve on the South Fork Kern — one of the best birding spots in the state, with trails into the riparian jungle. About an hour from Bakersfield.",
+ "China Peak Mountain Resort": "The Fresno-side ski resort at Huntington Lake, 7,000 feet up — the closest real skiing to the valley floor, about 1 hour 15 from Fresno. Check snow and chain controls in winter.",
+ "Badger Pass Ski Area": "California's oldest ski area, inside Yosemite — small, mellow, family-first slopes on Glacier Point Road. The ski day with a national park wrapped around it.",
+ "Curry Village Ice Rink": "Ice skating in Yosemite Valley with Half Dome right over the rink — a winter tradition since 1928. Seasonal, roughly late fall through early spring.",
+ "Mountain High Resort": "The closest ski resort to LA — three mountains by Wrightwood, famous for night skiing under the lights. About 1 hour 30 from downtown when the roads are clear.",
+ "Snow Summit": "Big Bear's original ski hill — family-friendly slopes and a scenic sky chair over the lake town. Winter = ski; book ahead on holiday weekends.",
+ "Bear Mountain": "Snow Summit's sister across town — the park-rat mountain, with the most terrain parks in SoCal. Same lift ticket family as Summit.",
+ "Mt Baldy Resort": "The closest snow to the city — Baldy's funky old-school lifts up San Antonio Canyon. Steep, scrappy, and beloved; check conditions, it needs real storms.",
+ "Snow Valley Mountain Resort": "The first resort you hit driving up to Big Bear — smaller, mellower, with a big sledding and snow-play scene for kids.",
+ "SkyPark at Santa's Village": "A Christmas-themed adventure park in the pines by Lake Arrowhead — Santa's Village rides, trails, and year-round holiday energy in the mountains.",
+ "Big Bear Lake": "The big alpine lake town of SoCal — in winter it's the ski-trip base camp; the lake, the village, and snowy cabin streets all in one.",
+ "Lake Arrowhead": "The Alps of Southern California — a forested lake village with a storybook main street. Private lake, public village: shop, eat, and take the Queen boat tour."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -1048,7 +1062,18 @@ const SEED_INFO_ES = {
  "Monterey Bay Aquarium": "El acuario de clase mundial en Cannery Row — bosque de kelp, nutrias marinas y la galería Open Sea. Los boletos se reservan antes en fines de semana; está a unas 2 horas de SLO.",
  "Elkhorn Slough": "Uno de los grandes estuarios de California — kayak entre nutrias marinas, focas y cientos de especies de aves en Moss Landing. Rentas y tours justo en el puerto.",
  "Garrapata State Park": "Puertas sin letreros a lo largo de la Highway 1, al sur de Carmel, que abren a acantilados, caletas y cañones de calas — el umbral más tranquilo de Big Sur.",
- "Audubon Kern River Preserve": "La reserva de bosque de álamos y sauces de Audubon en el South Fork del Kern — uno de los mejores lugares para observar aves del estado, con senderos hacia la jungla ribereña. A una hora de Bakersfield, más o menos."
+ "Audubon Kern River Preserve": "La reserva de bosque de álamos y sauces de Audubon en el South Fork del Kern — uno de los mejores lugares para observar aves del estado, con senderos hacia la jungla ribereña. A una hora de Bakersfield, más o menos.",
+ "China Peak Mountain Resort": "La estación de esquí del lado de Fresno en Huntington Lake, a 7,000 pies de altura — el esquí de verdad más cercano al valle, a 1 hora 15 de Fresno, más o menos. Checa la nieve y los controles de cadenas en invierno.",
+ "Badger Pass Ski Area": "La estación de esquí más antigua de California, dentro de Yosemite — pistas pequeñas, tranquilas y familiares en Glacier Point Road. El día de esquí con un parque nacional alrededor.",
+ "Curry Village Ice Rink": "Patinaje sobre hielo en el Valle de Yosemite con Half Dome justo sobre la pista — una tradición invernal desde 1928. Estacional, de finales de otoño a principios de primavera, aprox.",
+ "Mountain High Resort": "La estación de esquí más cercana a LA — tres montañas junto a Wrightwood, famosa por el esquí nocturno bajo las luces. A 1 hora 30 del centro, más o menos, cuando los caminos están despejados.",
+ "Snow Summit": "La estación original de Big Bear — pistas familiares y un lift panorámico sobre el pueblo del lago. Invierno = esquí; reserva antes en fines de semana festivos.",
+ "Bear Mountain": "La hermana de Snow Summit, cruzando el pueblo — la montaña de los parques de nieve, con más terrain parks que ningún otro lugar del sur de California. Misma familia de boletos que Summit.",
+ "Mt Baldy Resort": "La nieve más cercana a la ciudad — los lifts viejitos y con carácter de Baldy por el cañón de San Antonio. Empinada, ruda y querida; checa las condiciones, necesita tormentas de verdad.",
+ "Snow Valley Mountain Resort": "La primera estación que encuentras subiendo a Big Bear — más pequeña y tranquila, con una gran zona de trineos y juegos en la nieve para niños.",
+ "SkyPark at Santa's Village": "Un parque de aventuras con tema navideño entre los pinos junto a Lake Arrowhead — atracciones de Santa's Village, senderos y energía de fiestas todo el año en la montaña.",
+ "Big Bear Lake": "El gran pueblo lacustre alpino del sur de California — en invierno es el campamento base para esquiar; el lago, el pueblo y las calles nevadas de cabañas en uno solo.",
+ "Lake Arrowhead": "Los Alpes del sur de California — un pueblo lacustre entre bosques con una calle principal de cuento. Lago privado, pueblo público: compra, come y toma el tour en el barco Queen."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -1123,7 +1148,7 @@ const SEEDS = {
     seedPlace("Silver City Ghost Town","museum","Bodfish, CA",35.5978,-118.4916),
     seedPlace("Lake Isabella","beach","Lake Isabella, CA",35.6383,-118.4845),
     seedPlace("Greenhorn Mountain Park","park","Wofford Heights, CA",35.7357,-118.5552),
-    seedPlace("Shirley Meadow / Alta Sierra Ski Area","sports","Wofford Heights, CA",35.711,-118.5601),
+    seedPlace("Shirley Meadow / Alta Sierra Ski Area","snow","Wofford Heights, CA",35.711,-118.5601),
     seedPlace("Red Rock Canyon State Park","nature","Mojave, CA",35.3734,-117.9901),
     seedPlace("Mojave Air and Space Port","attraction","Mojave, CA",35.0593,-118.1528),
     seedPlace("Randsburg","attraction","Randsburg, CA",35.3694,-117.6599),
@@ -1193,7 +1218,10 @@ const SEEDS = {
     seedPlace("Tunnel Log","viewpoint","Sequoia National Park, CA",36.5525,-118.7614),
     seedPlace("San Luis National Wildlife Refuge","nature","Los Banos, CA",37.2628,-120.8937),
     seedPlace("Merced National Wildlife Refuge","nature","Merced, CA",37.2705,-120.7227),
-    seedPlace("Pixley National Wildlife Refuge","nature","Pixley, CA",35.9205,-119.3735)
+    seedPlace("Pixley National Wildlife Refuge","nature","Pixley, CA",35.9205,-119.3735),
+    seedPlace("China Peak Mountain Resort","snow","Lakeshore, CA",37.2356,-119.1557),
+    seedPlace("Badger Pass Ski Area","snow","Yosemite National Park, CA",37.6558,-119.6609),
+    seedPlace("Curry Village Ice Rink","ice","Yosemite National Park, CA",37.7385,-119.5735)
   ],
   "900":[ // Los Angeles
     seedPlace("Griffith Observatory","museum","Los Angeles, CA",34.1184,-118.3004),
@@ -1205,7 +1233,15 @@ const SEEDS = {
     seedPlace("Santa Monica Pier","attraction","Santa Monica, CA",34.0100,-118.4961),
     seedPlace("Venice Beach Boardwalk","beach","Venice, CA",33.9850,-118.4695),
     seedPlace("The Getty Center","museum","Los Angeles, CA",34.0780,-118.4741),
-    seedPlace("Elysian Park","viewpoint","Los Angeles, CA",34.0830,-118.2360)
+    seedPlace("Elysian Park","viewpoint","Los Angeles, CA",34.0830,-118.2360),
+    seedPlace("Mountain High Resort","snow","Wrightwood, CA",34.3766,-117.6912),
+    seedPlace("Snow Summit","snow","Big Bear Lake, CA",34.2283,-116.8914),
+    seedPlace("Bear Mountain","snow","Big Bear Lake, CA",34.2274,-116.8614),
+    seedPlace("Mt Baldy Resort","snow","Mount Baldy, CA",34.2693,-117.6235),
+    seedPlace("Snow Valley Mountain Resort","snow","Running Springs, CA",34.225,-117.0353),
+    seedPlace("SkyPark at Santa's Village","attraction","Skyforest, CA",34.2326,-117.1691),
+    seedPlace("Big Bear Lake","nature","Big Bear Lake, CA",34.2441,-116.9102),
+    seedPlace("Lake Arrowhead","nature","Lake Arrowhead, CA",34.2572,-117.1909)
   ],
   "606":[ // Chicago
     seedPlace("Millennium Park & Cloud Gate","park","Chicago, IL",41.8826,-87.6226),
@@ -1438,7 +1474,7 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","tehachapi":"933","kernville":"933","lake isabella":"933","wofford heights":"933","mojave":"933","ridgecrest":"933","taft":"933","shafter":"933","frazier park":"933","lebec":"933","boron":"933","randsburg":"933","bodfish":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","monterey":"934","carmel":"934","big sur":"934","pacific grove":"934","moss landing":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","dublin":"432","powell":"432","delaware":"432","newark":"432","logan":"432","delaware":"432","lewis center":"432","marion":"432","mount vernon":"432","mount gilead":"432","loudonville":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","girard":"445","struthers":"445","campbell":"445","vienna":"445","newton falls":"445","lake milton":"445","columbiana":"445","ravenna":"445","howland":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932","yosemite":"932","oakhurst":"932","shaver lake":"932","los banos":"932"};
+const CITY_SEED_KEYS={"bakersfield":"933","tehachapi":"933","kernville":"933","lake isabella":"933","wofford heights":"933","mojave":"933","ridgecrest":"933","taft":"933","shafter":"933","frazier park":"933","lebec":"933","boron":"933","randsburg":"933","bodfish":"933","los angeles":"900","big bear lake":"900","wrightwood":"900","running springs":"900","lake arrowhead":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","morro bay":"934","los osos":"934","atascadero":"934","paso robles":"934","cambria":"934","cayucos":"934","san simeon":"934","arroyo grande":"934","grover beach":"934","nipomo":"934","santa maria":"934","guadalupe":"934","monterey":"934","carmel":"934","big sur":"934","pacific grove":"934","moss landing":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","dublin":"432","powell":"432","delaware":"432","newark":"432","logan":"432","delaware":"432","lewis center":"432","marion":"432","mount vernon":"432","mount gilead":"432","loudonville":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","girard":"445","struthers":"445","campbell":"445","vienna":"445","newton falls":"445","lake milton":"445","columbiana":"445","ravenna":"445","howland":"445","porterville":"932","visalia":"932","springville":"932","fresno":"932","clovis":"932","yosemite":"932","oakhurst":"932","shaver lake":"932","los banos":"932","lakeshore":"932"};
 const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818],"youngstown":[41.0998,-80.6495],"boardman":[41.0229,-80.66],"austintown":[41.0919,-80.7449],"canfield":[41.0251,-80.7606],"warren":[41.2375,-80.8184],"niles":[41.1798,-80.7644]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
@@ -1722,7 +1758,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
   T.en.finding=(r)=>"Finding spots near "+r+"\u2026"; T.es.finding=(r)=>"Buscando lugares cerca de "+r+"\u2026";
   const FILTER_DEFS={
     fWho:[["any","Anyone","Quien sea"],["solo","Solo","Solo"],["date","Date","Cita"],["friends","Friends","Amigos"],["family","Family / Kids","Familia / Niños"]],
-    fVibe:[["any","Any vibe","Lo que sea"],["chill","Chill","Tranqui"],["active","Active","Activo"],["outdoors","Outdoors","Aire libre"],["artsy","Artsy","Artístico"],["nightlife","Nightlife","Vida nocturna"],["tourist","Tourist Mode","Modo turista"]],
+    fVibe:[["any","Any vibe","Lo que sea"],["chill","Chill","Tranqui"],["active","Active","Activo"],["outdoors","Outdoors","Aire libre"],["artsy","Artsy","Artístico"],["nightlife","Nightlife","Vida nocturna"],["winter","Winter","Invierno"],["tourist","Tourist Mode","Modo turista"]],
     fBudget:[["999","Any budget","Lo que sea"],["0","Free Only","Solo gratis"],["20","Under $20","Menos de $20"],["50","Under $50","Menos de $50"]],
     fTime:[["999","Any length","Lo que sea"],["70","~1 hour","~1 hora"],["180","2–3 hours","2–3 horas"],["300","Half day","Medio día"],["600","All day","Todo el día"]],
     fSetting:[["any","Indoor or Outdoor","Interior o exterior"],["in","Indoor","Interior"],["out","Outdoor","Exterior"]]
