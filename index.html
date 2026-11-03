@@ -385,7 +385,42 @@ const SEED_INFO = {
  "Central Park at Mill Creek": "Downtown's only park — a green strip along the Mill Creek canal right by the art museum, with a little lake, spray fountains, and the Mill Creek bridge. The downtown stroll.",
  "Reading Cinemas Valley Plaza": "The movie theater inside Valley Plaza Mall — pair the movie with the food court and make it a whole mall run.",
  "Highbanks Metro Park": "The big one — 1,200 acres of forest above the Olentangy River, with high bluffs, ravine trails, and a nature center. This pin is the nature center; the park has a few entrances, all worth it.",
- "AMC Dine-In Easton 30": "The 30-screen AMC right inside Easton Town Center — dine-in recliners, the default Easton movie move."
+ "AMC Dine-In Easton 30": "The 30-screen AMC right inside Easton Town Center — dine-in recliners, the default Easton movie move.",
+ "Fellows Riverside Gardens": "Mill Creek's crown jewel — 12 acres of rose gardens, gazebos, and lake views at the north end of the park, with the Davis Center inside. Free, and the most photographed spot in Youngstown.",
+ "Lanterman's Mill": "An 1845 grist mill still grinding in the Mill Creek gorge — tour the mill, then look over the covered bridge and falls right outside. The park's postcard shot.",
+ "Mill Creek Suspension Bridge": "The Cinderella Bridge — an 1895 suspension bridge arcing over the Mill Creek gorge. Short walk, huge payoff, especially in fall.",
+ "Lake Glacier": "Mill Creek's quiet lake on the north end — kayaks and paddle boats in season, easy shoreline walking year-round.",
+ "Ford Nature Center": "Mill Creek's nature HQ — wildlife exhibits, a bird-watching window, and trailheads into the gorge. The park's best starting point with kids.",
+ "Wick Recreation Area": "The play side of Mill Creek — sports fields, tennis, a par-3 golf course, playgrounds, and the sledding hill in winter.",
+ "Mill Creek Golf Course": "Two Donald Ross-designed 18s (North and South courses) in Boardman — a top-ranked public golf deal hiding at the south end of Mill Creek.",
+ "Butler Institute of American Art": "The first museum in America built just for American art — and it's free. Norman Rockwell, Winslow Homer, and the famous Lincoln 'snap' paintings, right by YSU.",
+ "McDonough Museum of Art": "YSU's contemporary art museum across from the Butler — rotating modern exhibits in a striking building. Also free.",
+ "Covelli Centre": "Downtown's arena — Youngstown Phantoms hockey, concerts, and big touring shows. Event-driven, check the calendar.",
+ "DeYor Performing Arts Center": "Home of the Youngstown Symphony in the gorgeous 1931 Powers Auditorium — concerts, Broadway tours, and dance downtown.",
+ "Stambaugh Auditorium": "A 1926 Greek Revival concert hall on the north side — concerts, comedy, and the big ballroom. A Youngstown landmark inside and out.",
+ "Youngstown Historical Center of Industry and Labor": "The Steel Museum — the story of the mills that built the Valley, told where it happened. Sobering and excellent.",
+ "Arms Family Museum": "A 1905 Arts & Crafts mansion museum on Millionaires Row — period rooms, local history, and the beloved Christmas displays in season.",
+ "OH WOW! Children's Center": "Hands-on science and tech center for kids downtown — build, splash, and experiment zones. Pure family energy.",
+ "Wean Park": "Downtown's front lawn — riverfront green space and amphitheater lawn by the Covelli Centre, host to summer concerts and festivals.",
+ "Boardman Park": "Boardman's 227-acre 'Green Oasis' — trails, pavilions, a dog park, and the historic St. James Meeting House. The township's living room.",
+ "Cinemark Tinseltown Boardman": "The big Boardman movie house — stadium seats on the 224 strip, the default suburban cinema run.",
+ "Southern Park Mall": "Boardman's indoor mall — shopping, food court, and the anchor of the 224 corridor.",
+ "Camelot Lanes": "Boardman's bowling center — lanes, leagues, and cosmic bowling nights on the west side.",
+ "Wedgewood Lanes": "Bowling in Austintown — home turf of the famous Wedgewood pizza name. Lanes plus a full bar and kitchen.",
+ "Hollywood Gaming Mahoning Valley": "The racino — thoroughbred racing plus a full casino floor (slots, tables, poker) on the west side. 21+ for the gaming floor.",
+ "Austintown Township Park": "Austintown's big community park — fields, courts, playgrounds, and pavilion space off Kirk Road.",
+ "Canfield Fairgrounds": "Home of the Canfield Fair, one of the biggest county fairs in Ohio (Labor Day week) — plus events and shows all year on the grounds.",
+ "MetroParks Farm": "Mill Creek's working-farm campus in Canfield — animal barns, a windmill, fishing pond, and farm programs. Great with little kids.",
+ "White House Fruit Farm": "The famous farm market south of Canfield — donuts people drive counties for, a giant market barn, and lake-side grounds to wander.",
+ "National McKinley Birthplace Memorial": "A marble Greek temple in the middle of Niles — museum and library honoring President William McKinley, born a few blocks away.",
+ "Eastwood Mall": "One of the largest shopping complexes in Ohio — the mall plus a whole universe of big-box and restaurants around it in Niles.",
+ "Eastwood Field": "Home of the Mahoning Valley Scrappers (summer collegiate ball) — cheap seats, fireworks nights, classic small-ballpark summer.",
+ "National Packard Museum": "Warren built Packards before Detroit did — this museum packs in the cars, the history, and a rotating cast of classics. A must for car people.",
+ "Packard Music Hall": "Warren's big hall since 1955 — concerts, comedy, and touring shows, funded back in the day by Packard himself.",
+ "Warren Community Amphitheatre": "Riverfront amphitheater in downtown Warren — summer concert series and River Rock at the Amp nights on the Mahoning River.",
+ "Mosquito Lake State Park": "One of Ohio's biggest lakes, just north of Warren — beach, boating, fishing, and camping. The area's summer lake day.",
+ "Nelson Ledges Quarry Park": "The legendary quarry — cliff jumping and swimming in clear spring water, camping, and festival weekends in the woods. A whole scene unto itself; check event weekends before a quiet visit.",
+ "Nelson-Kennedy Ledges State Park": "The state park next door to the quarry — mossy rock formations, squeeze-through ledges, and waterfall trails. The hiking half of Nelson Ledges."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||""}; }
 const SEEDS = {
@@ -454,6 +489,43 @@ const SEEDS = {
     seedPlace("Maggie Daley Park","park","Chicago, IL",41.8827,-87.6189),
     seedPlace("Garfield Park Conservatory","garden","Chicago, IL",41.8862,-87.7173)
   ],
+  "445":[
+    seedPlace("Fellows Riverside Gardens","garden","Youngstown, OH",41.1003,-80.6751),
+    seedPlace("Lanterman's Mill","museum","Youngstown, OH",41.0668,-80.6821),
+    seedPlace("Mill Creek Suspension Bridge","viewpoint","Youngstown, OH",41.0733,-80.689),
+    seedPlace("Lake Glacier","nature","Youngstown, OH",41.0936,-80.6771),
+    seedPlace("Ford Nature Center","nature","Youngstown, OH",41.0856,-80.6785),
+    seedPlace("Wick Recreation Area","park","Youngstown, OH",41.0867,-80.6929),
+    seedPlace("Mill Creek Golf Course","sports","Youngstown, OH",41.0308,-80.6985),
+    seedPlace("Butler Institute of American Art","museum","Youngstown, OH",41.1056,-80.6461),
+    seedPlace("McDonough Museum of Art","gallery","Youngstown, OH",41.105,-80.6449),
+    seedPlace("Covelli Centre","attraction","Youngstown, OH",41.0962,-80.6478),
+    seedPlace("DeYor Performing Arts Center","theatre","Youngstown, OH",41.102,-80.6532),
+    seedPlace("Stambaugh Auditorium","theatre","Youngstown, OH",41.1137,-80.6521),
+    seedPlace("Youngstown Historical Center of Industry and Labor","museum","Youngstown, OH",41.1026,-80.6513),
+    seedPlace("Arms Family Museum","museum","Youngstown, OH",41.1073,-80.6444),
+    seedPlace("OH WOW! Children's Center","attraction","Youngstown, OH",41.1006,-80.6507),
+    seedPlace("Wean Park","park","Youngstown, OH",41.0972,-80.6531),
+    seedPlace("Boardman Park","park","Boardman, OH",41.0168,-80.6487),
+    seedPlace("Cinemark Tinseltown Boardman","cinema","Boardman, OH",41.0177,-80.657),
+    seedPlace("Southern Park Mall","market","Boardman, OH",41.0217,-80.659),
+    seedPlace("Camelot Lanes","bowling","Boardman, OH",41.0259,-80.6804),
+    seedPlace("Wedgewood Lanes","bowling","Austintown, OH",41.0808,-80.7312),
+    seedPlace("Hollywood Gaming Mahoning Valley","attraction","Austintown, OH",41.1159,-80.761),
+    seedPlace("Austintown Township Park","park","Austintown, OH",41.0743,-80.7793),
+    seedPlace("Canfield Fairgrounds","attraction","Canfield, OH",41.0102,-80.7514),
+    seedPlace("MetroParks Farm","nature","Canfield, OH",41.0124,-80.774),
+    seedPlace("White House Fruit Farm","market","Canfield, OH",40.9849,-80.8065),
+    seedPlace("National McKinley Birthplace Memorial","museum","Niles, OH",41.181,-80.7659),
+    seedPlace("Eastwood Mall","market","Niles, OH",41.2172,-80.7519),
+    seedPlace("Eastwood Field","attraction","Niles, OH",41.2188,-80.7548),
+    seedPlace("National Packard Museum","museum","Warren, OH",41.2531,-80.8308),
+    seedPlace("Packard Music Hall","theatre","Warren, OH",41.2513,-80.8304),
+    seedPlace("Warren Community Amphitheatre","theatre","Warren, OH",41.2384,-80.8216),
+    seedPlace("Mosquito Lake State Park","nature","Cortland, OH",41.3571,-80.7408),
+    seedPlace("Nelson Ledges Quarry Park","nature","Garrettsville, OH",41.3215,-81.0379),
+    seedPlace("Nelson-Kennedy Ledges State Park","nature","Garrettsville, OH",41.3266,-81.0396)
+  ],
   "432":[
     seedPlace("Easton Town Center","market","Columbus, OH",40.0529,-82.9151),
     seedPlace("LEGOLAND Discovery Center Columbus","attraction","Columbus, OH",40.051,-82.9161),
@@ -519,12 +591,12 @@ const SEEDS = {
 function seedForZip(zip){
   if(!zip) return [];
   const p3=zip.slice(0,3);
-  const alias={"430":"432"};
+  const alias={"430":"432","444":"445"};
   const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432"};
-const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818]};
+const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445"};
+const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818],"youngstown":[41.0998,-80.6495],"boardman":[41.0229,-80.66],"austintown":[41.0919,-80.7449],"canfield":[41.0251,-80.7606],"warren":[41.2375,-80.8184],"niles":[41.1798,-80.7644]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
   const k=CITY_SEED_KEYS[normCity(city)];
@@ -589,7 +661,7 @@ function planText(plan,zip){
 /* ================= Live lookup ================= */
 const OVERPASS_URLS=["https://overpass-api.de/api/interpreter","https://overpass.private.coffee/api/interpreter","https://overpass.kumi.systems/api/interpreter","https://overpass.nchc.org.tw/api/interpreter"];
 const zipCacheKey="whatdo_zipcache3";
-const SEED_CENTERS={"430":[40.1168,-82.9612],"432":[40.0529,-82.9151],"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
+const SEED_CENTERS={"445":[41.0998,-80.6495],"430":[40.1168,-82.9612],"432":[40.0529,-82.9151],"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
 function fetchT(url,opts,ms){
   ms=ms||10000;
   if(typeof AbortController==="undefined") return fetch(url,opts);
@@ -821,7 +893,6 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
   }
 
   /* ---- search autosuggest (Photon type-ahead + starter-pack cities) ---- */
-  const PACK_CITY_SUGGEST=[["Bakersfield, CA","bakersfield"],["Los Angeles, CA","los angeles"],["Chicago, IL","chicago"],["San Luis Obispo, CA","san luis obispo"],["Pismo Beach, CA","pismo beach"],["Avila Beach, CA","avila beach"],["Columbus, OH","columbus"],["Worthington, OH","worthington"],["Westerville, OH","westerville"],["Gahanna, OH","gahanna"]];
   let sugTimer=null, sugSeq=0;
   function hideSuggest(){ $("#suggest").style.display="none"; }
   function renderSuggest(items){
@@ -847,8 +918,8 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     if(state.picked && v.trim().toLowerCase()!==state.picked.key) state.picked=null;
     const q=v.trim().toLowerCase();
     if(/^\d/.test(q)||q.length<3){ hideSuggest(); return; }
-    const local=PACK_CITY_SUGGEST.filter(x=>x[1].includes(q)||x[0].toLowerCase().includes(q)).map(x=>({label:x[0],sub:"\u2B50 Starter-pack city \u2014 extra hand-picked spots",picked:null}));
-    renderSuggest(local);
+    const local=[];
+    hideSuggest();
     clearTimeout(sugTimer); const seq=++sugSeq;
     sugTimer=setTimeout(async()=>{
       try{
