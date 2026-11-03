@@ -335,7 +335,11 @@ const SEED_INFO = {
  "Beale Memorial Library": "The main county library downtown — three floors of books, regular events and exhibits, and a Kern County history room.",
  "Valley Plaza Mall": "The big indoor mall on Ming Ave — shopping, a food court, and a movie theater inside. Solid too-hot-outside plan.",
  "Kaiser Permanente Sports Village": "Huge sports complex in the southwest — soccer and baseball fields with tournaments running most weekends.",
- "Links at RiverLakes Ranch": "Public golf at RiverLakes Ranch in the northwest — 18 holes wound around lakes. Green fees run more than the app's generic sports estimate."
+ "Links at RiverLakes Ranch": "Public golf at RiverLakes Ranch in the northwest — 18 holes wound around lakes, plus a driving range for a quick bucket-of-balls session. Green fees run more than the app's generic sports estimate.",
+ "North Kern Golf Course": "Public county course up in the north end — cheap green fees and a driving range if you just want to smash a bucket of balls.",
+ "Kern River Golf Course": "County course out by Lake Ming on the Kern River — 18 holes plus a driving range and putting greens. The scenic one.",
+ "Rio Bravo Country Club": "Country-club course in the northeast foothills along the Kern River — the prettiest track in town. Check public tee-time availability before heading out.",
+ "Sundale Country Club": "Country club course in the southwest with a driving range — check guest / public tee-time availability before you go."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||""}; }
 const SEEDS = {
@@ -372,7 +376,11 @@ const SEEDS = {
     seedPlace("Beale Memorial Library","library","Bakersfield, CA",35.3727,-119.0101),
     seedPlace("Valley Plaza Mall","market","Bakersfield, CA",35.3374,-119.0357),
     seedPlace("Kaiser Permanente Sports Village","sports","Bakersfield, CA",35.2706,-119.0745),
-    seedPlace("Links at RiverLakes Ranch","sports","Bakersfield, CA",35.3943,-119.0934)
+    seedPlace("Links at RiverLakes Ranch","sports","Bakersfield, CA",35.3943,-119.0934),
+    seedPlace("North Kern Golf Course","sports","Bakersfield, CA",35.5194,-119.1125),
+    seedPlace("Kern River Golf Course","sports","Bakersfield, CA",35.4375,-118.8573),
+    seedPlace("Rio Bravo Country Club","sports","Bakersfield, CA",35.4049,-118.8382),
+    seedPlace("Sundale Country Club","sports","Bakersfield, CA",35.34,-119.0672)
   ],
   "900":[ // Los Angeles
     seedPlace("Griffith Observatory","museum","Los Angeles, CA",34.1184,-118.3004),
