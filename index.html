@@ -488,7 +488,27 @@ const SEED_INFO = {
  "Woodside Green Park": "Gahanna neighborhood park on the Big Walnut trail — playground, sports courts, and creek access.",
  "Hoover Reservoir Park": "The park at Hoover Dam on Sunbury Road — 4,700 acres of water and woods: fishing, boat launches, birdwatching (bald eagles nest here), the Brent Hambrick disc golf course, and sunsets over the reservoir.",
  "ZipZone Outdoor Adventures": "Zip lines and a treetop adventure park in the woods at Camp Mary Orton, off North High Street — guided canopy tours and 60+ climbing challenges. Reservations required, and it's seasonal (closed in winter).",
- "Alum Creek State Park": "Huge state park on Alum Creek Lake north of the city — the swim beach is the main event in summer, plus boating, fishing, and trails. Heads up: it's a big park and this pin is the park center — follow the signs inside to the beach on the southwest shore."
+ "Alum Creek State Park": "Huge state park on Alum Creek Lake north of the city — the swim beach is the main event in summer, plus boating, fishing, and trails. Heads up: it's a big park and this pin is the park center — follow the signs inside to the beach on the southwest shore.",
+ "Zalud House Museum": "A brick pioneer house from 1891 turned museum — one of the few Second Empire homes left in the Central Valley, decked out in period furniture.",
+ "Success Lake": "The hometown lake just east of town on the Tule River — fishing, boating, camping, and summer swim days. Porterville's default lake run.",
+ "Eagle Mountain Casino": "The Tule River Tribe's casino right in Porterville — slots, table games, and concerts. 21+ for the gaming floor.",
+ "Galaxy Theatres Porterville": "Porterville's movie house — stadium seats and the new releases without driving to Visalia.",
+ "Mooney Grove Park": "Visalia's famous oak park — giant valley oaks, a lagoon, and the End of the Trail statue. Shady picnic country since 1909.",
+ "Visalia Fox Theatre": "Restored 1930 movie palace on Main Street — concerts, comedy, and films under the clock tower. Downtown Visalia's crown jewel.",
+ "Kaweah Oaks Preserve": "A rare patch of the old valley oak forest, saved on the Kaweah River east of Visalia — flat, shady trails under 300-year-old oaks.",
+ "ImagineU Children's Museum": "Hands-on children's museum downtown — climb, build, splash, and farm-play zones built for under-10 energy.",
+ "Visalia Adventure Park": "Family fun park off Highway 198 — mini golf, go-karts, bumper boats, batting cages, and an arcade. Pay per ride or grab a pass.",
+ "Lake Kaweah": "Reservoir at the Sierra foothills on the Kaweah River — boating, fishing, and swimming on the way up to Sequoia. About 45 minutes from Porterville.",
+ "General Sherman Tree": "The largest tree on Earth by volume, in Sequoia National Park's Giant Forest — the paved trail down is easy, the scale is not. About 1.5-2 hours from Porterville; park entry fee applies.",
+ "Moro Rock": "A granite dome in Sequoia National Park with 350 steps carved up it — the top looks over the whole Great Western Divide. Same trip as the big trees.",
+ "General Grant Tree": "The nation's Christmas tree — a giant sequoia in Grant Grove, Kings Canyon National Park, on a short paved loop with other giants. About 2 hours from Porterville; park entry fee applies.",
+ "Trail of 100 Giants": "An easy paved loop through a grove of giant sequoias in Sequoia National Forest above Springville — some trees are 1,500 years old. About an hour from Porterville, no national-park line.",
+ "Balch Park": "Mountain county park above Springville — a sequoia grove, two fishing ponds, and cool air at 4,700 feet when the valley is baking.",
+ "Lake Isabella": "Big Kern River reservoir in the southern Sierra — boating, fishing, windsurfing, and beach camping. About 1 hour 20 from Porterville.",
+ "Colonel Allensworth State Historic Park": "The only town in California founded by African Americans (1908), now a state park of restored buildings — schoolhouse, church, and homes. About 45 minutes southwest.",
+ "Fresno Chaffee Zoo": "One of the best mid-size zoos in the country — African Safari savanna, sea lion cove, and a rainforest. About 1 hour 15 from Porterville, and worth the drive.",
+ "Forestiere Underground Gardens": "A Sicilian immigrant hand-dug this underground villa over 40 years — rooms, courtyards, and fruit trees below the Fresno hardpan. Guided tours; genuinely one of a kind.",
+ "Shinzen Japanese Garden": "Five acres of Japanese garden inside Woodward Park — koi ponds, a teahouse, and the Clark Bonsai Collection. Peak calm, about 1 hour 15 away."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||"",infoEs:(typeof SEED_INFO_ES!=="undefined"?(SEED_INFO_ES[name]||""):"")}; }
 const SEED_INFO_ES = {
@@ -662,7 +682,27 @@ const SEED_INFO_ES = {
  "Woodside Green Park": "Parque de barrio en Gahanna, sobre el sendero del Big Walnut — juegos, canchas deportivas y acceso al arroyo.",
  "Hoover Reservoir Park": "El parque junto a la presa Hoover, en Sunbury Road — 4,700 acres de agua y bosque: pesca, rampas para botes, observación de aves (aquí anidan águilas calvas), el campo de disc golf Brent Hambrick y atardeceres sobre el embalse.",
  "ZipZone Outdoor Adventures": "Tirolesas y un parque de aventura entre los árboles del bosque de Camp Mary Orton, por North High Street — tours guiados entre las copas y más de 60 retos para escalar. Se requiere reservación y es por temporada (cerrado en invierno).",
- "Alum Creek State Park": "Parque estatal enorme junto al lago Alum Creek, al norte de la ciudad — la playa para nadar es lo principal en verano, más botes, pesca y senderos. Ojo: es un parque grande y este pin es el centro del parque — sigue los letreros adentro hasta la playa, en la orilla suroeste."
+ "Alum Creek State Park": "Parque estatal enorme junto al lago Alum Creek, al norte de la ciudad — la playa para nadar es lo principal en verano, más botes, pesca y senderos. Ojo: es un parque grande y este pin es el centro del parque — sigue los letreros adentro hasta la playa, en la orilla suroeste.",
+ "Zalud House Museum": "Una casa pionera de ladrillo de 1891 convertida en museo — una de las pocas casas estilo Second Empire que quedan en el Valle Central, amueblada de época.",
+ "Success Lake": "El lago de casa, justo al este del pueblo sobre el río Tule — pesca, botes, camping y días de nado en verano. La corrida al lago por defecto de Porterville.",
+ "Eagle Mountain Casino": "El casino de la tribu Tule River, aquí mismo en Porterville — tragamonedas, juegos de mesa y conciertos. 21+ para el área de juego.",
+ "Galaxy Theatres Porterville": "El cine de Porterville — asientos tipo estadio y los estrenos sin manejar hasta Visalia.",
+ "Mooney Grove Park": "El famoso parque de encinos de Visalia — encinos gigantes del valle, una laguna y la estatua End of the Trail. Territorio de picnic con sombra desde 1909.",
+ "Visalia Fox Theatre": "Palacio de cine restaurado de 1930 en Main Street — conciertos, comedia y películas bajo la torre del reloj. La joya del centro de Visalia.",
+ "Kaweah Oaks Preserve": "Un pedazo raro del antiguo bosque de encinos del valle, salvado junto al río Kaweah al este de Visalia — senderos planos y con sombra bajo encinos de 300 años.",
+ "ImagineU Children's Museum": "Museo infantil interactivo en el centro — zonas para trepar, construir, chapotear y jugar a la granja, hechas para la energía de los menores de 10 años.",
+ "Visalia Adventure Park": "Parque de diversión familiar sobre la carretera 198 — minigolf, go-karts, lanchitas de choque, jaulas de bateo y maquinitas. Paga por juego o compra un pase.",
+ "Lake Kaweah": "Embalse en las faldas de la Sierra, sobre el río Kaweah — botes, pesca y nado, camino a Sequoia. A unos 45 minutos de Porterville.",
+ "General Sherman Tree": "El árbol más grande del planeta por volumen, en el Giant Forest del Parque Nacional Sequoia — el sendero pavimentado de bajada es fácil; la escala, no. A 1.5-2 horas de Porterville; aplica la cuota de entrada al parque.",
+ "Moro Rock": "Una cúpula de granito en el Parque Nacional Sequoia con 350 escalones tallados — desde arriba se ve toda la Great Western Divide. El mismo viaje que los árboles gigantes.",
+ "General Grant Tree": "El árbol de Navidad de la nación — una secuoya gigante en Grant Grove, Parque Nacional Kings Canyon, en un circuito corto pavimentado junto a otros gigantes. A unas 2 horas de Porterville; aplica la cuota de entrada al parque.",
+ "Trail of 100 Giants": "Un circuito pavimentado y fácil entre secuoyas gigantes en el Bosque Nacional Sequoia, arriba de Springville — algunos árboles tienen 1,500 años. A una hora de Porterville, sin fila de parque nacional.",
+ "Balch Park": "Parque de montaña del condado arriba de Springville — un bosque de secuoyas, dos lagos para pescar y aire fresco a 4,700 pies cuando el valle se está cocinando.",
+ "Lake Isabella": "Embalse grande del río Kern en la Sierra sur — botes, pesca, windsurf y camping en la playa. A 1 hora 20 de Porterville, más o menos.",
+ "Colonel Allensworth State Historic Park": "El único pueblo de California fundado por afroamericanos (1908), hoy un parque estatal de edificios restaurados — escuela, iglesia y casas. A unos 45 minutos al suroeste.",
+ "Fresno Chaffee Zoo": "Uno de los mejores zoológicos medianos del país — sabana Safari africana, caleta de leones marinos y una selva tropical. A 1 hora 15 de Porterville, y vale la manejada.",
+ "Forestiere Underground Gardens": "Un inmigrante siciliano excavó a mano esta villa subterránea durante 40 años — cuartos, patios y árboles frutales bajo la tierra dura de Fresno. Tours guiados; de verdad, único en su tipo.",
+ "Shinzen Japanese Garden": "Cinco acres de jardín japonés dentro de Woodward Park — estanques de koi, una casa de té y la Colección de Bonsáis Clark. Calma máxima, a 1 hora 15, más o menos."
 };
 const SEEDS = {
   "933":[ // Bakersfield
@@ -707,6 +747,28 @@ const SEEDS = {
     seedPlace("The Empty Space","theatre","Bakersfield, CA",35.3078,-119.0625),
     seedPlace("Central Park at Mill Creek","park","Bakersfield, CA",35.3744,-119.0088),
     seedPlace("Reading Cinemas Valley Plaza","cinema","Bakersfield, CA",35.3394,-119.0323)
+  ],
+  "932":[ // Porterville + Visalia + Sequoia ring (within ~2 hrs)
+    seedPlace("Zalud House Museum","museum","Porterville, CA",36.0729,-119.0176),
+    seedPlace("Success Lake","beach","Porterville, CA",36.0554,-118.974),
+    seedPlace("Eagle Mountain Casino","attraction","Porterville, CA",36.0315,-119.0761),
+    seedPlace("Galaxy Theatres Porterville","cinema","Porterville, CA",36.0781,-119.0365),
+    seedPlace("Mooney Grove Park","park","Visalia, CA",36.2818,-119.3096),
+    seedPlace("Visalia Fox Theatre","theatre","Visalia, CA",36.3304,-119.2949),
+    seedPlace("Kaweah Oaks Preserve","nature","Visalia, CA",36.3331,-119.1754),
+    seedPlace("ImagineU Children's Museum","museum","Visalia, CA",36.3317,-119.2864),
+    seedPlace("Visalia Adventure Park","minigolf","Visalia, CA",36.326,-119.353),
+    seedPlace("Lake Kaweah","nature","Lemon Cove, CA",36.4125,-118.9981),
+    seedPlace("General Sherman Tree","nature","Sequoia National Park, CA",36.5816,-118.7514),
+    seedPlace("Moro Rock","viewpoint","Sequoia National Park, CA",36.5441,-118.7651),
+    seedPlace("General Grant Tree","nature","Kings Canyon National Park, CA",36.7481,-118.9711),
+    seedPlace("Trail of 100 Giants","nature","Sequoia National Forest, CA",35.9787,-118.592),
+    seedPlace("Balch Park","nature","Springville, CA",36.2243,-118.6754),
+    seedPlace("Lake Isabella","beach","Lake Isabella, CA",35.6383,-118.4845),
+    seedPlace("Colonel Allensworth State Historic Park","museum","Allensworth, CA",35.8727,-119.4019),
+    seedPlace("Fresno Chaffee Zoo","zoo","Fresno, CA",36.7521,-119.8232),
+    seedPlace("Forestiere Underground Gardens","museum","Fresno, CA",36.8076,-119.8818),
+    seedPlace("Shinzen Japanese Garden","garden","Fresno, CA",36.865,-119.78)
   ],
   "900":[ // Los Angeles
     seedPlace("Griffith Observatory","museum","Los Angeles, CA",34.1184,-118.3004),
@@ -856,7 +918,7 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445"};
+const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432","youngstown":"445","boardman":"445","austintown":"445","canfield":"445","warren":"445","niles":"445","porterville":"932","visalia":"932"};
 const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818],"youngstown":[41.0998,-80.6495],"boardman":[41.0229,-80.66],"austintown":[41.0919,-80.7449],"canfield":[41.0251,-80.7606],"warren":[41.2375,-80.8184],"niles":[41.1798,-80.7644]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
@@ -924,7 +986,7 @@ function planText(plan,zip){
 /* ================= Live lookup ================= */
 const OVERPASS_URLS=["https://overpass-api.de/api/interpreter","https://overpass.private.coffee/api/interpreter","https://overpass.kumi.systems/api/interpreter","https://overpass.nchc.org.tw/api/interpreter"];
 const zipCacheKey="whatdo_zipcache3";
-const SEED_CENTERS={"445":[41.0998,-80.6495],"430":[40.1168,-82.9612],"432":[40.0529,-82.9151],"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
+const SEED_CENTERS={"445":[41.0998,-80.6495],"430":[40.1168,-82.9612],"432":[40.0529,-82.9151],"932":[36.0652,-119.0168],"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
 function fetchT(url,opts,ms){
   ms=ms||10000;
   if(typeof AbortController==="undefined") return fetch(url,opts);
