@@ -348,7 +348,20 @@ const SEED_INFO = {
  "North Kern Golf Course": "Public county course up in the north end — cheap green fees and a driving range if you just want to smash a bucket of balls.",
  "Kern River Golf Course": "County course out by Lake Ming on the Kern River — 18 holes plus a driving range and putting greens. The scenic one.",
  "Rio Bravo Country Club": "Country-club course in the northeast foothills along the Kern River — the prettiest track in town. Check public tee-time availability before heading out.",
- "Sundale Country Club": "Country club course in the southwest with a driving range — check guest / public tee-time availability before you go."
+ "Sundale Country Club": "Country club course in the southwest with a driving range — check guest / public tee-time availability before you go.",
+ "Easton Town Center": "The whole Easton plaza — a huge open-air shopping and entertainment district built like its own little town: stores, restaurants, fountains, street performers, and constant people-watching. The default 'just go walk Easton' plan.",
+ "LEGOLAND Discovery Center Columbus": "Indoor LEGO playground inside Easton — rides, build zones, and a mini Columbus built from LEGO. Squarely a kids-and-family stop.",
+ "Funny Bone Comedy Club": "Stand-up comedy club right at Easton — national touring comics most weekends. Check the lineup; shows are ticketed and mostly evenings.",
+ "Pins Mechanical Co.": "Duckpin bowling + arcade bar at Easton — vintage games, pinball, giant Jenga, and drinks. The grown-up game night pick.",
+ "Polaris Fashion Place": "The big two-level mall up at Polaris — 150+ stores, food court, the north side's main shopping run.",
+ "Topgolf Columbus": "Topgolf at Polaris — climate-controlled hitting bays, targets, food and drinks brought to your bay. No golf skill required, groups love it.",
+ "Franklin Park Conservatory": "Botanical gardens and glass greenhouses — tropical biomes, the Chihuly glass collection, and a butterfly release in season. The prettiest indoor-outdoor walk in the city.",
+ "Otherworld": "A huge immersive art playground on the southeast side — room after room of interactive, glowing, climb-through installations. Photos do not do it justice; book tickets ahead on weekends.",
+ "Ohio History Center": "Ohio's state history museum by the fairgrounds — exhibits from mastodons to the '50s, plus the Ohio Village, a recreated 1860s town outside (seasonal).",
+ "Inniswood Metro Gardens": "A 123-acre garden sanctuary in Westerville — themed flower gardens, woodland trails, and a sisters' garden kids can explore. Free and peaceful.",
+ "Sharon Woods Metro Park": "Big metro park up north — a lake for fishing and boating, miles of trails, and an adventure playground. Classic picnic-and-walk territory.",
+ "Blendon Woods Metro Park": "Wooded metro park just east of Easton — ravine trails, a nature center, and a disc golf course. The closest real nature reset to Easton.",
+ "Creekside Park": "Park and plaza on Big Walnut Creek in downtown Gahanna — waterfalls, paddle boats in season, and cafes right on the plaza."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||""}; }
 const SEEDS = {
@@ -413,6 +426,21 @@ const SEEDS = {
     seedPlace("Maggie Daley Park","park","Chicago, IL",41.8827,-87.6189),
     seedPlace("Garfield Park Conservatory","garden","Chicago, IL",41.8862,-87.7173)
   ],
+  "432":[
+    seedPlace("Easton Town Center","market","Columbus, OH",40.0529,-82.9151),
+    seedPlace("LEGOLAND Discovery Center Columbus","attraction","Columbus, OH",40.051,-82.9161),
+    seedPlace("Funny Bone Comedy Club","theatre","Columbus, OH",40.0504,-82.9159),
+    seedPlace("Pins Mechanical Co.","bowling","Columbus, OH",40.0542,-82.9121),
+    seedPlace("Polaris Fashion Place","market","Columbus, OH",40.1454,-82.9819),
+    seedPlace("Topgolf Columbus","sports","Columbus, OH",40.15,-82.963),
+    seedPlace("Franklin Park Conservatory","garden","Columbus, OH",39.9663,-82.9542),
+    seedPlace("Otherworld","museum","Columbus, OH",39.9221,-82.8358),
+    seedPlace("Ohio History Center","museum","Columbus, OH",40.005,-82.9878),
+    seedPlace("Inniswood Metro Gardens","garden","Westerville, OH",40.1013,-82.8977),
+    seedPlace("Sharon Woods Metro Park","park","Westerville, OH",40.1168,-82.9612),
+    seedPlace("Blendon Woods Metro Park","nature","Columbus, OH",40.0724,-82.8781),
+    seedPlace("Creekside Park","park","Gahanna, OH",40.0203,-82.8818)
+  ],
   "934":[ // San Luis Obispo + Pismo Beach + Avila Beach
     seedPlace("Mission San Luis Obispo de Tolosa","museum","San Luis Obispo, CA",35.2808,-120.665),
     seedPlace("Bubblegum Alley","attraction","San Luis Obispo, CA",35.2791,-120.6638),
@@ -454,8 +482,8 @@ function seedForZip(zip){
   const list=(SEEDS[p3]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934"};
-const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582]};
+const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432"};
+const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
   const k=CITY_SEED_KEYS[normCity(city)];
@@ -520,7 +548,7 @@ function planText(plan,zip){
 /* ================= Live lookup ================= */
 const OVERPASS_URLS=["https://overpass-api.de/api/interpreter","https://overpass.private.coffee/api/interpreter","https://overpass.kumi.systems/api/interpreter","https://overpass.nchc.org.tw/api/interpreter"];
 const zipCacheKey="whatdo_zipcache3";
-const SEED_CENTERS={"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
+const SEED_CENTERS={"432":[40.0529,-82.9151],"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
 function fetchT(url,opts,ms){
   ms=ms||10000;
   if(typeof AbortController==="undefined") return fetch(url,opts);
