@@ -361,7 +361,17 @@ const SEED_INFO = {
  "Inniswood Metro Gardens": "A 123-acre garden sanctuary in Westerville — themed flower gardens, woodland trails, and a sisters' garden kids can explore. Free and peaceful.",
  "Sharon Woods Metro Park": "Big metro park up north — a lake for fishing and boating, miles of trails, and an adventure playground. Classic picnic-and-walk territory.",
  "Blendon Woods Metro Park": "Wooded metro park just east of Easton — ravine trails, a nature center, and a disc golf course. The closest real nature reset to Easton.",
- "Creekside Park": "Park and plaza on Big Walnut Creek in downtown Gahanna — waterfalls, paddle boats in season, and cafes right on the plaza."
+ "Creekside Park": "Park and plaza on Big Walnut Creek in downtown Gahanna — waterfalls, paddle boats in season, and cafes right on the plaza.",
+ "Columbus Zoo and Aquarium": "One of the top zoos in the country — 10,000+ animals, regions from the Congo to the polar frontier, and Jack Hanna's home zoo. Budget the day, it's huge.",
+ "Zoombezi Bay": "The zoo's water park next door — slides, a wave pool, and a lazy river. Summer only, and zoo combo tickets exist.",
+ "Star Lanes Polaris": "Upscale bowling at Polaris — boutique lanes, a big arcade, and a sports bar. Date-night bowling, not league-night bowling.",
+ "Dave & Buster's": "The big arcade at Polaris — games, prizes, sports bar, the works. Eat, drink, and lose at air hockey.",
+ "Magic Mountain Fun Center": "Polaris family fun center — go-karts, two mini-golf courses, bumper boats, and batting cages. Pure group-chaos energy.",
+ "Marcus Crosswoods Cinema": "Movie theater at Crosswoods by I-270 — recliner seats and the north side's easy default cinema.",
+ "Ohio Railway Museum": "Vintage trains in Worthington — streetcars, locomotives, and short train rides on open days (mostly weekends, seasonal). A sleeper pick for train nerds and kids.",
+ "Village Green": "The heart of Old Worthington — a classic New England-style village green with concerts, markets, and festivals across the year.",
+ "Whetstone Park": "Big Clintonville park on the Olentangy — trails, fishing pond, athletic fields, and the Park of Roses inside it.",
+ "Columbus Park of Roses": "One of the largest municipal rose gardens in the country — 12,000+ roses inside Whetstone Park, peaking in June. Free, and peak date-night stroll material."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||""}; }
 const SEEDS = {
@@ -439,7 +449,17 @@ const SEEDS = {
     seedPlace("Inniswood Metro Gardens","garden","Westerville, OH",40.1013,-82.8977),
     seedPlace("Sharon Woods Metro Park","park","Westerville, OH",40.1168,-82.9612),
     seedPlace("Blendon Woods Metro Park","nature","Columbus, OH",40.0724,-82.8781),
-    seedPlace("Creekside Park","park","Gahanna, OH",40.0203,-82.8818)
+    seedPlace("Creekside Park","park","Gahanna, OH",40.0203,-82.8818),
+    seedPlace("Columbus Zoo and Aquarium","zoo","Powell, OH",40.1573,-83.1174),
+    seedPlace("Zoombezi Bay","attraction","Powell, OH",40.154,-83.1198),
+    seedPlace("Star Lanes Polaris","bowling","Columbus, OH",40.143,-82.9782),
+    seedPlace("Dave & Buster's","attraction","Columbus, OH",40.1459,-82.9786),
+    seedPlace("Magic Mountain Fun Center","minigolf","Columbus, OH",40.1395,-82.9739),
+    seedPlace("Marcus Crosswoods Cinema","cinema","Columbus, OH",40.1146,-83.0098),
+    seedPlace("Ohio Railway Museum","museum","Worthington, OH",40.0932,-83.0034),
+    seedPlace("Village Green","park","Worthington, OH",40.0884,-83.0178),
+    seedPlace("Whetstone Park","park","Columbus, OH",40.0432,-83.0262),
+    seedPlace("Columbus Park of Roses","garden","Columbus, OH",40.0436,-83.0255)
   ],
   "934":[ // San Luis Obispo + Pismo Beach + Avila Beach
     seedPlace("Mission San Luis Obispo de Tolosa","museum","San Luis Obispo, CA",35.2808,-120.665),
@@ -479,11 +499,12 @@ const SEEDS = {
 function seedForZip(zip){
   if(!zip) return [];
   const p3=zip.slice(0,3);
-  const list=(SEEDS[p3]||[]).slice();
+  const alias={"430":"432"};
+  const list=(SEEDS[p3]||SEEDS[alias[p3]]||[]).slice();
   return list;
 }
-const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432"};
-const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151]};
+const CITY_SEED_KEYS={"bakersfield":"933","los angeles":"900","chicago":"606","san luis obispo":"934","pismo beach":"934","avila beach":"934","slo":"934","columbus":"432","worthington":"432","westerville":"432","gahanna":"432"};
+const SEED_CITY_CENTERS={"bakersfield":[35.3733,-119.0476],"los angeles":[34.0840,-118.2900],"chicago":[41.8781,-87.6298],"san luis obispo":[35.2703,-120.6582],"pismo beach":[35.1428,-120.6453],"avila beach":[35.1786,-120.7357],"slo":[35.2703,-120.6582],"columbus":[40.0529,-82.9151],"worthington":[40.0884,-83.0178],"westerville":[40.1013,-82.8977],"gahanna":[40.0203,-82.8818]};
 function normCity(x){ return (x||"").toLowerCase().trim().replace(/\s+/g," ").replace(/,.*$/,""); }
 function seedForCity(city){
   const k=CITY_SEED_KEYS[normCity(city)];
@@ -548,7 +569,7 @@ function planText(plan,zip){
 /* ================= Live lookup ================= */
 const OVERPASS_URLS=["https://overpass-api.de/api/interpreter","https://overpass.private.coffee/api/interpreter","https://overpass.kumi.systems/api/interpreter","https://overpass.nchc.org.tw/api/interpreter"];
 const zipCacheKey="whatdo_zipcache3";
-const SEED_CENTERS={"432":[40.0529,-82.9151],"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
+const SEED_CENTERS={"430":[40.1168,-82.9612],"432":[40.0529,-82.9151],"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
 function fetchT(url,opts,ms){
   ms=ms||10000;
   if(typeof AbortController==="undefined") return fetch(url,opts);
