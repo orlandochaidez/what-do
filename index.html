@@ -420,7 +420,8 @@ const SEED_INFO = {
  "Warren Community Amphitheatre": "Riverfront amphitheater in downtown Warren — summer concert series and River Rock at the Amp nights on the Mahoning River.",
  "Mosquito Lake State Park": "One of Ohio's biggest lakes, just north of Warren — beach, boating, fishing, and camping. The area's summer lake day.",
  "Nelson Ledges Quarry Park": "The legendary quarry — cliff jumping and swimming in clear spring water, camping, and festival weekends in the woods. A whole scene unto itself; check event weekends before a quiet visit.",
- "Nelson-Kennedy Ledges State Park": "The state park next door to the quarry — mossy rock formations, squeeze-through ledges, and waterfall trails. The hiking half of Nelson Ledges."
+ "Nelson-Kennedy Ledges State Park": "The state park next door to the quarry — mossy rock formations, squeeze-through ledges, and waterfall trails. The hiking half of Nelson Ledges.",
+ "The Lily Pond": "The park's oldest man-made body of water, tucked off McCollum Road by Birch Hill Drive — a flat quarter-mile circle trail loops it, with wooden overlooks jutting into the pond and ducks and geese everywhere (look, don't feed — park rules). Birch Hill Cabin sits right across the road."
 };
 function seedPlace(name,cat,city,lat,lon){ const cm=CATS[cat]; return {name,cat,lat,lon,dist:null,addr:city,dur:cm.dur,cost:cm.cost,io:cm.io,vibes:cm.vibes.slice(),who:cm.who.slice(),src:"starter",info:SEED_INFO[name]||""}; }
 const SEEDS = {
@@ -494,6 +495,7 @@ const SEEDS = {
     seedPlace("Lanterman's Mill","museum","Youngstown, OH",41.0668,-80.6821),
     seedPlace("Mill Creek Suspension Bridge","viewpoint","Youngstown, OH",41.0733,-80.689),
     seedPlace("Lake Glacier","nature","Youngstown, OH",41.0936,-80.6771),
+    seedPlace("The Lily Pond","nature","Youngstown, OH",41.0885,-80.6809),
     seedPlace("Ford Nature Center","nature","Youngstown, OH",41.0856,-80.6785),
     seedPlace("Wick Recreation Area","park","Youngstown, OH",41.0867,-80.6929),
     seedPlace("Mill Creek Golf Course","sports","Youngstown, OH",41.0308,-80.6985),
