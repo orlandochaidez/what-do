@@ -340,6 +340,26 @@ function placesFromElements(elements, cLat, cLon){
   return out.sort((a,b)=>a.dist-b.dist);
 }
 
+// Google Places primaryType -> app category (mirrors catFromTags for OSM).
+const GOOGLE_TYPE_CATS={tourist_attraction:"attraction",museum:"museum",park:"park",zoo:"zoo",aquarium:"zoo",art_gallery:"gallery",amusement_park:"attraction",bowling_alley:"bowling",movie_theater:"cinema",night_club:"nightlife",bar:"nightlife",cafe:"cafe"};
+function googleTypeToCat(t){ return GOOGLE_TYPE_CATS[t]||"generic"; }
+
+function placesFromGoogle(list, cLat, cLon){
+  const out=[], seen=new Set();
+  for(const p of (list||[])){
+    if(!p.name || p.lat==null || p.lon==null) continue;
+    const key=p.name.toLowerCase()+"@"+(+p.lat).toFixed(3)+","+(+p.lon).toFixed(3);
+    if(seen.has(key)) continue; seen.add(key);
+    const cat=googleTypeToCat(p.type||""), cm=CATS[cat]||CATS.generic;
+    const dist=haversineMi(cLat,cLon,p.lat,p.lon);
+    if(dist>15) continue;
+    out.push({name:p.name, cat, lat:p.lat, lon:p.lon, dist:Math.round(dist*10)/10, addr:p.address||"",
+      dur:cm.dur, cost:cm.cost, io:cm.io, vibes:cm.vibes.slice(), who:cm.who.slice(), src:"google",
+      gid:p.id?("live:"+p.id):"", website:"", hours:"", info:""});
+  }
+  return out.sort((a,b)=>a.dist-b.dist);
+}
+
 /* ---- Hand-picked starter places (real, well-known) for test cities ---- */
 const SEED_INFO = {
  "California Living Museum (CALM Zoo)": "Zoo and botanical garden of California native animals — bighorn sheep, mountain lions, a reptile house, and native plant gardens.",
@@ -1797,6 +1817,10 @@ function planText(plan,zip){
 
 /* ================= Live lookup ================= */
 const OVERPASS_URLS=["https://overpass-api.de/api/interpreter","https://overpass.private.coffee/api/interpreter","https://overpass.kumi.systems/api/interpreter","https://overpass.nchc.org.tw/api/interpreter"];
+// Google Places tier (Worker whatdo-places, same key/project as grub-places).
+// App calls it first; if it's not deployed yet (or Google errors), the
+// Overpass live pull below is the fallback and nothing changes.
+const GOOGLE_WORKER_URL="https://whatdo-places.orlandochaidez.workers.dev/nearby";
 const zipCacheKey="whatdo_zipcache3";
 const SEED_CENTERS={"921":[32.7157,-117.1638],"920":[33.1581,-117.3506],"445":[41.0998,-80.6495],"430":[40.1168,-82.9612],"432":[40.0529,-82.9151],"932":[36.0652,-119.0168],"933":[35.3733,-119.0476],"900":[34.0840,-118.2900],"606":[41.8781,-87.6298],"934":[35.2703,-120.6582]};
 function fetchT(url,opts,ms){
@@ -1850,6 +1874,17 @@ async function fetchPlaces(lat,lon){
   let lastErr=null;
   for(const url of OVERPASS_URLS){ try{ return await attempt(url); }catch(e){ lastErr=e; } }
   throw lastErr||new Error("lookup failed");
+}
+async function fetchGooglePlaces(lat,lon){
+  // Pro-tier fields only (no hours) — 12 calls per lookup inside the
+  // worker, 5,000 free/mo shared with grub-places. Throws on any failure
+  // so the caller falls back to Overpass.
+  const r=await fetchT(`${GOOGLE_WORKER_URL}?lat=${lat}&lon=${lon}`,{},8000);
+  if(!r.ok) throw new Error("google worker "+r.status);
+  const j=await r.json();
+  const places=placesFromGoogle(j.places||[],lat,lon);
+  if(!places.length) throw new Error("google worker empty");
+  return places;
 }
 async function fetchWeather(lat,lon){
   try{
@@ -2164,7 +2199,11 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
     state.label=g.label; state.center={lat:g.lat,lon:g.lon};
     let places=[];
     const wxPromise=fetchWeather(g.lat,g.lon);
-    try{ places=await fetchPlaces(g.lat,g.lon); }catch(e){ places=[]; }
+    // Google Places first (real names, addresses, ratings-ready pins);
+    // Overpass is the fallback — and the only source until the Worker
+    // is deployed, so nothing changes before then.
+    try{ places=await fetchGooglePlaces(g.lat,g.lon); }catch(e){ places=[]; }
+    if(!places.length){ try{ places=await fetchPlaces(g.lat,g.lon); }catch(e){ places=[]; } }
     // merge starters for this ZIP/city (dedupe by name), compute their distances
     for(const sp of seedForQuery(seedZip, isZip?null:raw)){
       if(!places.some(x=>x.name.toLowerCase()===sp.name.toLowerCase())){
@@ -2303,7 +2342,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
 }
 
 /* Node/test export */
-if(typeof module!=="undefined" && module.exports){ module.exports={CATS,CAT_BLURBS,CAT_BLURBS_ES,SEED_INFO,SEED_INFO_ES,setLang:(l)=>{WD_LANG=l;},getLang:()=>WD_LANG,catLabel,catFromTags,placesFromElements,seedForZip,seedForCity,seedForQuery,buildPlan,planText,placeOK,DEFAULT_FILTERS,haversineMi,fetchPlaces,geocodeZip,geocodeCity,pickGeocodeResult,SEED_CENTERS}; }
+if(typeof module!=="undefined" && module.exports){ module.exports={CATS,CAT_BLURBS,CAT_BLURBS_ES,SEED_INFO,SEED_INFO_ES,setLang:(l)=>{WD_LANG=l;},getLang:()=>WD_LANG,catLabel,catFromTags,placesFromElements,googleTypeToCat,placesFromGoogle,seedForZip,seedForCity,seedForQuery,buildPlan,planText,placeOK,DEFAULT_FILTERS,haversineMi,fetchPlaces,fetchGooglePlaces,geocodeZip,geocodeCity,pickGeocodeResult,SEED_CENTERS}; }
 </script>
 </body>
 </html>
