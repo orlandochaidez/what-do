@@ -27,6 +27,24 @@ const TYPE_GROUPS = [
 ];
 const PRO_MASK = "places.displayName,places.formattedAddress,places.location,places.primaryType,places.id";
 const HOURS_MASK = PRO_MASK + ",places.currentOpeningHours";
+// v2: allowlist on primaryType. Google's includedTypes is a preference,
+// not a strict filter — a "park" search also returns the insurance
+// agency next to the park, pet stores, restaurants. Anything not in this
+// set is dropped here (the app enforces the same list as a second gate).
+// Restaurants/food are excluded on purpose (GrubRoulette's lane).
+const ALLOWED_TYPES = new Set([
+  "tourist_attraction", "historical_landmark", "cultural_landmark", "monument",
+  "church", "hindu_temple", "mosque", "synagogue", "marina",
+  "museum", "art_museum", "planetarium", "observatory",
+  "park", "city_park", "dog_park", "picnic_ground",
+  "national_park", "state_park", "nature_preserve", "hiking_area", "campground",
+  "botanical_garden", "zoo", "aquarium", "art_gallery",
+  "amusement_park", "water_park", "amusement_center",
+  "bowling_alley", "movie_theater", "performing_arts_theater",
+  "night_club", "bar", "wine_bar", "sports_bar", "lounge_bar", "bar_and_grill", "brewery", "pub", "casino",
+  "cafe", "coffee_shop", "tea_house", "bakery", "donut_shop", "ice_cream_shop",
+  "stadium", "sports_club", "fitness_center", "playground", "library", "ski_resort",
+]);
 
 async function searchOne(env, type, lat, lon, hours) {
   const r = await fetch("https://places.googleapis.com/v1/places:searchNearby", {
@@ -85,6 +103,7 @@ export default {
     for (const p of groups.flat()) {
       const name = (p.displayName && p.displayName.text) || "";
       const address = p.formattedAddress || "";
+      if (!ALLOWED_TYPES.has(p.primaryType || "")) continue; // v2: drop shops/offices/restaurants
       const key = name + "|" + address;
       if (!name || seen.has(key)) continue;
       seen.add(key);

@@ -29,6 +29,14 @@ Save, then tell me it's live (or just send the Worker URL).
 
 ## 4. That's it — it lights up on its own
 
+> v2 note (2026-11-16): after the first live test, Google's `includedTypes`
+> turned out to be a preference, not a strict filter — the v1 Worker also
+> returned insurance agencies, pet stores, and restaurants next to the
+> real spots. The app now filters those out itself (allowlist, same list
+> as the Worker v2 code in `worker.js`), so your deployed v1 Worker works
+> fine as-is. Re-pasting `worker.js` is optional — it just trims the junk
+> server-side too. No rush, do it whenever.
+
 No app update needed. The next search in What Do? will pull real Google
 places for any city, with OSM as backup. Tell me once it's deployed and
 I'll test it end to end (92126 + "san diego" + a random small town).
