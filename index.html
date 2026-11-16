@@ -30,6 +30,9 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
 .tagline{text-align:center; color:var(--muted); margin:0 0 20px; font-size:15px;}
 
 .zipRow{display:flex; gap:8px; justify-content:center; margin-bottom:10px;}
+/* .topActions is display:contents below 900px, so the zip row, suggest
+   dropdown and roll button flow exactly as before on mobile. */
+.topActions{display:contents;}
 #zip{width:150px; padding:13px 14px; font-size:18px; text-align:center; border-radius:14px; border:1.5px solid var(--line); background:var(--card); color:var(--ink); outline:none;}
 #zip:focus{border-color:var(--accent);}
 #locBtn{padding:13px 14px; font-size:14px; border-radius:14px; border:1.5px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer;}
@@ -114,6 +117,22 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
   #langToggle{display:flex;align-items:center;gap:6px;background:var(--card);color:var(--muted);border:1.5px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer;}
   #langToggle span.on{color:var(--accent);font-weight:800;}
   #langToggle .lsep{opacity:.4;}
+
+  /* desktop: spread out (min-width:900px) — nothing below changes */
+  @media(min-width:900px){
+    .wrap{max-width:1120px;}
+    .topActions{display:grid; grid-template-columns:minmax(0,1fr) 300px; column-gap:16px; align-items:start;}
+    .topActions .zipRow{grid-column:1; grid-row:1; justify-content:flex-start; margin-bottom:0;}
+    .topActions #zip{flex:1; width:auto; max-width:480px; text-align:left;}
+    .topActions #suggest{grid-column:1; grid-row:2; max-width:none; margin:8px 0 0;}
+    .topActions #rollBtn{grid-column:2; grid-row:1 / span 2; align-self:center; width:300px; flex:none;}
+    .planCard{display:grid; grid-template-columns:repeat(3,minmax(0,1fr));}
+    .planHead{grid-column:1 / -1;}
+    .planCard .stop{border-top:none;}
+    .planCard .stop + .stop{border-left:1px solid var(--line);}
+    .planCard .totals{grid-column:1 / -1;}
+    #map{height:420px;}
+  }
 </style>
 </head>
 <body>
@@ -124,15 +143,17 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
   <div class="logo">What Do<span class="q">?</span></div>
   <p class="tagline" id="tagline">What's there to do around here?</p>
 
-  <div class="zipRow">
-    <input id="zip" autocomplete="off" placeholder="ZIP or city name" maxlength="40">
-    <button id="locBtn" type="button">Use my location</button>
+  <div class="topActions">
+    <div class="zipRow">
+      <input id="zip" autocomplete="off" placeholder="ZIP or city name" maxlength="40" enterkeyhint="go">
+      <button id="locBtn" type="button">Use my location</button>
+    </div>
+    <div id="suggest"></div>
+    <button id="rollBtn" type="button">WHAT DO? 🎲</button>
   </div>
-  <div id="suggest"></div>
   <div id="zipNote"></div>
   <div id="wxPill"></div>
 
-  <button id="rollBtn" type="button">WHAT DO? 🎲</button>
   <div id="filterSummary"></div>
 
   <div id="result">
@@ -2160,7 +2181,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
   }
   $("#rollBtn").onclick=roll;
   $("#againBtn").onclick=roll;
-  $("#zip").addEventListener("keydown",(e)=>{ if(e.key==="Enter") roll(); });
+  $("#zip").addEventListener("keydown",(e)=>{ if(e.key==="Enter"){ e.preventDefault(); if(!$("#rollBtn").disabled) roll(); } });
   $("#lockBtn").onclick=()=>{ state.lockedMain=state.lockedMain?null:(state.plan?state.plan.main:null); renderPlan(); };
   $("#copyBtn").onclick=async()=>{
     if(!state.plan) return;
