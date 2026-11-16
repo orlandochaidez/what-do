@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
-<title>What Do? — Things To Do Roulette</title>
+<title>What To Do? — Things To Do Roulette</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 :root{
@@ -140,7 +140,7 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
 
 <div class="wrap">
   <div class="topRow"><button id="langToggle" type="button" aria-label="Language / Idioma"><span data-l="en">EN</span><span class="lsep">|</span><span data-l="es">ES</span></button></div>
-  <div class="logo">What Do<span class="q">?</span></div>
+  <div class="logo">What To Do<span class="q">?</span></div>
   <p class="tagline" id="tagline">What's there to do around here?</p>
 
   <div class="topActions">
@@ -149,7 +149,7 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
       <button id="locBtn" type="button">Use my location</button>
     </div>
     <div id="suggest"></div>
-    <button id="rollBtn" type="button">WHAT DO? 🎲</button>
+    <button id="rollBtn" type="button">WHAT TO DO? 🎲</button>
   </div>
   <div id="zipNote"></div>
   <div id="wxPill"></div>
@@ -201,7 +201,7 @@ body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,He
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 "use strict";
-/* ================= What Do? — core engine (pure, testable) ================= */
+/* ================= What To Do? — core engine (pure, testable) ================= */
 const $ = (s)=>document.querySelector(s);
 let WD_LANG="en";
 try{ WD_LANG = localStorage.getItem("whatdo_lang") || (((navigator.language||"en").toLowerCase().indexOf("es")===0)?"es":"en"); }catch(e){}
@@ -1830,7 +1830,7 @@ function planText(plan,zip){
   const L=WD_LANG==="es";
   const labels=L?["EVENTO PRINCIPAL","PARADA EXTRA","CIERRE"]:["MAIN EVENT","SIDE QUEST","CLOSER"];
   const lines=plan.stops.map((p,i)=>`${labels[i]||(L?"PARADA":"STOP")}: ${p.name} (${catLabel(p.cat)}${p.dist!=null?", "+p.dist+" mi":""}${p.cost? ", ~$"+p.cost+(L?"/persona":"/person"):(L?", Gratis":", Free")})`);
-  return `What Do? \u2014 plan ${L?"para":"for"} ${zip}\n`+lines.join("\n")+`\nEst: ~$${plan.totalCost}${L?"/persona":"/person"} \u00B7 ~${Math.round(plan.totalTime/60*10)/10} hrs total`;
+  return `What To Do? \u2014 plan ${L?"para":"for"} ${zip}\n`+lines.join("\n")+`\nEst: ~$${plan.totalCost}${L?"/persona":"/person"} \u00B7 ~${Math.round(plan.totalTime/60*10)/10} hrs total`;
 }
 
 /* ================= Live lookup ================= */
@@ -1922,7 +1922,7 @@ if(typeof document!=="undefined" && document.getElementById("rollBtn")){
   "tagline": "What's there to do around here?",
   "zipPh": "ZIP or city name",
   "loc": "Use my location",
-  "roll": "WHAT DO? 🎲",
+  "roll": "WHAT TO DO? 🎲",
   "rolling": "ROLLING…",
   "again": "Roll Again 🎲",
   "lock": "Lock Main Event",
